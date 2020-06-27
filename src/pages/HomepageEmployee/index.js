@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Input, Select } from "antd";
 import UserMainInfo from "../../components/UserMainInfo";
@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import ax from "../../styled-components/accessor";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
+import ReviewsFeedItem from "../../components/ReviewsFeedItem";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -56,6 +57,13 @@ const EmployeeHomepageContent = styled.div`
   align-items: flex-start;
 `;
 
+const FeedWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
 const selectOptions = [
   {
     value: "positive",
@@ -72,6 +80,11 @@ const selectOptions = [
 ];
 
 const Homepage = () => {
+  const [feedItems, setFeedItems] = useState([{}, {}]);
+  useEffect(() => {
+    // todo fetch data from backend
+  }, []);
+
   const user = getUser();
 
   const onSelectChange = (value) => {
@@ -83,6 +96,7 @@ const Homepage = () => {
 
   return (
     <Layout>
+      {/* Header */}
       <Header pageTitle="Feedback on you">
         <FiltersWrapper>
           <StyledSelect
@@ -106,18 +120,25 @@ const Homepage = () => {
           />
         </FiltersWrapper>
       </Header>
-
+      {/* Content */}
       <EmployeeHomepageContent>
+        {/* User Info */}
         <UserMainInfo
-            jobTitle={user?.profile?.job_title}
-            fullName={user?.full_name}
-            age={user?.age}
-            email={user?.email}
-            imageSrc={user?.image_src}
-            yearsOfExperience={user?.years_of_experience}
-            shortDescription={user?.profile?.short_description}
-            links={user?.profile?.social_links}
+          jobTitle={user?.profile?.job_title}
+          fullName={user?.full_name}
+          age={user?.age}
+          email={user?.email}
+          imageSrc={user?.image_src}
+          yearsOfExperience={user?.years_of_experience}
+          shortDescription={user?.profile?.short_description}
+          links={user?.profile?.social_links}
         />
+        {/* Feed with reviews */}
+        <FeedWrapper>
+          {feedItems.map((item) => {
+            return <ReviewsFeedItem key={item.id} />;
+          })}
+        </FeedWrapper>
       </EmployeeHomepageContent>
     </Layout>
   );
