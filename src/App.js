@@ -5,7 +5,7 @@ import { BrowserRouter, Switch } from "react-router-dom";
 import theme from "./styled-components/theme";
 import HomePage from "./pages/HomepageEmployee";
 import LoginPage from "./pages/LoginPage";
-import 'antd/dist/antd.css';
+import "antd/dist/antd.css";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -19,7 +19,7 @@ function App() {
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
-  )
+  );
 }
 
-export default observer(App)
+export default observer(App);

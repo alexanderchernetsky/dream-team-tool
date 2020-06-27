@@ -9,6 +9,8 @@ const forgotTextColor = "#4568E4";
 const textColor = "#344062";
 const userInfoTextColor = "#333333";
 const userMainInfoTextColor = "#939393";
+const menuIconColor = "#B6B5BB";
+const menuItemHoverBgColor = "#F9FBFF";
 
 const theme = {
   "primary-color": primaryColor,
@@ -20,7 +22,9 @@ const theme = {
   "forgot-text-color": forgotTextColor,
   "text-color": textColor,
   "user-info-text-color": userInfoTextColor,
-  "user-main-info-text-color": userMainInfoTextColor
+  "user-main-info-text-color": userMainInfoTextColor,
+  "menu-icon-color": menuIconColor,
+  "menu-item-hover-bg-color": menuItemHoverBgColor
 };
 
 export default theme;
