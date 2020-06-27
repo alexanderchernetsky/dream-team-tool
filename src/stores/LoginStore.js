@@ -11,7 +11,7 @@ class LoginStore {
     this.loginInProgress = true;
     return Manager.login(params)
       .then((result) => {
-        setUserSession(result.data.access_token);
+        setUserSession(result?.data?.access_token, result?.data?.user);
       })
       .catch((error) => console.log(error))
       .finally(() => {

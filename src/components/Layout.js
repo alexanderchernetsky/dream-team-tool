@@ -46,6 +46,7 @@ const menuItems = [
 const Layout = ({ children }) => {
   return (
     <PageWrapper>
+      {/* Sidebar */}
       <SideBar>
         <CompanyLogoWrapper>
           <CompanyLogo>
@@ -65,6 +66,7 @@ const Layout = ({ children }) => {
           })}
         </Menu>
       </SideBar>
+      {/* Content */}
       <Content>{children}</Content>
     </PageWrapper>
   );

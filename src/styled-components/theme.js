@@ -12,6 +12,7 @@ const userMainInfoTextColor = "#939393";
 const menuIconColor = "#B6B5BB";
 const menuItemHoverBgColor = "#F9FBFF";
 const borderColor = "#F3F4F6";
+const socMediaLinkColor = "#E5E5E5";
 
 const theme = {
   "primary-color": primaryColor,
@@ -26,7 +27,8 @@ const theme = {
   "user-main-info-text-color": userMainInfoTextColor,
   "menu-icon-color": menuIconColor,
   "menu-item-hover-bg-color": menuItemHoverBgColor,
-  "border-color": borderColor
+  "border-color": borderColor,
+  "soc-media-link-color": socMediaLinkColor
 };
 
 export default theme;

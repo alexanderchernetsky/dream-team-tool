@@ -3,15 +3,17 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
+import SocMediaLink from "./SocMediaLink";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 365px;
+  max-width: 500px;
   box-sizing: border-box;
   padding: 70px 50px;
+  border-right: 2px solid ${ax("border-color")};
 `;
 
 const PhotoAndMainInfoWrapper = styled.div`
@@ -92,7 +94,14 @@ const UserMainInfo = ({
       <TextWrapper>{shortDescription}</TextWrapper>
       <LinksWrapper>
         {links.map((item, index) => {
-          return <div key={index}>{item.name}</div>;
+          return (
+            <SocMediaLink
+              key={index}
+              link={item.link}
+              name={item.name}
+              profileName={item.profile_name}
+            />
+          );
         })}
       </LinksWrapper>
     </Wrapper>

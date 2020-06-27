@@ -6,6 +6,7 @@ import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import ax from "../../styled-components/accessor";
 import LoopIcon from "../../images/Loop";
+import { getUser } from "../../helpers/authentication";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -47,6 +48,14 @@ const StyledSearch = styled(Search)`
   }
 `;
 
+const EmployeeHomepageContent = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
 const selectOptions = [
   {
     value: "positive",
@@ -63,19 +72,24 @@ const selectOptions = [
 ];
 
 const Homepage = () => {
-  const onSelectChange = value => {
-    console.log("value", value);
+  const user = getUser();
 
-  }
-  const searchHandler = value => {
+  const onSelectChange = (value) => {
     console.log("value", value);
-  }
+  };
+  const searchHandler = (value) => {
+    console.log("value", value);
+  };
 
   return (
     <Layout>
       <Header pageTitle="Feedback on you">
         <FiltersWrapper>
-          <StyledSelect placeholder="All feedback" allowClear onChange={onSelectChange}>
+          <StyledSelect
+            placeholder="All feedback"
+            allowClear
+            onChange={onSelectChange}
+          >
             {selectOptions.map((item, index) => {
               return (
                 <Option value={item.value} key={index}>
@@ -84,10 +98,27 @@ const Homepage = () => {
               );
             })}
           </StyledSelect>
-          <StyledSearch type="search" placeholder="Search everything" onSearch={searchHandler} suffix={LoopIcon} />
+          <StyledSearch
+            type="search"
+            placeholder="Search everything"
+            onSearch={searchHandler}
+            suffix={LoopIcon}
+          />
         </FiltersWrapper>
       </Header>
-      <UserMainInfo />
+
+      <EmployeeHomepageContent>
+        <UserMainInfo
+            jobTitle={user?.profile?.job_title}
+            fullName={user?.full_name}
+            age={user?.age}
+            email={user?.email}
+            imageSrc={user?.image_src}
+            yearsOfExperience={user?.years_of_experience}
+            shortDescription={user?.profile?.short_description}
+            links={user?.profile?.social_links}
+        />
+      </EmployeeHomepageContent>
     </Layout>
   );
 };
