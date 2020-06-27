@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Switch } from "react-router-dom";
 import theme from "./styled-components/theme";
-import HomePage from "./pages/Homepage";
+import HomePage from "./pages/HomepageEmployee";
 import LoginPage from "./pages/LoginPage";
 import 'antd/dist/antd.css';
 import PublicRoute from "./components/PublicRoute";

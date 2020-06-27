@@ -2,6 +2,7 @@ import React from "react";
 import {Button} from "antd";
 import loginStore from "../../stores/LoginStore";
 import {LOGIN_PATH} from "../../constants/routes";
+import UserMainInfo from "../../components/UserMainInfo";
 
 const Homepage = ({ history }) => {
   const logOutClickHandler = () => {
@@ -11,8 +12,8 @@ const Homepage = ({ history }) => {
 
   return (
     <div>
-      Homepage
-      <Button onClick={logOutClickHandler}>Log Out</Button>
+      <div><Button onClick={logOutClickHandler}>Log Out</Button></div>
+      <UserMainInfo />
     </div>
   );
 };
