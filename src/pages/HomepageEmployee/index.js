@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Input, Select } from "antd";
+import { Input, Select, Spin } from "antd";
+import { observer } from "mobx-react";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
@@ -8,6 +9,8 @@ import ax from "../../styled-components/accessor";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
+import store from "../../stores/EmployeeHomepageStore";
+import getUrlParams from "../../helpers/getUrlParams";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -71,6 +74,15 @@ const FeedWrapper = styled.div`
   align-items: flex-start;
 `;
 
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+`;
+
 const selectOptions = [
   {
     value: "positive",
@@ -87,9 +99,8 @@ const selectOptions = [
 ];
 
 const Homepage = () => {
-  const [feedItems, setFeedItems] = useState([{}, {}]);
   useEffect(() => {
-    // todo fetch data from backend
+    store.getFeedItems(getUrlParams());
   }, []);
 
   const user = getUser();
@@ -141,14 +152,33 @@ const Homepage = () => {
           links={user?.profile?.social_links}
         />
         {/* Feed with reviews */}
-        <FeedWrapper>
-          {feedItems.map((item) => {
-            return <ReviewsFeedItem key={item.id} />;
-          })}
-        </FeedWrapper>
+        {store.loading ? (
+          <SpinnerWrapper>
+            <Spin size="large" />
+          </SpinnerWrapper>
+        ) : (
+          <FeedWrapper>
+            {store?.feedItems?.data?.map((item) => {
+              return (
+                <ReviewsFeedItem
+                  key={item.id}
+                  jobTitle={item.author?.profile?.job_title}
+                  fullName={item.author?.full_name}
+                  date={item.created_at}
+                  id={item.id}
+                  photoSrc={item.author?.image_src}
+                  otherComments={item.other_comments}
+                  personalCharacteristics={item.strong_personal_characteristics}
+                  rating={item.rating}
+                  weakSides={item.weak_sides}
+                />
+              );
+            })}
+          </FeedWrapper>
+        )}
       </EmployeeHomepageContent>
     </Layout>
   );
 };
 
-export default Homepage;
+export default observer(Homepage);

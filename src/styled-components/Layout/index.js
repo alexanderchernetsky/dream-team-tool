@@ -6,10 +6,12 @@ const PageWrapper = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  min-width: 1200px;
 `;
 
 const SideBar = styled.div`
   width: 270px;
+  min-width: 200px;
   height: 100vh;
   border-right: 2px solid #f3f4f6;
 `;

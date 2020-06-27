@@ -9,8 +9,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   max-width: 500px;
+  min-width: 400px;
   box-sizing: border-box;
   padding: 70px 50px;
   border-right: 2px solid ${ax("border-color")};

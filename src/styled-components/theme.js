@@ -12,7 +12,7 @@ const userMainInfoTextColor = "#939393";
 const menuIconColor = "#B6B5BB";
 const menuItemHoverBgColor = "#F9FBFF";
 const borderColor = "#F3F4F6";
-const socMediaLinkColor = "#E5E5E5";
+const socMediaLinkColor = menuIconColor;
 const reviewLinkColor ="#5F83C2";
 
 const theme = {

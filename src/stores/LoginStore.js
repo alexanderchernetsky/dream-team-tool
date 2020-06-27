@@ -1,7 +1,7 @@
 // LoginStore.js
 import { observable, action } from "mobx";
 import Manager from "../services/Manager";
-import {removeUserSession, setUserSession} from "../helpers/authentication";
+import {getToken, removeUserSession, setUserSession} from "../helpers/authentication";
 
 class LoginStore {
   @observable loginInProgress = false;
@@ -12,6 +12,7 @@ class LoginStore {
     return Manager.login(params)
       .then((result) => {
         setUserSession(result?.data?.access_token, result?.data?.user);
+        Manager.setAuthHeader(`Bearer ${getToken()}`);
       })
       .catch((error) => console.log(error))
       .finally(() => {

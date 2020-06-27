@@ -21,7 +21,7 @@ const PhotoAndMainInfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const Photo = styled.div`
