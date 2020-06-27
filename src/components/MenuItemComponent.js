@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 import ax from "../styled-components/accessor";
 import FolderIcon from "../images/menu/Folder";
 
@@ -15,7 +16,7 @@ const MenuItemWrapper = styled.div`
   padding: 0 20px;
   box-sizing: border-box;
   :hover {
-    font-weight: 600;\
+    font-weight: 600;
     background-color: ${ax("menu-item-hover-bg-color")};
     svg {
       path {
@@ -38,9 +39,13 @@ const IconWrapper = styled.span`
   }
 `;
 
-const MenuItemComponent = ({ label, IconComponent }) => {
+const MenuItemComponent = ({ label, IconComponent, linkTo, history }) => {
+  const onMenuItemClickHandler = (link) => {
+    history.push(link);
+  };
+
   return (
-    <MenuItemWrapper>
+    <MenuItemWrapper onClick={() => onMenuItemClickHandler(linkTo)}>
       <Label>{label}</Label>
       <IconWrapper>
         <IconComponent />
@@ -57,6 +62,7 @@ MenuItemComponent.defaultProps = {
 MenuItemComponent.propTypes = {
   label: PropTypes.string,
   IconComponent: PropTypes.func,
+  linkTo: PropTypes.string.isRequired,
 };
 
-export default MenuItemComponent;
+export default withRouter(MenuItemComponent);
