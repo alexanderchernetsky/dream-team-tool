@@ -25,6 +25,7 @@ const StyledSelect = styled(Select)`
   height: 50px;
   background-color: ${ax("menu-item-hover-bg-color")};
   .ant-select-selector {
+    border: none !important;
     background-color: ${ax("menu-item-hover-bg-color")} !important;
     width: 183px !important;
     height: 50px !important;
@@ -44,8 +45,14 @@ const StyledSearch = styled(Search)`
   height: 50px;
   background-color: ${ax("menu-item-hover-bg-color")};
   margin-left: 40px;
+  border: none;
   .ant-input {
     background-color: ${ax("menu-item-hover-bg-color")};
+  }
+  .ant-input-search-icon {
+    :before {
+      content: none;
+    }
   }
 `;
 
