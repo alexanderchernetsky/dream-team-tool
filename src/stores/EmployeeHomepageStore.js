@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import Manager from "../services/Manager";
+import showErrorMessage from "../helpers/showErrorMessage";
 
 class EmployeeHomepageStore {
   @observable loading = false;
@@ -13,7 +14,7 @@ class EmployeeHomepageStore {
         .then((result) => {
           this.feedItems = result.data;
         })
-        .catch((error) => console.log(error))
+        .catch((error) => showErrorMessage(error))
         .finally(() => {
           this.loading = false;
         });

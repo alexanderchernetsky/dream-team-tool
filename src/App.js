@@ -8,14 +8,17 @@ import LoginPage from "./pages/LoginPage";
 import "antd/dist/antd.css";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
+import {ADD_FEEDBACK_PATH, HOMEPAGE_PATH, LOGIN_PATH} from "./constants/routes";
+import FeedbackPage from "./pages/FeedbackPage";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <PublicRoute exact path="/login" component={LoginPage} />
-          <PrivateRoute exact path="/" component={HomePage} />
+          <PublicRoute exact path={LOGIN_PATH} component={LoginPage} />
+          <PrivateRoute exact path={HOMEPAGE_PATH} component={HomePage} />
+          <PrivateRoute exact path={ADD_FEEDBACK_PATH} component={FeedbackPage} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

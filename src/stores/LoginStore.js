@@ -6,6 +6,7 @@ import {
   removeUserSession,
   setUserSession,
 } from "../helpers/authentication";
+import showErrorMessage from "../helpers/showErrorMessage";
 
 class LoginStore {
   @observable loginInProgress = false;
@@ -18,7 +19,7 @@ class LoginStore {
         setUserSession(result?.data?.access_token, result?.data?.user);
         Manager.setAuthHeader(`Bearer ${getToken()}`);
       })
-      .catch((error) => console.log(error))
+      .catch((error) => showErrorMessage(error))
       .finally(() => {
         this.loginInProgress = false;
       });

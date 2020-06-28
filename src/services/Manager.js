@@ -30,6 +30,16 @@ export class ApiBackendManager {
     const response = await this.instance.get(`/feed${createSearchString(params)}`);
     return response;
   }
+
+  getEmployeesList = async (params) => {
+    const response = await this.instance.get(`users/list${createSearchString(params)}`);
+    return response;
+  }
+
+  getSpecificEmployeeData = async (id) => {
+    const response = await this.instance.get(`/users/${id}`);
+    return response;
+  }
 }
 
 export default new ApiBackendManager();
