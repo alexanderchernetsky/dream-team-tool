@@ -1,89 +1,51 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
-import { Form, Select, Spin } from "antd";
+import { Select, Spin } from "antd";
 import { observer } from "mobx-react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
-import ax from "../../styled-components/accessor";
 import getUrlParams from "../../helpers/getUrlParams";
 import loginStore from "../../stores/LoginStore";
 import createSearchString from "../../helpers/createSearchString";
 import feedbackPageStore from "../../stores/FeedbackPageStore";
 import TargetUserInfo from "../../components/TargetUserInfo";
+import {
+  EmployeeHomepageContent,
+  FeedbackFormWrapper,
+  FiltersSpinnerWrapper,
+  FiltersWrapper,
+  NoResults,
+  SectionCard,
+  SectionHeading,
+  SpinnerWrapper,
+  StyledButton,
+  StyledFeedbackForm,
+  StyledFormItem,
+  StyledFormSelect,
+  StyledSelect,
+  StyledTextArea,
+} from "../../styled-components/FeedbackPage";
+import { ADD_FEEDBACK_PATH } from "../../constants/routes";
 
 const { Option } = Select;
 
-const EmployeeHomepageContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
+const selectOptions = (
+  <>
+    <Option value="2">Always</Option>
+    <Option value="1">Often</Option>
+    <Option value="-1">Rarely</Option>
+    <Option value="-2">Never</Option>
+  </>
+);
 
-const FiltersWrapper = styled.div`
-  width: 283px;
-  max-width: 283px;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  border-right: 2px solid ${ax("border-color")};
-`;
+const requiredFieldRules = [
+  { required: true, message: "This field is required." },
+];
 
-const FiltersSpinnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-  width: 283px;
-  max-width: 283px;
-`;
-
-const SpinnerWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-`;
-
-const StyledSelect = styled(Select)`
-  margin-top: 45px;
-  width: 183px;
-  height: 35px;
-  background-color: ${ax("menu-item-hover-bg-color")};
-  .ant-select-selector {
-    border: none !important;
-    background-color: ${ax("menu-item-hover-bg-color")} !important;
-    width: 183px !important;
-    height: 35px !important;
-    .ant-select-selection-search-input {
-      height: 35px !important;
-    }
-    .ant-select-selection-placeholder,
-    .ant-select-selection-item {
-      display: flex;
-      align-items: center;
-    }
-  }
-`;
-
-const NoResults = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-`;
-
-const FeedbackFormWrapper = styled.div``;
-
-const FeedbackForm = styled(Form)``;
+const requiredTextAreaRules = [
+  { required: true, message: "This field is required." },
+  { min: 20, message: "This field must be at least 20 characters." },
+  { max: 32500, message: "This field should be less than 32500 characters." },
+];
 
 const FeedbackPage = ({ history, location }) => {
   useEffect(() => {
@@ -92,6 +54,9 @@ const FeedbackPage = ({ history, location }) => {
     if (getUrlParams().user) {
       feedbackPageStore.getSpecificEmployeeData(targetUserId);
     }
+    return () => {
+      feedbackPageStore.removeSpecificEmployeeData();
+    };
   }, [location]);
 
   useEffect(() => {
@@ -107,6 +72,20 @@ const FeedbackPage = ({ history, location }) => {
     } else {
       history.push(`${createSearchString({ ...getUrlParams(), user: value })}`);
     }
+  };
+
+  const onFinish = (values) => {
+    console.log("onFinish values", values);
+
+    feedbackPageStore
+      .submitFeedbackForm(values, feedbackPageStore?.employeeData?.id)
+      .then(() => {
+        history.push(ADD_FEEDBACK_PATH);
+      });
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -150,12 +129,366 @@ const FeedbackPage = ({ history, location }) => {
             )}
             {feedbackPageStore?.employeeData?.id && (
               <FeedbackFormWrapper>
+                {/* Target user info */}
                 <TargetUserInfo
                   photoSrc={feedbackPageStore?.employeeData?.image_src}
                   fullName={feedbackPageStore?.employeeData?.full_name}
                   jobTitle={feedbackPageStore?.employeeData?.profile?.job_title}
                 />
-                <FeedbackForm>Form</FeedbackForm>
+                {/* Feedback form */}
+                <StyledFeedbackForm
+                  name="feedback-form"
+                  initialValues={{ remember: false }}
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+                  hideRequiredMark
+                >
+                  {/* Working in a team section */}
+                  <SectionCard>
+                    <SectionHeading color="#1168FF">
+                      Working in a team
+                    </SectionHeading>
+                    <StyledFormItem
+                      label="Perceive constructive criticism"
+                      name="workInTeam_perceiveConstructiveCriticism"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+
+                    <StyledFormItem
+                      label="Takes the initiative"
+                      name="workInTeam_takesInitiative"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+
+                    <StyledFormItem
+                      label="Works together with others to solve the problems"
+                      name="workInTeam_teamworkToSolveProblems"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+
+                    <StyledFormItem
+                      label="Involved in work"
+                      name="workInTeam_involvedInWork"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+
+                    <StyledFormItem
+                      label="Seems to be a trustworthy team member"
+                      name="workInTeam_trustworthyTeamMember"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                  </SectionCard>
+
+                  {/* Communication section */}
+                  <SectionCard>
+                    <SectionHeading color="#5FB840">
+                      Communication
+                    </SectionHeading>
+                    {/* 1 */}
+                    <StyledFormItem
+                      label="Respectful and tactful in communication with colleagues"
+                      name="communication_respectAndTactfulInCommunication"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 2 */}
+                    <StyledFormItem
+                      label="Listens to others and clarifies information when needed"
+                      name="communication_listensAndClarifiesInformation"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 3 */}
+                    <StyledFormItem
+                      label="Open and available for communication"
+                      name="communication_openAndAvailableForCommunication"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 4 */}
+                    <StyledFormItem
+                      label="Clearly explains his/her ideas in spoken language"
+                      name="communication_explainsIdeasInSpokenLanguage"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 5 */}
+                    <StyledFormItem
+                      label="Clearly explains his/her ideas in written language"
+                      name="communication_explainsWrittenIdeas"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                  </SectionCard>
+
+                  {/* Effectiveness section */}
+                  <SectionCard>
+                    <SectionHeading color="#F16B41">
+                      Effectiveness
+                    </SectionHeading>
+                    {/* 1 */}
+                    <StyledFormItem
+                      label="Shows diligence in day-to-day work"
+                      name="effectiveness_showsDiligenceInDayToDayWork"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 2 */}
+                    <StyledFormItem
+                      label="Meets deadlines"
+                      name="effectiveness_meetsDeadlines"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 3 */}
+                    <StyledFormItem
+                      label="Works without mistakes"
+                      name="effectiveness_worksWithoutMistakes"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 4 */}
+                    <StyledFormItem
+                      label="Good in multitasking"
+                      name="effectiveness_goodInMultitasking"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 5 */}
+                    <StyledFormItem
+                      label="Is able to find effective solutions to simplify work"
+                      name="effectiveness_findsEffectiveSolutionsToSimplifyWork"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                  </SectionCard>
+
+                  {/* Independence section */}
+                  <SectionCard>
+                    <SectionHeading color="#E8A7FF">
+                      Independence
+                    </SectionHeading>
+                    {/* 1 */}
+                    <StyledFormItem
+                      label="Responsible for results of his work"
+                      name="independence_responsibleForResultsOfHisWork"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 2 */}
+                    <StyledFormItem
+                      label="Works independently, without control from the side"
+                      name="independence_independentWork"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 3 */}
+                    <StyledFormItem
+                      label="Able to handle independently difficulties in work"
+                      name="independence_independentWorkWithDifficulties"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 4 */}
+                    <StyledFormItem
+                      label="Adequately evaluates his/her skills and abilities"
+                      name="independence_adequatelyEvaluateSkillsAndAbilities"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 5 */}
+                    <StyledFormItem
+                      label="Able to take the responsibility for his/her mistakes"
+                      name="independence_ableToTakeResponsibilityForMistakes"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                  </SectionCard>
+
+                  {/* Interpersonal qualities */}
+                  <SectionCard>
+                    <SectionHeading color="#F1D541">
+                      Interpersonal qualities
+                    </SectionHeading>
+                    {/* 1 */}
+                    <StyledFormItem
+                      label="Shows understanding of other points of view"
+                      name="interpersonalQualities_understandingOfOtherPointsOfView"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 2 */}
+                    <StyledFormItem
+                      label="Takes into consideration other points of view"
+                      name="interpersonalQualities_takesIntoConsiderationOtherPointsOfView"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 3 */}
+                    <StyledFormItem
+                      label="Does not allow stress to influence interpersonal communication with others"
+                      name="interpersonalQualities_stressResistance"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 4 */}
+                    <StyledFormItem
+                      label="Provides honest reviews"
+                      name="interpersonalQualities_providesHonestReviews"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 5 */}
+                    <StyledFormItem
+                      label="Open for new ideas"
+                      name="interpersonalQualities_openForNewIdeas"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        {selectOptions}
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                  </SectionCard>
+
+                  {/* General */}
+                  <SectionCard>
+                    {/* 1 */}
+                    <StyledFormItem
+                      label={`How could you estimate your experience of working with ${feedbackPageStore?.employeeData?.full_name} in general?`}
+                      name="workExperienceWithAnEmployee"
+                      rules={requiredFieldRules}
+                    >
+                      <StyledFormSelect placeholder="Please select">
+                        <Option value="2">Perfect</Option>
+                        <Option value="1">Good</Option>
+                        <Option value="0">Neutral</Option>
+                        <Option value="-1">Bad</Option>
+                        <Option value="-2">Awful</Option>
+                      </StyledFormSelect>
+                    </StyledFormItem>
+                    {/* 2 */}
+                    <StyledFormItem
+                      withTextArea
+                      label={`How do you think what are the strong personal characteristics of ${feedbackPageStore?.employeeData?.full_name}?`}
+                      name="strongPersonalCharacteristics"
+                      rules={requiredTextAreaRules}
+                    >
+                      <StyledTextArea placeholder="Enter your answer...">
+                        {selectOptions}
+                      </StyledTextArea>
+                    </StyledFormItem>
+                    {/* 3 */}
+                    <StyledFormItem
+                      withTextArea
+                      label={`What are weak sides of ${feedbackPageStore?.employeeData?.full_name}?`}
+                      name="weakSides"
+                      rules={requiredTextAreaRules}
+                    >
+                      <StyledTextArea placeholder="Enter your answer...">
+                        {selectOptions}
+                      </StyledTextArea>
+                    </StyledFormItem>
+                    {/* 4 */}
+                    <StyledFormItem
+                      withTextArea
+                      label="Other comments:"
+                      name="otherComments"
+                      rules={requiredTextAreaRules}
+                    >
+                      <StyledTextArea placeholder="Enter your answer...">
+                        {selectOptions}
+                      </StyledTextArea>
+                    </StyledFormItem>
+                  </SectionCard>
+
+                  {/* Submit */}
+                  <StyledFormItem submitButton>
+                    <StyledButton
+                      type="primary"
+                      htmlType="submit"
+                      loading={feedbackPageStore?.submittingFeedbackForm}
+                    >
+                      Send
+                    </StyledButton>
+                  </StyledFormItem>
+                </StyledFeedbackForm>
               </FeedbackFormWrapper>
             )}
           </>

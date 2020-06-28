@@ -40,6 +40,11 @@ export class ApiBackendManager {
     const response = await this.instance.get(`/users/${id}`);
     return response;
   }
+
+  sendFeedbackForm = async (formData, targetUserId) => {
+    const response = await this.instance.post(`/users/${targetUserId}/reviews`, formData);
+    return response;
+  }
 }
 
 export default new ApiBackendManager();

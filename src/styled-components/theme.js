@@ -15,6 +15,8 @@ const borderColor = "#F3F4F6";
 const socMediaLinkColor = menuIconColor;
 const reviewLinkColor = "#5F83C2";
 const menuItemHoverColor = "black";
+const formSectionHeadingColor = "#454545";
+const formSectionCardShadowColor = "#E2ECFF";
 
 const theme = {
   "primary-color": primaryColor,
@@ -32,7 +34,9 @@ const theme = {
   "border-color": borderColor,
   "soc-media-link-color": socMediaLinkColor,
   "review-link-color": reviewLinkColor,
-  "menu-item-hover-color": menuItemHoverColor
+  "menu-item-hover-color": menuItemHoverColor,
+  "form-section-heading-color": formSectionHeadingColor,
+  "form-section-card-shadow-color": formSectionCardShadowColor
 };
 
 export default theme;
