@@ -190,10 +190,10 @@ const Homepage = ({ history, location }) => {
                   date={item.created_at}
                   id={item.id}
                   photoSrc={item.author?.image_src}
-                  otherComments={item.other_comments}
-                  personalCharacteristics={item.strong_personal_characteristics}
+                  otherComments={item.attributes?.otherComments}
+                  personalCharacteristics={item.attributes?.strongPersonalCharacteristics}
                   rating={item.rating}
-                  weakSides={item.weak_sides}
+                  weakSides={item.attributes?.weakSides}
                 />
               );
             })}

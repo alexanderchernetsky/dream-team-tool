@@ -2,11 +2,14 @@ import { observable, action } from "mobx";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapResultsToSelectOptions from "../helpers/mapResultsToSelectOptions";
+import showSuccessMessage from "../helpers/showSuccessMessage";
 
 class FeedbackPageStore {
   @observable loadingEmployeesList = false;
 
   @observable loadingSpecificEmployeeData = false;
+
+  @observable submittingFeedbackForm = false;
 
   @observable employeesList = [];
 
@@ -41,6 +44,19 @@ class FeedbackPageStore {
   @action
   removeSpecificEmployeeData() {
     this.employeeData = [];
+  }
+
+  @action
+  submitFeedbackForm(formData, targetUserId) {
+    this.submittingFeedbackForm = true;
+    return Manager.sendFeedbackForm(formData, targetUserId)
+        .then((result) => {
+          showSuccessMessage(result.message);
+        })
+        .catch((error) => showErrorMessage(error))
+        .finally(() => {
+          this.submittingFeedbackForm = false;
+        });
   }
 }
 

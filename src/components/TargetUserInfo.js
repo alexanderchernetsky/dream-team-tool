@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
-  padding: 47px 35px;
+  padding: 47px 35px 20px;
 `;
 
 const PhotoAndMainInfoWrapper = styled.div`
