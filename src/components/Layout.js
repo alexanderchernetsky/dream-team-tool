@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from "react-router-dom";
 import logo from "../images/_DTT.svg";
 import FolderIcon from "../images/menu/Folder";
 import PencilIcon from "../images/menu/Pencil";
@@ -43,13 +44,17 @@ const menuItems = [
   },
 ];
 
-const Layout = ({ children }) => {
+const Layout = ({ children, history }) => {
+  const onLogoClick = () => {
+    history.push(HOMEPAGE_PATH);
+  }
+
   return (
     <PageWrapper>
       {/* Sidebar */}
       <SideBar>
         <CompanyLogoWrapper>
-          <CompanyLogo>
+          <CompanyLogo onClick={onLogoClick}>
             <img src={logo} alt="dream team tool logo" />
           </CompanyLogo>
         </CompanyLogoWrapper>
@@ -72,4 +77,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default withRouter(Layout);

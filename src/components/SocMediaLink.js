@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import {Link, withRouter} from "react-router-dom";
+import { withRouter} from "react-router-dom";
 import ax from "../styled-components/accessor";
 import GithubIcon from "../images/socialMedia/Github";
 import SlackIcon from "../images/socialMedia/Slack";
@@ -23,7 +23,7 @@ const ProfileName = styled.span`
   padding-left: 10px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   background-color: ${ax("menu-item-hover-bg-color")};
   margin: 0 15px 15px 0;
   padding: 6px 17px;
@@ -31,7 +31,7 @@ const StyledLink = styled(Link)`
 
 const SocMediaLinkComponent = ({ name, link, profileName }) => {
   return (
-      <StyledLink to={link}>
+      <StyledLink href={link} target="_blank">
         {getIconForName(name)}
         <ProfileName>{profileName}</ProfileName>
       </StyledLink>

@@ -13,7 +13,8 @@ const menuIconColor = "#B6B5BB";
 const menuItemHoverBgColor = "#F9FBFF";
 const borderColor = "#F3F4F6";
 const socMediaLinkColor = menuIconColor;
-const reviewLinkColor ="#5F83C2";
+const reviewLinkColor = "#5F83C2";
+const menuItemHoverColor = "black";
 
 const theme = {
   "primary-color": primaryColor,
@@ -30,7 +31,8 @@ const theme = {
   "menu-item-hover-bg-color": menuItemHoverBgColor,
   "border-color": borderColor,
   "soc-media-link-color": socMediaLinkColor,
-  "review-link-color": reviewLinkColor
+  "review-link-color": reviewLinkColor,
+  "menu-item-hover-color": menuItemHoverColor
 };
 
 export default theme;

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
+import moment from "moment";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
 import ArrowIcon from "../images/Arrow";
@@ -113,7 +114,7 @@ const ReviewsFeedItem = ({
         <MainInfo>
           <FullName>{fullName}</FullName>
           <MainInfoText>{jobTitle}</MainInfoText>
-          <MainInfoText>{date}</MainInfoText>
+          <MainInfoText>{moment(date).format("LLL")}</MainInfoText>
         </MainInfo>
       </PhotoAndMainInfoWrapper>
       <Review color={getColorForReviewBorder(rating)}>

@@ -1,7 +1,11 @@
 // LoginStore.js
 import { observable, action } from "mobx";
 import Manager from "../services/Manager";
-import {getToken, removeUserSession, setUserSession} from "../helpers/authentication";
+import {
+  getToken,
+  removeUserSession,
+  setUserSession,
+} from "../helpers/authentication";
 
 class LoginStore {
   @observable loginInProgress = false;
@@ -23,6 +27,14 @@ class LoginStore {
   @action
   logOut() {
     removeUserSession();
+  }
+
+  @action
+  checkAndSetAuthHeader() {
+    const token = getToken();
+    if (token) {
+      Manager.setAuthHeader(`Bearer ${getToken()}`);
+    }
   }
 }
 

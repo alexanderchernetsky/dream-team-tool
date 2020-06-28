@@ -11,6 +11,8 @@ import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
 import store from "../../stores/EmployeeHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
+import loginStore from "../../stores/LoginStore";
+import createSearchString from "../../helpers/createSearchString";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -85,31 +87,49 @@ const SpinnerWrapper = styled.div`
 
 const selectOptions = [
   {
-    value: "positive",
+    value: "1",
     label: "Positive",
   },
   {
-    value: "neutral",
+    value: "0",
     label: "Neutral",
   },
   {
-    value: "negative",
+    value: "-1",
     label: "Negative",
   },
 ];
 
-const Homepage = () => {
+const Homepage = ({ history, location }) => {
   useEffect(() => {
+    loginStore.checkAndSetAuthHeader();
     store.getFeedItems(getUrlParams());
-  }, []);
+  }, [location]);
 
   const user = getUser();
 
   const onSelectChange = (value) => {
-    console.log("value", value);
+    const urlParams = getUrlParams();
+    if (!value) {
+      delete urlParams.rating;
+      history.push(`${createSearchString(urlParams)}`);
+    } else {
+      history.push(
+        `${createSearchString({ ...getUrlParams(), rating: value })}`
+      );
+    }
   };
+
   const searchHandler = (value) => {
-    console.log("value", value);
+    const urlParams = getUrlParams();
+    if (!value) {
+      delete urlParams.searchPhrase;
+      history.push(`${createSearchString(urlParams)}`);
+    } else {
+      history.push(
+          `${createSearchString({ ...getUrlParams(), searchPhrase: value })}`
+      );
+    }
   };
 
   return (
@@ -121,6 +141,7 @@ const Homepage = () => {
             placeholder="All feedback"
             allowClear
             onChange={onSelectChange}
+            value={getUrlParams().rating || null}
           >
             {selectOptions.map((item, index) => {
               return (
@@ -135,6 +156,8 @@ const Homepage = () => {
             placeholder="Search everything"
             onSearch={searchHandler}
             suffix={LoopIcon}
+            defaultValue={getUrlParams().searchPhrase}
+            allowClear
           />
         </FiltersWrapper>
       </Header>

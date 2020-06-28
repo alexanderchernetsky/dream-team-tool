@@ -15,12 +15,14 @@ const MenuItemWrapper = styled.div`
   height: 60px;
   padding: 0 20px;
   box-sizing: border-box;
+  transition: all 0.5s ease-out;
   :hover {
-    font-weight: 600;
+    color: ${ax("menu-item-hover-color")}; 
     background-color: ${ax("menu-item-hover-bg-color")};
     svg {
       path {
         fill: ${ax("user-info-text-color")};
+        transition: all 0.5s ease-out;
       }
     }
   }
