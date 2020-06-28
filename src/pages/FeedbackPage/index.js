@@ -9,6 +9,7 @@ import getUrlParams from "../../helpers/getUrlParams";
 import loginStore from "../../stores/LoginStore";
 import createSearchString from "../../helpers/createSearchString";
 import feedbackPageStore from "../../stores/FeedbackPageStore";
+import TargetUserInfo from "../../components/TargetUserInfo";
 
 const { Option } = Select;
 
@@ -28,6 +29,17 @@ const FiltersWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
+  border-right: 2px solid ${ax("border-color")};
+`;
+
+const FiltersSpinnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  width: 283px;
+  max-width: 283px;
 `;
 
 const SpinnerWrapper = styled.div`
@@ -106,9 +118,9 @@ const FeedbackPage = ({ history, location }) => {
         {/* User selection */}
         <FiltersWrapper>
           {feedbackPageStore.loadingEmployeesList ? (
-            <SpinnerWrapper>
+            <FiltersSpinnerWrapper>
               <Spin size="default" />
-            </SpinnerWrapper>
+            </FiltersSpinnerWrapper>
           ) : (
             <StyledSelect
               placeholder="Please select user"
@@ -138,6 +150,11 @@ const FeedbackPage = ({ history, location }) => {
             )}
             {feedbackPageStore?.employeeData?.id && (
               <FeedbackFormWrapper>
+                <TargetUserInfo
+                  photoSrc={feedbackPageStore?.employeeData?.image_src}
+                  fullName={feedbackPageStore?.employeeData?.full_name}
+                  jobTitle={feedbackPageStore?.employeeData?.profile?.job_title}
+                />
                 <FeedbackForm>Form</FeedbackForm>
               </FeedbackFormWrapper>
             )}
