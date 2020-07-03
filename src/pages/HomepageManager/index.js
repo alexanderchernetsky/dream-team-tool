@@ -163,7 +163,7 @@ const HomepageManager = ({ history, location }) => {
           {/* Search */}
           <StyledManagerHomepageSearch
             type="search"
-            placeholder="Search"
+            placeholder="Search by full name"
             onSearch={searchHandler}
             suffix={LoopIcon}
             defaultValue={getUrlParams().searchPhrase}
