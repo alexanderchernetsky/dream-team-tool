@@ -33,18 +33,18 @@ const MembersCount = styled.div`
 `;
 
 const StyledButton = styled(Link)`
+  display: block;
+  max-width: 110px;
+  padding: 10px 5px;
+  margin-top: -15px;
+  margin-left: auto;
+  border-radius: 5px;
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
   color: #FF79A9;
   background: #FFFFFF;
-  border-radius: 5px;
-  padding: 10px 5px;
-  margin-left: auto;
-  display: block;
-  max-width: 110px;
   text-align: center;
-  margin-top: -15px;
   
   &:hover {
     color: #ff1368;

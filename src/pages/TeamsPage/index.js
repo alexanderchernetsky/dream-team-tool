@@ -30,7 +30,9 @@ const TeamsPage = () => {
       <Header pageTitle="Teams" />
       {/* Content */}
       <TeamsPageContent>
+        {/* Row */}
         <Row gutter={58}>
+          {/* Column */}
           {teams.data.map(getTeamCard)}
         </Row>
       </TeamsPageContent>
