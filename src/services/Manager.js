@@ -6,7 +6,7 @@ export class ApiBackendManager {
 
   constructor() {
     this.instance = axios.create({
-      baseURL: process.env.REACT_APP_API_PATH_BACK
+      baseURL: process.env.REACT_APP_API_PATH_BACK,
     });
   }
 
@@ -31,39 +31,47 @@ export class ApiBackendManager {
   // Employee Homepage
 
   getFeedItems = async (params) => {
-    const response = await this.instance.get(`/feed${createSearchString(params)}`);
+    const response = await this.instance.get(
+      `/feed${createSearchString(params)}`
+    );
     return response;
-  }
+  };
 
   getEmployeesList = async (params) => {
-    const response = await this.instance.get(`users/list${createSearchString(params)}`);
+    const response = await this.instance.get(
+      `users/list${createSearchString(params)}`
+    );
     return response;
-  }
+  };
 
   // Add feedback page
 
   getSpecificEmployeeData = async (id) => {
     const response = await this.instance.get(`/users/${id}`);
     return response;
-  }
+  };
 
   sendFeedbackForm = async (formData, targetUserId) => {
-    const response = await this.instance.post(`/users/${targetUserId}/reviews`, formData);
+    const response = await this.instance.post(
+      `/users/${targetUserId}/reviews`,
+      formData
+    );
     return response;
-  }
+  };
 
   // Manager Homepage
 
   getSelectOptions = async () => {
-    const response = await this.instance.get(`/users/filter-data`)
+    const response = await this.instance.get(`/users/filter-data`);
     return response;
-  }
+  };
 
   getGridData = async (params) => {
-    const response = await this.instance.get(`/users${createSearchString(params)}`);
+    const response = await this.instance.get(
+      `/users${createSearchString(params)}`
+    );
     return response;
-  }
-
+  };
 }
 
 export default new ApiBackendManager();

@@ -18,6 +18,7 @@ const menuItemHoverColor = "black";
 const formSectionHeadingColor = "#454545";
 const formSectionCardShadowColor = "#E2ECFF";
 const gridTextColor = "#515151";
+const inputPlaceholderColor = "#C2C2C2";
 
 const theme = {
   "primary-color": primaryColor,
@@ -39,6 +40,7 @@ const theme = {
   "form-section-heading-color": formSectionHeadingColor,
   "form-section-card-shadow-color": formSectionCardShadowColor,
   "grid-text-color": gridTextColor,
+  "input-placeholder-color": inputPlaceholderColor
 };
 
 export default theme;

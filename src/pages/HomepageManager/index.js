@@ -100,7 +100,7 @@ const HomepageManager = ({ history, location }) => {
     }
   };
 
-  const onTableChangeHandler = (pagination, filters, sorter) => {
+  const tableChangeHandler = (pagination, filters, sorter) => {
     const urlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || !sorter?.order) {
@@ -118,7 +118,6 @@ const HomepageManager = ({ history, location }) => {
           })}`
       );
     }
-
   };
 
   return (
@@ -174,7 +173,7 @@ const HomepageManager = ({ history, location }) => {
             dataSource={store.gridData}
             loading={store.loadingGridData}
             pagination={store.pagination}
-            onChange={onTableChangeHandler}
+            onChange={tableChangeHandler}
           />
         </GridWrapper>
       </ManagerHomepageContent>
