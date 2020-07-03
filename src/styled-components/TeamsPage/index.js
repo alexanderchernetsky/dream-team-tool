@@ -10,9 +10,13 @@ const TeamsPageContent = styled.div`
 const GradientCard = styled.div`
   margin: 19px 0;
   padding: 25px 30px;
-  background: linear-gradient(90deg, #FFC7B6 0%, #FF65A6 100%);
+  background: ${(props) => (props.gradient)};
   border-radius: 10px;
   color: #fff;
+  
+  .view-button {
+    color: ${(props) => (props.buttonColor)};
+  }
 `;
 
 const TeamName = styled.div`
@@ -42,13 +46,8 @@ const StyledButton = styled(Link)`
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
-  color: #FF79A9;
   background: #FFFFFF;
   text-align: center;
-  
-  &:hover {
-    color: #ff1368;
-  }
 `;
 
 export {

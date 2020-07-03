@@ -10,18 +10,27 @@ import {
 } from "../../styled-components/TeamsPage";
 import teams from '../../__moks__/teams.json';
 import { Col, Row } from "antd";
+import randomGradient from "../../helpers/randomGradient";
 
-const getTeamCard = (team) => (
-  <Col span={8}>
-    <GradientCard>
-      <TeamName>{team.name}</TeamName>
-      <MembersCount>{team.users_count} members</MembersCount>
-      <StyledButton to={`/teams/${team.id}`}>
-        View Team
-      </StyledButton>
-    </GradientCard>
-  </Col>
-);
+
+const getTeamCard = (team) => {
+  const item = randomGradient();
+
+  return (
+    <Col span={8} key={team.id}>
+      <GradientCard
+        gradient={item.gradient}
+        buttonColor={item.buttonColor}
+      >
+        <TeamName>{team.name}</TeamName>
+        <MembersCount>{team.users_count} members</MembersCount>
+        <StyledButton to={`/teams/${team.id}`} className="view-button">
+          View Team
+        </StyledButton>
+      </GradientCard>
+    </Col>
+  )
+};
 
 const TeamsPage = () => {
   return (
