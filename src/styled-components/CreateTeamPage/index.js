@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Input } from "antd";
 import ax from "../accessor";
+import {SectionCard} from "../FeedbackPage";
 
 const CreateTeamPageContent = styled.div`
   width: 100%;
@@ -8,20 +9,22 @@ const CreateTeamPageContent = styled.div`
   padding: 26px 46px;
 `;
 
-const TablesWrapper = styled.div`
+const TablesWrapper = styled(SectionCard)`
   width: 100%;
-  margin-top: 30px;
+  max-width: unset;
+  margin: 30px 0 0;
+  padding: 20px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 `;
 
 const EmployeesGridWrapper = styled.div`
-  flex: 0 0 50%;
+  flex: 0 0 40%;
 `;
 
 const SelectedGridWrapper = styled.div`
-  flex: 0 0 50%;
+  flex: 0 0 40%;
   margin-left: 60px;
 `;
 
@@ -51,6 +54,55 @@ const GridName = styled.div`
 
 const TeamNameWrapper = styled.div``;
 
+const TeamAnalysisBtnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 42px;
+`;
+
+const AnalysisCard = styled(SectionCard)`
+  width: 100%;
+  max-width: unset;
+  margin: 100px 0 0;
+`;
+
+const Legend = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  border-bottom: 2px solid ${ax("analysis-row-border-color")};
+  box-sizing: border-box;
+  padding: 7px 0;
+`;
+
+const LegendItemWrapper = styled.div`
+  width: fit-content;
+  margin-right: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Color = styled.div`
+  background-color: ${(props) => props.color};
+  width: 15px;
+  height: 15px;
+  border-radius: 8px;
+`;
+
+const Slug = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 20px;
+  color: ${ax("grid-text-color")};
+  margin-left: 6px;
+`;
+
 export {
   CreateTeamPageContent,
   TeamNameWrapper,
@@ -58,5 +110,11 @@ export {
   StyledInput,
   TablesWrapper,
   SelectedGridWrapper,
-  GridName
+  GridName,
+  TeamAnalysisBtnWrapper,
+  AnalysisCard,
+  Legend,
+  LegendItemWrapper,
+  Color,
+  Slug
 };

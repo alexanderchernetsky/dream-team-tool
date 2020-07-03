@@ -6,11 +6,15 @@ import mapToGridData from "../helpers/mapToGridData";
 class CreateTeamStore {
   @observable loadingGridData = false;
 
+  @observable loadingAnalysisData = false;
+
   @observable pagination = {};
 
   @observable gridData = [];
 
   @observable selectedUsersGridData = [];
+
+  @observable analysisData = [];
 
   @action
   getGridData(params) {
@@ -32,14 +36,31 @@ class CreateTeamStore {
 
   @action
   addTeamMember(id) {
-    const targetMember = this.gridData.find(user => user.id === id);
+    const targetMember = this.gridData.find((user) => user.id === id);
     this.selectedUsersGridData = [...this.selectedUsersGridData, targetMember];
   }
 
   @action
   removeTeamMember(id) {
-    const filtered = this.selectedUsersGridData.filter(user => user.id !== id);
+    const filtered = this.selectedUsersGridData.filter(
+      (user) => user.id !== id
+    );
     this.selectedUsersGridData = filtered;
+  }
+
+  @action
+  getAnalysisData() {
+    this.loadingAnalysisData = true;
+    const users = this.selectedUsersGridData.map(item => item.id);
+    return Manager.getAnalysis({ users })
+      .then((result) => {
+        console.log("result?.data", result?.data);
+        this.analysisData = result?.data;
+      })
+      .catch((error) => showErrorMessage(error))
+      .finally(() => {
+        this.loadingAnalysisData = false;
+      });
   }
 }
 

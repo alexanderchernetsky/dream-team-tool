@@ -72,6 +72,15 @@ export class ApiBackendManager {
     );
     return response;
   };
+
+  // Create team page
+
+  getAnalysis = async params => {
+    const response = await this.instance.post(
+        `/analyze/users`, params
+    );
+    return response;
+  }
 }
 
 export default new ApiBackendManager();

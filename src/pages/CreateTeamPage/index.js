@@ -14,13 +14,21 @@ import createSearchString from "../../helpers/createSearchString";
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import {
+  AnalysisCard,
+  Color,
   CreateTeamPageContent,
-  EmployeesGridWrapper, GridName,
+  EmployeesGridWrapper,
+  GridName,
+  Legend,
+  LegendItemWrapper,
   SelectedGridWrapper,
+  Slug,
   StyledInput,
   TablesWrapper,
+  TeamAnalysisBtnWrapper,
   TeamNameWrapper,
 } from "../../styled-components/CreateTeamPage";
+import UserAnalysisRow from "../../components/UserAnalysisRow";
 
 // add team member button handler
 const addButtonClickHandler = (id) => {
@@ -77,7 +85,9 @@ const allEmployeesGridColumns = [
             type="primary"
             htmlType="button"
             onClick={() => addButtonClickHandler(data.id)}
-            disabled={store.selectedUsersGridData.some(item => item.id === data.id)}
+            disabled={store.selectedUsersGridData.some(
+              (item) => item.id === data.id
+            )}
           >
             Add
           </StyledActionColButton>
@@ -122,6 +132,21 @@ const selectedUsersGridColumns = [
   },
 ];
 
+const legendItems = [
+  {
+    color: "#A5F081",
+    slug: "Positive",
+  },
+  {
+    color: "#CFCFCF",
+    slug: "Neutral",
+  },
+  {
+    color: "#C78AF7",
+    slug: "Negative",
+  },
+];
+
 const CreateTeamPage = ({ location, history }) => {
   useEffect(() => {
     store.getGridData(getUrlParams());
@@ -153,10 +178,12 @@ const CreateTeamPage = ({ location, history }) => {
       <Header pageTitle="Create new team" />
       {/* Content */}
       <CreateTeamPageContent>
+        {/* Input team name */}
         <TeamNameWrapper>
           <StyledInput placeholder="Please enter a team name" />
         </TeamNameWrapper>
         <TablesWrapper>
+          {/* Select employee grid */}
           <EmployeesGridWrapper>
             <GridName>Select employee</GridName>
             <StyledTable
@@ -167,6 +194,7 @@ const CreateTeamPage = ({ location, history }) => {
               onChange={tableChangeHandler}
             />
           </EmployeesGridWrapper>
+          {/* Team grid */}
           <SelectedGridWrapper>
             <GridName>Team</GridName>
             <StyledTable
@@ -176,6 +204,33 @@ const CreateTeamPage = ({ location, history }) => {
             />
           </SelectedGridWrapper>
         </TablesWrapper>
+        <TeamAnalysisBtnWrapper>
+          <StyledActionColButton
+            type="primary"
+            htmlType="button"
+            onClick={() => store.getAnalysisData()}
+            loading={store.loadingAnalysisData}
+          >
+            Team analysis
+          </StyledActionColButton>
+        </TeamAnalysisBtnWrapper>
+        {/* Team analysis */}
+        <AnalysisCard>
+          <GridName>Team analysis</GridName>
+          <Legend>
+            {legendItems.map((item, index) => {
+              return (
+                <LegendItemWrapper key={index}>
+                  <Color color={item.color} />
+                  <Slug slug={item.slug}>{item.slug}</Slug>
+                </LegendItemWrapper>
+              );
+            })}
+          </Legend>
+          {store.analysisData.map((item, index) => {
+            return <UserAnalysisRow key={index} id={item.user?.id} />;
+          })}
+        </AnalysisCard>
       </CreateTeamPageContent>
     </Layout>
   );
