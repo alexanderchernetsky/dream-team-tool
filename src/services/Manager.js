@@ -10,6 +10,8 @@ export class ApiBackendManager {
     });
   }
 
+  // Authentication
+
   setHeader(name, value) {
     this.instance.defaults.headers.common[name] = value;
     if (!value) {
@@ -26,6 +28,8 @@ export class ApiBackendManager {
     return response;
   };
 
+  // Employee Homepage
+
   getFeedItems = async (params) => {
     const response = await this.instance.get(`/feed${createSearchString(params)}`);
     return response;
@@ -36,6 +40,8 @@ export class ApiBackendManager {
     return response;
   }
 
+  // Add feedback page
+
   getSpecificEmployeeData = async (id) => {
     const response = await this.instance.get(`/users/${id}`);
     return response;
@@ -45,6 +51,19 @@ export class ApiBackendManager {
     const response = await this.instance.post(`/users/${targetUserId}/reviews`, formData);
     return response;
   }
+
+  // Manager Homepage
+
+  getSelectOptions = async () => {
+    const response = await this.instance.get(`/users/filter-data`)
+    return response;
+  }
+
+  getGridData = async (params) => {
+    const response = await this.instance.get(`/users${createSearchString(params)}`);
+    return response;
+  }
+
 }
 
 export default new ApiBackendManager();

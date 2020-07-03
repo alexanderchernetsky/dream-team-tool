@@ -17,6 +17,7 @@ const reviewLinkColor = "#5F83C2";
 const menuItemHoverColor = "black";
 const formSectionHeadingColor = "#454545";
 const formSectionCardShadowColor = "#E2ECFF";
+const gridTextColor = "#515151";
 
 const theme = {
   "primary-color": primaryColor,
@@ -36,7 +37,8 @@ const theme = {
   "review-link-color": reviewLinkColor,
   "menu-item-hover-color": menuItemHoverColor,
   "form-section-heading-color": formSectionHeadingColor,
-  "form-section-card-shadow-color": formSectionCardShadowColor
+  "form-section-card-shadow-color": formSectionCardShadowColor,
+  "grid-text-color": gridTextColor,
 };
 
 export default theme;

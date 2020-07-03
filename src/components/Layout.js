@@ -1,5 +1,5 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import logo from "../images/_DTT.svg";
 import FolderIcon from "../images/menu/Folder";
 import PencilIcon from "../images/menu/Pencil";
@@ -16,17 +16,16 @@ import {
 } from "../styled-components/Layout";
 import {
   ADD_FEEDBACK_PATH,
+  CREATE_TEAM_PATH,
   HOMEPAGE_PATH,
   RELATIONSHIP_MAP_PATH,
   SETTINGS_PATH,
 } from "../constants/routes";
+import { getUser } from "../helpers/authentication";
+import HomeIcon from "../images/menu/Home";
+import TeamIcon from "../images/menu/Team";
 
-const menuItems = [
-  {
-    label: "Feedback on you",
-    icon: FolderIcon,
-    linkTo: HOMEPAGE_PATH,
-  },
+const commonMenuItems = [
   {
     label: "Write a feedback",
     icon: PencilIcon,
@@ -44,10 +43,35 @@ const menuItems = [
   },
 ];
 
+const employeeMenuItems = [
+  {
+    label: "Feedback on you",
+    icon: FolderIcon,
+    linkTo: HOMEPAGE_PATH,
+  },
+  ...commonMenuItems,
+];
+
+const managerMenuItems = [
+  {
+    label: "Home",
+    icon: HomeIcon,
+    linkTo: HOMEPAGE_PATH,
+  },
+  {
+    label: "Create a team",
+    icon: TeamIcon,
+    linkTo: CREATE_TEAM_PATH,
+  },
+  ...commonMenuItems,
+];
+
 const Layout = ({ children, history }) => {
   const onLogoClick = () => {
     history.push(HOMEPAGE_PATH);
-  }
+  };
+
+  const menuItems = getUser().is_manager ? managerMenuItems : employeeMenuItems;
 
   return (
     <PageWrapper>
