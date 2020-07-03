@@ -8,10 +8,17 @@ import LoginPage from "./pages/LoginPage";
 import "antd/dist/antd.css";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
-import {ADD_FEEDBACK_PATH, HOMEPAGE_PATH, LOGIN_PATH, VIEW_EMPLOYEE_PROFILE_PATH} from "./constants/routes";
+import {
+  ADD_FEEDBACK_PATH,
+  CREATE_TEAM_PATH,
+  HOMEPAGE_PATH,
+  LOGIN_PATH,
+  VIEW_EMPLOYEE_PROFILE_PATH
+} from "./constants/routes";
 import FeedbackPage from "./pages/FeedbackPage";
 import {getUser} from "./helpers/authentication";
 import HomepageManager from "./pages/HomepageManager";
+import CreateTeamPage from "./pages/CreateTeamPage";
 
 function App() {
   const HomepageComponent = getUser()?.is_manager ? HomepageManager : HomePageEmployee;
@@ -24,6 +31,7 @@ function App() {
           <PrivateRoute exact path={HOMEPAGE_PATH} component={HomepageComponent} />
           <PrivateRoute exact path={ADD_FEEDBACK_PATH} component={FeedbackPage} />
           <PrivateRoute exact path={VIEW_EMPLOYEE_PROFILE_PATH} component={HomePageEmployee} />
+          <PrivateRoute exact path={CREATE_TEAM_PATH} component={CreateTeamPage} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

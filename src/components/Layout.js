@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { withRouter } from "react-router-dom";
 import logo from "../images/_DTT.svg";
 import FolderIcon from "../images/menu/Folder";
@@ -24,6 +24,7 @@ import {
 import { getUser } from "../helpers/authentication";
 import HomeIcon from "../images/menu/Home";
 import TeamIcon from "../images/menu/Team";
+import loginStore from "../stores/LoginStore";
 
 const commonMenuItems = [
   {
@@ -67,6 +68,11 @@ const managerMenuItems = [
 ];
 
 const Layout = ({ children, history }) => {
+  useEffect(() => {
+    loginStore.getAndSetAuthHeader();
+  }, []);
+
+
   const onLogoClick = () => {
     history.push(HOMEPAGE_PATH);
   };

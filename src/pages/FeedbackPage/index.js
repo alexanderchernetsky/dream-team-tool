@@ -4,7 +4,6 @@ import { observer } from "mobx-react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import getUrlParams from "../../helpers/getUrlParams";
-import loginStore from "../../stores/LoginStore";
 import createSearchString from "../../helpers/createSearchString";
 import feedbackPageStore from "../../stores/FeedbackPageStore";
 import TargetUserInfo from "../../components/TargetUserInfo";
@@ -49,7 +48,6 @@ const requiredTextAreaRules = [
 
 const FeedbackPage = ({ history, location }) => {
   useEffect(() => {
-    loginStore.checkAndSetAuthHeader();
     const targetUserId = getUrlParams().user;
     if (getUrlParams().user) {
       feedbackPageStore.getSpecificEmployeeData(targetUserId);

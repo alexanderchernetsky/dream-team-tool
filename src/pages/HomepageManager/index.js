@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Select } from "antd";
-import loginStore from "../../stores/LoginStore";
 import store from "../../stores/ManagerHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
@@ -70,7 +69,6 @@ const columns = [
 
 const HomepageManager = ({ history, location }) => {
   useEffect(() => {
-    loginStore.checkAndSetAuthHeader();
     store.getSelectOptions();
   }, []);
 
@@ -102,7 +100,7 @@ const HomepageManager = ({ history, location }) => {
     }
   };
 
-  const onTableChangeHandler = (pagination, filters, sorter) => {
+  const tableChangeHandler = (pagination, filters, sorter) => {
     const urlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || !sorter?.order) {
@@ -120,7 +118,6 @@ const HomepageManager = ({ history, location }) => {
           })}`
       );
     }
-
   };
 
   return (
@@ -163,7 +160,7 @@ const HomepageManager = ({ history, location }) => {
           {/* Search */}
           <StyledManagerHomepageSearch
             type="search"
-            placeholder="Search"
+            placeholder="Search by full name"
             onSearch={searchHandler}
             suffix={LoopIcon}
             defaultValue={getUrlParams().searchPhrase}
@@ -176,7 +173,7 @@ const HomepageManager = ({ history, location }) => {
             dataSource={store.gridData}
             loading={store.loadingGridData}
             pagination={store.pagination}
-            onChange={onTableChangeHandler}
+            onChange={tableChangeHandler}
           />
         </GridWrapper>
       </ManagerHomepageContent>
