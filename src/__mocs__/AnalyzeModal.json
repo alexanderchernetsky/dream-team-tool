@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "author": {
+      "id": 3,
+      "full_name": "Casimer Hodkiewicz",
+      "image_src": "https:\/\/dream-team-api.bubeha.com\/storage\/avatars\/default_profile.png",
+      "profile": {
+        "id": 5,
+        "job_title": "Electronic Drafter"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "author": {
+      "id": 4,
+      "full_name": "Nathan Stamm",
+      "image_src": "https:\/\/dream-team-api.bubeha.com\/storage\/avatars\/default_profile.png",
+      "profile": {
+        "id": 6,
+        "job_title": "Opticians"
+      }
+    }
+  }
+]
