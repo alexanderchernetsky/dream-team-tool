@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
-import { Input, Select, Spin } from "antd";
+import { Select, Spin } from "antd";
 import { observer } from "mobx-react";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
-import ax from "../../styled-components/accessor";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
@@ -13,77 +11,16 @@ import store from "../../stores/EmployeeHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import loginStore from "../../stores/LoginStore";
 import createSearchString from "../../helpers/createSearchString";
+import {
+  EmployeeHomepageContent,
+  FeedWrapper,
+  FiltersWrapper,
+  SpinnerWrapper
+} from "../../styled-components/HomepageEmployee";
+import StyledSelect from "../../styled-components/common/Select";
+import StyledSearch from "../../styled-components/common/Search";
 
 const { Option } = Select;
-const { Search } = Input;
-
-const FiltersWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-`;
-
-const StyledSelect = styled(Select)`
-  width: 183px;
-  height: 50px;
-  background-color: ${ax("menu-item-hover-bg-color")};
-  .ant-select-selector {
-    border: none !important;
-    background-color: ${ax("menu-item-hover-bg-color")} !important;
-    width: 183px !important;
-    height: 50px !important;
-    .ant-select-selection-search-input {
-      height: 50px !important;
-    }
-    .ant-select-selection-placeholder,
-    .ant-select-selection-item {
-      display: flex;
-      align-items: center;
-    }
-  }
-`;
-
-const StyledSearch = styled(Search)`
-  width: 208px;
-  height: 50px;
-  background-color: ${ax("menu-item-hover-bg-color")};
-  margin-left: 40px;
-  border: none;
-  .ant-input {
-    background-color: ${ax("menu-item-hover-bg-color")};
-  }
-  .ant-input-search-icon {
-    :before {
-      content: none;
-    }
-  }
-`;
-
-const EmployeeHomepageContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
-
-const FeedWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
-
-const SpinnerWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-`;
 
 const selectOptions = [
   {
@@ -100,7 +37,7 @@ const selectOptions = [
   },
 ];
 
-const Homepage = ({ history, location }) => {
+const HomePageEmployee = ({ history, location }) => {
   useEffect(() => {
     loginStore.checkAndSetAuthHeader();
     store.getFeedItems(getUrlParams());
@@ -204,4 +141,4 @@ const Homepage = ({ history, location }) => {
   );
 };
 
-export default observer(Homepage);
+export default observer(HomePageEmployee);
