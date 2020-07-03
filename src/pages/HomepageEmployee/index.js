@@ -9,7 +9,6 @@ import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
 import store from "../../stores/EmployeeHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
-import loginStore from "../../stores/LoginStore";
 import createSearchString from "../../helpers/createSearchString";
 import {
   EmployeeHomepageContent,
@@ -39,7 +38,6 @@ const selectOptions = [
 
 const HomePageEmployee = ({ history, location }) => {
   useEffect(() => {
-    loginStore.checkAndSetAuthHeader();
     store.getFeedItems(getUrlParams());
   }, [location]);
 

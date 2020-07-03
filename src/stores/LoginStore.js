@@ -31,7 +31,7 @@ class LoginStore {
   }
 
   @action
-  checkAndSetAuthHeader() {
+  getAndSetAuthHeader() {
     const token = getToken();
     if (token) {
       Manager.setAuthHeader(`Bearer ${getToken()}`);

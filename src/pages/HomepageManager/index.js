@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Select } from "antd";
-import loginStore from "../../stores/LoginStore";
 import store from "../../stores/ManagerHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
@@ -70,7 +69,6 @@ const columns = [
 
 const HomepageManager = ({ history, location }) => {
   useEffect(() => {
-    loginStore.checkAndSetAuthHeader();
     store.getSelectOptions();
   }, []);
 
