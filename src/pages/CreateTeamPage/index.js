@@ -215,22 +215,36 @@ const CreateTeamPage = ({ location, history }) => {
           </StyledActionColButton>
         </TeamAnalysisBtnWrapper>
         {/* Team analysis */}
-        <AnalysisCard>
-          <GridName>Team analysis</GridName>
-          <Legend>
-            {legendItems.map((item, index) => {
+        {store.analysisData.length !== 0 && (
+          <AnalysisCard>
+            <GridName>Team analysis</GridName>
+            <Legend>
+              {legendItems.map((item, index) => {
+                return (
+                  <LegendItemWrapper key={index}>
+                    <Color color={item.color} />
+                    <Slug slug={item.slug}>{item.slug}</Slug>
+                  </LegendItemWrapper>
+                );
+              })}
+            </Legend>
+            {store.analysisData.map((item, index) => {
               return (
-                <LegendItemWrapper key={index}>
-                  <Color color={item.color} />
-                  <Slug slug={item.slug}>{item.slug}</Slug>
-                </LegendItemWrapper>
+                <UserAnalysisRow
+                  key={index}
+                  id={item.user?.id}
+                  jobTitle={item.user?.profile?.job_title}
+                  photoSrc={item.user?.image_src}
+                  fullName={item.user?.full_name}
+                  rating={item.user?.profile?.rating}
+                  negative={item.statistic?.negative}
+                  neutral={item.statistic?.neutral}
+                  positive={item.statistic?.positive}
+                />
               );
             })}
-          </Legend>
-          {store.analysisData.map((item, index) => {
-            return <UserAnalysisRow key={index} id={item.user?.id} />;
-          })}
-        </AnalysisCard>
+          </AnalysisCard>
+        )}
       </CreateTeamPageContent>
     </Layout>
   );

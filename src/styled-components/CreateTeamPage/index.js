@@ -16,16 +16,17 @@ const TablesWrapper = styled(SectionCard)`
   padding: 20px;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 `;
 
 const EmployeesGridWrapper = styled.div`
   flex: 0 0 40%;
+  margin-right: 60px;
 `;
 
 const SelectedGridWrapper = styled.div`
   flex: 0 0 40%;
-  margin-left: 60px;
+  min-width: 571px;
 `;
 
 const StyledInput = styled(Input)`

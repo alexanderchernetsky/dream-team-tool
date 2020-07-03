@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Tooltip } from "antd";
 import noLogoImage from "../images/no_logo_image.png";
 import ax from "../styled-components/accessor";
 
@@ -108,23 +109,26 @@ const UserAnalysisRow = ({
           <Rating>Rating: {rating}</Rating>
         </MainInfo>
       </PhotoAndMainInfoWrapper>
-      <Bar>
-        {positive && (
-          <Part percent={positive} color="#A5F081">
-            {positive}%
-          </Part>
-        )}
-        {neutral && (
-          <Part percent={neutral} color="#CFCFCF">
-            {neutral}%
-          </Part>
-        )}
-        {negative && (
-          <Part percent={negative} color="#C78AF7">
-            {negative}%
-          </Part>
-        )}
-      </Bar>
+      <Tooltip title="Click for more information">
+        <Bar>
+          {positive !== 0 && (
+            <Part percent={positive} color="#A5F081">
+              {positive}%
+            </Part>
+          )}
+          {neutral !== 0 && (
+            <Part percent={neutral} color="#CFCFCF">
+              {neutral}%
+            </Part>
+          )}
+          {negative !== 0 && (
+            <Part percent={negative} color="#C78AF7">
+              {negative}%
+            </Part>
+          )}
+          {positive === 0 && negative === 0 && neutral === 0 && "No info"}
+        </Bar>
+      </Tooltip>
     </Wrapper>
   );
 };

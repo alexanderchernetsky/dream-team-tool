@@ -54,7 +54,6 @@ class CreateTeamStore {
     const users = this.selectedUsersGridData.map(item => item.id);
     return Manager.getAnalysis({ users })
       .then((result) => {
-        console.log("result?.data", result?.data);
         this.analysisData = result?.data;
       })
       .catch((error) => showErrorMessage(error))
