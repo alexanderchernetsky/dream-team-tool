@@ -48,6 +48,7 @@ const LoginPage = ({ history }) => {
         <StyledItem
           name="email"
           rules={[{ required: true, message: "Please input your email!" }]}
+          data-test-id="login-email"
         >
           <StyledInput />
         </StyledItem>
@@ -55,6 +56,7 @@ const LoginPage = ({ history }) => {
         <StyledItem
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
+          data-test-id="login-password"
         >
           <StyledInput type="password" />
         </StyledItem>
