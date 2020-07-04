@@ -20,7 +20,7 @@ import FeedbackPage from "./pages/FeedbackPage";
 import { getUser } from "./helpers/authentication";
 import HomepageManager from "./pages/HomepageManager";
 import CreateTeamPage from "./pages/CreateTeamPage";
-import TeamsPage from "./pages/TeamsPage";
+import TeamsPage from "./pages/TeamsListPage";
 
 function App() {
   const HomepageComponent = getUser()?.is_manager ? HomepageManager : HomePageEmployee;

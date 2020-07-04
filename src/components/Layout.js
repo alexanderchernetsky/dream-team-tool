@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import logo from "../images/_DTT.svg";
 import FolderIcon from "../images/menu/Folder";
@@ -20,11 +20,13 @@ import {
   HOMEPAGE_PATH,
   RELATIONSHIP_MAP_PATH,
   SETTINGS_PATH,
+  TEAMS_LIST_PATH,
 } from "../constants/routes";
 import { getUser } from "../helpers/authentication";
 import HomeIcon from "../images/menu/Home";
 import TeamIcon from "../images/menu/Team";
 import loginStore from "../stores/LoginStore";
+import TeamsIcon from "../images/menu/TeamsIcon";
 
 const commonMenuItems = [
   {
@@ -64,6 +66,11 @@ const managerMenuItems = [
     icon: TeamIcon,
     linkTo: CREATE_TEAM_PATH,
   },
+  {
+    label: "Teams",
+    icon: TeamsIcon,
+    linkTo: TEAMS_LIST_PATH,
+  },
   ...commonMenuItems,
 ];
 
@@ -71,7 +78,6 @@ const Layout = ({ children, history }) => {
   useEffect(() => {
     loginStore.getAndSetAuthHeader();
   }, []);
-
 
   const onLogoClick = () => {
     history.push(HOMEPAGE_PATH);
