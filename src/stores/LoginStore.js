@@ -1,4 +1,3 @@
-// LoginStore.js
 import { observable, action } from "mobx";
 import Manager from "../services/Manager";
 import {
@@ -11,6 +10,8 @@ import showErrorMessage from "../helpers/showErrorMessage";
 class LoginStore {
   @observable loginInProgress = false;
 
+  @observable user = {};
+
   @action
   login(params) {
     this.loginInProgress = true;
@@ -18,6 +19,7 @@ class LoginStore {
       .then((result) => {
         setUserSession(result?.data?.access_token, result?.data?.user);
         Manager.setAuthHeader(`Bearer ${getToken()}`);
+        this.user = result?.data?.user;
       })
       .catch((error) => showErrorMessage(error))
       .finally(() => {
@@ -28,6 +30,7 @@ class LoginStore {
   @action
   logOut() {
     removeUserSession();
+    this.user = {};
   }
 
   @action
