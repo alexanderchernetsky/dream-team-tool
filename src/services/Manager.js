@@ -1,4 +1,5 @@
 import axios from "axios";
+import createSearchString from "../helpers/createSearchString";
 
 export class ApiBackendManager {
   instance;
@@ -9,8 +10,85 @@ export class ApiBackendManager {
     });
   }
 
+  // Authentication
+
+  setHeader(name, value) {
+    this.instance.defaults.headers.common[name] = value;
+    if (!value) {
+      delete this.instance.defaults.headers.common[name];
+    }
+  }
+
+  setAuthHeader(token) {
+    this.setHeader("Authorization", token);
+  }
+
   login = async (params) => {
     const response = await this.instance.post(`/login`, params);
+    return response;
+  };
+
+  // Employee Homepage
+
+  getFeedItems = async (params) => {
+    const response = await this.instance.get(
+      `/feed${createSearchString(params)}`
+    );
+    return response;
+  };
+
+  getEmployeesList = async (params) => {
+    const response = await this.instance.get(
+      `users/list${createSearchString(params)}`
+    );
+    return response;
+  };
+
+  // Add feedback page
+
+  getSpecificEmployeeData = async (id) => {
+    const response = await this.instance.get(`/users/${id}`);
+    return response;
+  };
+
+  sendFeedbackForm = async (formData, targetUserId) => {
+    const response = await this.instance.post(
+      `/users/${targetUserId}/reviews`,
+      formData
+    );
+    return response;
+  };
+
+  // Manager Homepage
+
+  getSelectOptions = async () => {
+    const response = await this.instance.get(`/users/filter-data`);
+    return response;
+  };
+
+  getGridData = async (params) => {
+    const response = await this.instance.get(
+      `/users${createSearchString(params)}`
+    );
+    return response;
+  };
+
+  // Create team page
+
+  getAnalysis = async (params) => {
+    const response = await this.instance.post(`/analyze/users`, params);
+    return response;
+  };
+
+  saveTeam = async (params) => {
+    const response = await this.instance.post(`/teams`, params);
+    return response;
+  }
+
+  // Teams List page
+
+  getTeams = async () => {
+    const response = await this.instance.get(`/teams`);
     return response;
   };
 }
