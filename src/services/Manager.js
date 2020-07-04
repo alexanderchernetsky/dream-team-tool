@@ -75,12 +75,17 @@ export class ApiBackendManager {
 
   // Create team page
 
-  getAnalysis = async params => {
-    const response = await this.instance.post(
-        `/analyze/users`, params
-    );
+  getAnalysis = async (params) => {
+    const response = await this.instance.post(`/analyze/users`, params);
     return response;
-  }
+  };
+
+  // Teams List page
+
+  getTeams = async () => {
+    const response = await this.instance.get(`/teams`);
+    return response;
+  };
 }
 
 export default new ApiBackendManager();
