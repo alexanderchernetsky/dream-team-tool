@@ -2,11 +2,14 @@ import { observable, action } from "mobx";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapToGridData from "../helpers/mapToGridData";
+import showSuccessMessage from "../helpers/showSuccessMessage";
 
 class CreateTeamStore {
   @observable loadingGridData = false;
 
   @observable loadingAnalysisData = false;
+
+  @observable savingTeamInProgress = false;
 
   @observable pagination = {};
 
@@ -51,7 +54,7 @@ class CreateTeamStore {
   @action
   getAnalysisData() {
     this.loadingAnalysisData = true;
-    const users = this.selectedUsersGridData.map(item => item.id);
+    const users = this.selectedUsersGridData.map((item) => item.id);
     return Manager.getAnalysis({ users })
       .then((result) => {
         this.analysisData = result?.data;
@@ -59,6 +62,20 @@ class CreateTeamStore {
       .catch((error) => showErrorMessage(error))
       .finally(() => {
         this.loadingAnalysisData = false;
+      });
+  }
+
+  @action
+  saveTeam(name) {
+    this.savingTeamInProgress = true;
+    const users = this.selectedUsersGridData.map((item) => item.id);
+    return Manager.saveTeam({ name, users })
+      .then(() => {
+        showSuccessMessage();
+      })
+      .catch((error) => showErrorMessage(error))
+      .finally(() => {
+        this.savingTeamInProgress = false;
       });
   }
 }

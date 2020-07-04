@@ -80,6 +80,11 @@ export class ApiBackendManager {
     return response;
   };
 
+  saveTeam = async (params) => {
+    const response = await this.instance.post(`/teams`, params);
+    return response;
+  }
+
   // Teams List page
 
   getTeams = async () => {

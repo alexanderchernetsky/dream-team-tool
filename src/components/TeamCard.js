@@ -30,7 +30,7 @@ TeamCard.propTypes = {
   gradient: PropTypes.string,
   btnColor: PropTypes.string,
   teamName: PropTypes.string,
-  usersCount: PropTypes.string,
+  usersCount: PropTypes.number,
   teamId: PropTypes.number.isRequired,
 };
 
