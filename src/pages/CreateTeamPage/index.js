@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import {
   ActionColWrapper,
@@ -29,6 +29,7 @@ import {
   TeamNameWrapper,
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
+import { TEAMS_LIST_PATH } from "../../constants/routes";
 
 // add team member button handler
 const addButtonClickHandler = (id) => {
@@ -148,6 +149,8 @@ const legendItems = [
 ];
 
 const CreateTeamPage = ({ location, history }) => {
+  const [teamNameValue, setTeamNameValue] = useState("");
+
   useEffect(() => {
     store.getGridData(getUrlParams());
   }, [location]);
@@ -172,6 +175,10 @@ const CreateTeamPage = ({ location, history }) => {
     }
   };
 
+  const saveTeamButtonHandler = () => {
+    store.saveTeam(teamNameValue).then(history.push(TEAMS_LIST_PATH));
+  };
+
   return (
     <Layout>
       {/* Header */}
@@ -180,7 +187,13 @@ const CreateTeamPage = ({ location, history }) => {
       <CreateTeamPageContent>
         {/* Input team name */}
         <TeamNameWrapper>
-          <StyledInput placeholder="Please enter a team name" />
+          <StyledInput
+            placeholder="Please enter a team name"
+            value={teamNameValue}
+            onChange={(event) => {
+              return setTeamNameValue(event.target.value);
+            }}
+          />
         </TeamNameWrapper>
         <TablesWrapper>
           {/* Select employee grid */}
@@ -216,34 +229,47 @@ const CreateTeamPage = ({ location, history }) => {
         </TeamAnalysisBtnWrapper>
         {/* Team analysis */}
         {store.analysisData.length !== 0 && (
-          <AnalysisCard>
-            <GridName>Team analysis</GridName>
-            <Legend>
-              {legendItems.map((item, index) => {
+          <>
+            <AnalysisCard>
+              <GridName>Team analysis</GridName>
+              <Legend>
+                {legendItems.map((item, index) => {
+                  return (
+                    <LegendItemWrapper key={index}>
+                      <Color color={item.color} />
+                      <Slug slug={item.slug}>{item.slug}</Slug>
+                    </LegendItemWrapper>
+                  );
+                })}
+              </Legend>
+              {store.analysisData.map((item, index) => {
                 return (
-                  <LegendItemWrapper key={index}>
-                    <Color color={item.color} />
-                    <Slug slug={item.slug}>{item.slug}</Slug>
-                  </LegendItemWrapper>
+                  <UserAnalysisRow
+                    key={index}
+                    id={item.user?.id}
+                    jobTitle={item.user?.profile?.job_title}
+                    photoSrc={item.user?.image_src}
+                    fullName={item.user?.full_name}
+                    rating={item.user?.profile?.rating}
+                    negative={item.statistic?.negative}
+                    neutral={item.statistic?.neutral}
+                    positive={item.statistic?.positive}
+                  />
                 );
               })}
-            </Legend>
-            {store.analysisData.map((item, index) => {
-              return (
-                <UserAnalysisRow
-                  key={index}
-                  id={item.user?.id}
-                  jobTitle={item.user?.profile?.job_title}
-                  photoSrc={item.user?.image_src}
-                  fullName={item.user?.full_name}
-                  rating={item.user?.profile?.rating}
-                  negative={item.statistic?.negative}
-                  neutral={item.statistic?.neutral}
-                  positive={item.statistic?.positive}
-                />
-              );
-            })}
-          </AnalysisCard>
+            </AnalysisCard>
+            <TeamAnalysisBtnWrapper>
+              <StyledActionColButton
+                type="primary"
+                htmlType="button"
+                onClick={saveTeamButtonHandler}
+                loading={store.savingTeamInProgress}
+                disabled={!teamNameValue}
+              >
+                Save team
+              </StyledActionColButton>
+            </TeamAnalysisBtnWrapper>
+          </>
         )}
       </CreateTeamPageContent>
     </Layout>

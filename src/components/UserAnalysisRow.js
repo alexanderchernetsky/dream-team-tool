@@ -17,6 +17,7 @@ const Wrapper = styled.div`
 
 const Photo = styled.div`
   width: 50px;
+  min-width: 50px;
   height: 50px;
   border-radius: 10px;
   img {
@@ -113,17 +114,17 @@ const UserAnalysisRow = ({
         <Bar>
           {positive !== 0 && (
             <Part percent={positive} color="#A5F081">
-              {positive}%
+              {positive.toFixed(1)}%
             </Part>
           )}
           {neutral !== 0 && (
             <Part percent={neutral} color="#CFCFCF">
-              {neutral}%
+              {neutral.toFixed(1)}%
             </Part>
           )}
           {negative !== 0 && (
             <Part percent={negative} color="#C78AF7">
-              {negative}%
+              {negative.toFixed(1)}%
             </Part>
           )}
           {positive === 0 && negative === 0 && neutral === 0 && "No info"}
