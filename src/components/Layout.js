@@ -33,19 +33,22 @@ const commonMenuItems = [
     label: "Write a feedback",
     icon: PencilIcon,
     linkTo: ADD_FEEDBACK_PATH,
-    dataTestId: "write-feedback-menu-item"
+    dataTestId: "write-feedback-menu-item",
+    disabled: false
   },
   {
     label: "Relationship map",
     icon: SmileIcon,
     linkTo: RELATIONSHIP_MAP_PATH,
-    dataTestId: "relationship-map-menu-item"
+    dataTestId: "relationship-map-menu-item",
+    disabled: true
   },
   {
     label: "Settings",
     icon: ToolsIcon,
     linkTo: SETTINGS_PATH,
-    dataTestId: "settings-menu-item"
+    dataTestId: "settings-menu-item",
+    disabled: true
   },
 ];
 
@@ -54,7 +57,8 @@ const employeeMenuItems = [
     label: "Feedback on you",
     icon: FolderIcon,
     linkTo: HOMEPAGE_PATH,
-    dataTestId: "employee-homepage-menu-item"
+    dataTestId: "employee-homepage-menu-item",
+    disabled: false
   },
   ...commonMenuItems,
 ];
@@ -64,19 +68,22 @@ const managerMenuItems = [
     label: "Home",
     icon: HomeIcon,
     linkTo: HOMEPAGE_PATH,
-    dataTestId: "manager-homepage-menu-item"
+    dataTestId: "manager-homepage-menu-item",
+    disabled: false
   },
   {
     label: "Create a team",
     icon: TeamIcon,
     linkTo: CREATE_TEAM_PATH,
-    dataTestId: "create-new-team-menu-item"
+    dataTestId: "create-new-team-menu-item",
+    disabled: false
   },
   {
     label: "Teams",
     icon: TeamsIcon,
     linkTo: TEAMS_LIST_PATH,
-    dataTestId: "teams-menu-item"
+    dataTestId: "teams-menu-item",
+    disabled: false
   },
   ...commonMenuItems,
 ];
@@ -110,6 +117,7 @@ const Layout = ({ children, history }) => {
                 IconComponent={item.icon}
                 linkTo={item.linkTo}
                 dataTestId={item.dataTestId}
+                disabled={item.disabled}
               />
             );
           })}
