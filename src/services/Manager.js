@@ -85,6 +85,11 @@ export class ApiBackendManager {
     return response;
   }
 
+  deleteTeam = async (id) => {
+    const response = await this.instance.delete(`/teams/${id}`) ;
+    return response;
+  }
+
   // Teams List page
 
   getTeams = async () => {

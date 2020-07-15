@@ -12,7 +12,7 @@ class TeamsListPageStore {
     this.loading = true;
     return Manager.getTeams()
       .then((result) => {
-        this.teams = result.data;
+        this.teams = result;
       })
       .catch((error) => showErrorMessage(error))
       .finally(() => {

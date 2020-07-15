@@ -17,7 +17,7 @@ const MenuItemWrapper = styled.div`
   box-sizing: border-box;
   transition: all 0.5s ease-out;
   :hover {
-    color: ${ax("menu-item-hover-color")}; 
+    color: ${ax("menu-item-hover-color")};
     background-color: ${ax("menu-item-hover-bg-color")};
     svg {
       path {
@@ -41,13 +41,22 @@ const IconWrapper = styled.span`
   }
 `;
 
-const MenuItemComponent = ({ label, IconComponent, linkTo, history }) => {
+const MenuItemComponent = ({
+  label,
+  IconComponent,
+  linkTo,
+  history,
+  dataTestId,
+}) => {
   const onMenuItemClickHandler = (link) => {
     history.push(link);
   };
 
   return (
-    <MenuItemWrapper onClick={() => onMenuItemClickHandler(linkTo)}>
+    <MenuItemWrapper
+      onClick={() => onMenuItemClickHandler(linkTo)}
+      data-test-id={dataTestId}
+    >
       <Label>{label}</Label>
       <IconWrapper>
         <IconComponent />
@@ -59,12 +68,14 @@ const MenuItemComponent = ({ label, IconComponent, linkTo, history }) => {
 MenuItemComponent.defaultProps = {
   label: "Menu Item",
   IconComponent: FolderIcon,
+  dataTestId: "default-menu-item",
 };
 
 MenuItemComponent.propTypes = {
   label: PropTypes.string,
   IconComponent: PropTypes.func,
   linkTo: PropTypes.string.isRequired,
+  dataTestId: PropTypes.string,
 };
 
 export default withRouter(MenuItemComponent);
