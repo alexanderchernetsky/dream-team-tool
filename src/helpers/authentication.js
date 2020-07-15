@@ -1,8 +1,8 @@
 // return the user data from the local storage
 export const getUser = () => {
-  const userStr = localStorage.getItem('user');
-  if (userStr) {
-    return JSON.parse(userStr);
+  const user = localStorage.getItem('user');
+  if (user) {
+    return JSON.parse(user);
   }
   return null;
 }

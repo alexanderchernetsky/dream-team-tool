@@ -14,7 +14,7 @@ import {
   EmployeeHomepageContent,
   FeedWrapper,
   FiltersWrapper,
-  SpinnerWrapper
+  SpinnerWrapper,
 } from "../../styled-components/HomepageEmployee";
 import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
@@ -62,7 +62,7 @@ const HomePageEmployee = ({ history, location }) => {
       history.push(`${createSearchString(urlParams)}`);
     } else {
       history.push(
-          `${createSearchString({ ...getUrlParams(), searchPhrase: value })}`
+        `${createSearchString({ ...getUrlParams(), searchPhrase: value })}`
       );
     }
   };
@@ -126,7 +126,9 @@ const HomePageEmployee = ({ history, location }) => {
                   id={item.id}
                   photoSrc={item.author?.image_src}
                   otherComments={item.attributes?.otherComments}
-                  personalCharacteristics={item.attributes?.strongPersonalCharacteristics}
+                  personalCharacteristics={
+                    item.attributes?.strongPersonalCharacteristics
+                  }
                   rating={item.rating}
                   weakSides={item.attributes?.weakSides}
                 />

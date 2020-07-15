@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Switch } from "react-router-dom";
+import { Spin } from "antd";
 import theme from "./styled-components/theme";
 import HomePageEmployee from "./pages/HomepageEmployee";
 import LoginPage from "./pages/LoginPage";
@@ -21,43 +22,60 @@ import HomepageManager from "./pages/HomepageManager";
 import CreateTeamPage from "./pages/CreateTeamPage";
 import TeamsPage from "./pages/TeamsListPage";
 import loginStore from "./stores/LoginStore";
+import { SpinnerWrapper } from "./styled-components/HomepageEmployee";
 
 function App() {
+  useEffect(() => {
+    loginStore.getAndSetCurrentUser();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <PublicRoute exact path={LOGIN_PATH} component={LoginPage} />
-          {loginStore.user.is_manager && (
-            <PrivateRoute
-              exact
-              path={HOMEPAGE_PATH}
-              component={HomepageManager}
-            />
+          {!loginStore?.user ? (
+            <SpinnerWrapper>
+              <Spin size="large" />
+            </SpinnerWrapper>
+          ) : (
+            <>
+              <PublicRoute exact path={LOGIN_PATH} component={LoginPage} />
+              {loginStore?.user?.is_manager && (
+                <PrivateRoute
+                  exact
+                  path={HOMEPAGE_PATH}
+                  component={HomepageManager}
+                />
+              )}
+              {!loginStore?.user?.is_manager && (
+                <PrivateRoute
+                  exact
+                  path={HOMEPAGE_PATH}
+                  component={HomePageEmployee}
+                />
+              )}
+              <PrivateRoute
+                exact
+                path={ADD_FEEDBACK_PATH}
+                component={FeedbackPage}
+              />
+              <PrivateRoute
+                exact
+                path={VIEW_EMPLOYEE_PROFILE_PATH}
+                component={HomePageEmployee}
+              />
+              <PrivateRoute
+                exact
+                path={CREATE_TEAM_PATH}
+                component={CreateTeamPage}
+              />
+              <PrivateRoute
+                exact
+                path={TEAMS_LIST_PATH}
+                component={TeamsPage}
+              />
+            </>
           )}
-          {!loginStore.user.is_manager && (
-            <PrivateRoute
-              exact
-              path={HOMEPAGE_PATH}
-              component={HomePageEmployee}
-            />
-          )}
-          <PrivateRoute
-            exact
-            path={ADD_FEEDBACK_PATH}
-            component={FeedbackPage}
-          />
-          <PrivateRoute
-            exact
-            path={VIEW_EMPLOYEE_PROFILE_PATH}
-            component={HomePageEmployee}
-          />
-          <PrivateRoute
-            exact
-            path={CREATE_TEAM_PATH}
-            component={CreateTeamPage}
-          />
-          <PrivateRoute exact path={TEAMS_LIST_PATH} component={TeamsPage} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
