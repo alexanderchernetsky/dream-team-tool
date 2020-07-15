@@ -27,7 +27,9 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "cy:run": "cypress run --browser chrome"
+    "cy": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "cy:all": "cypress run"
   },
   "eslintConfig": {
     "extends": "react-app"
