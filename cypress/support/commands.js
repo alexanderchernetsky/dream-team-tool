@@ -10,9 +10,14 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
+Cypress.Commands.add("login", (email, password) => {
+  cy.visit("/login");
+  cy.get('[data-test-id="login-email"]').type(email);
+  cy.get('[data-test-id="login-password"]').type(password);
+  cy.contains("Submit").click();
+  cy.url().should("eq", "http://localhost:3000/");
+});
+
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
 //

@@ -89,6 +89,7 @@ const allEmployeesGridColumns = [
             disabled={store.selectedUsersGridData.some(
               (item) => item.id === data.id
             )}
+            data-test-id="add-employee-to-new-team-btn"
           >
             Add
           </StyledActionColButton>
@@ -176,7 +177,9 @@ const CreateTeamPage = ({ location, history }) => {
   };
 
   const saveTeamButtonHandler = () => {
-    store.saveTeam(teamNameValue).then(history.push(TEAMS_LIST_PATH));
+    store.saveTeam(teamNameValue).then(() => {
+      history.push(TEAMS_LIST_PATH);
+    });
   };
 
   return (
@@ -188,6 +191,7 @@ const CreateTeamPage = ({ location, history }) => {
         {/* Input team name */}
         <TeamNameWrapper>
           <StyledInput
+            data-test-id="new-team-name-input"
             placeholder="Please enter a team name"
             value={teamNameValue}
             onChange={(event) => {
@@ -219,6 +223,7 @@ const CreateTeamPage = ({ location, history }) => {
         </TablesWrapper>
         <TeamAnalysisBtnWrapper>
           <StyledActionColButton
+            data-test-id="new-team-analyze-btn"
             type="primary"
             htmlType="button"
             onClick={() => store.getAnalysisData()}
@@ -260,6 +265,7 @@ const CreateTeamPage = ({ location, history }) => {
             </AnalysisCard>
             <TeamAnalysisBtnWrapper>
               <StyledActionColButton
+                data-test-id="save-new-team-btn"
                 type="primary"
                 htmlType="button"
                 onClick={saveTeamButtonHandler}

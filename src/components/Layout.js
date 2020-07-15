@@ -33,16 +33,19 @@ const commonMenuItems = [
     label: "Write a feedback",
     icon: PencilIcon,
     linkTo: ADD_FEEDBACK_PATH,
+    dataTestId: "write-feedback-menu-item"
   },
   {
     label: "Relationship map",
     icon: SmileIcon,
     linkTo: RELATIONSHIP_MAP_PATH,
+    dataTestId: "relationship-map-menu-item"
   },
   {
     label: "Settings",
     icon: ToolsIcon,
     linkTo: SETTINGS_PATH,
+    dataTestId: "settings-menu-item"
   },
 ];
 
@@ -51,6 +54,7 @@ const employeeMenuItems = [
     label: "Feedback on you",
     icon: FolderIcon,
     linkTo: HOMEPAGE_PATH,
+    dataTestId: "employee-homepage-menu-item"
   },
   ...commonMenuItems,
 ];
@@ -60,16 +64,19 @@ const managerMenuItems = [
     label: "Home",
     icon: HomeIcon,
     linkTo: HOMEPAGE_PATH,
+    dataTestId: "manager-homepage-menu-item"
   },
   {
     label: "Create a team",
     icon: TeamIcon,
     linkTo: CREATE_TEAM_PATH,
+    dataTestId: "create-new-team-menu-item"
   },
   {
     label: "Teams",
     icon: TeamsIcon,
     linkTo: TEAMS_LIST_PATH,
+    dataTestId: "teams-menu-item"
   },
   ...commonMenuItems,
 ];
@@ -83,7 +90,7 @@ const Layout = ({ children, history }) => {
     history.push(HOMEPAGE_PATH);
   };
 
-  const menuItems = getUser().is_manager ? managerMenuItems : employeeMenuItems;
+  const menuItems = getUser()?.is_manager ? managerMenuItems : employeeMenuItems;
 
   return (
     <PageWrapper>
@@ -102,6 +109,7 @@ const Layout = ({ children, history }) => {
                 label={item.label}
                 IconComponent={item.icon}
                 linkTo={item.linkTo}
+                dataTestId={item.dataTestId}
               />
             );
           })}
