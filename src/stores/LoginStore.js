@@ -2,6 +2,7 @@ import { observable, action } from "mobx";
 import Manager from "../services/Manager";
 import {
   getToken,
+  getUser,
   removeUserSession,
   setUserSession,
 } from "../helpers/authentication";
@@ -10,7 +11,7 @@ import showErrorMessage from "../helpers/showErrorMessage";
 class LoginStore {
   @observable loginInProgress = false;
 
-  @observable user = {};
+  @observable user = null;
 
   @action
   login(params) {
@@ -30,7 +31,7 @@ class LoginStore {
   @action
   logOut() {
     removeUserSession();
-    this.user = {};
+    this.user = null;
   }
 
   @action
@@ -38,6 +39,14 @@ class LoginStore {
     const token = getToken();
     if (token) {
       Manager.setAuthHeader(`Bearer ${getToken()}`);
+    }
+  }
+
+  @action
+  getAndSetCurrentUser() {
+    const user = getUser();
+    if (user) {
+      this.user = user;
     }
   }
 }

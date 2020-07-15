@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Switch } from "react-router-dom";
@@ -23,19 +23,23 @@ import TeamsPage from "./pages/TeamsListPage";
 import loginStore from "./stores/LoginStore";
 
 function App() {
+  useEffect(() => {
+    loginStore.getAndSetCurrentUser();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
           <PublicRoute exact path={LOGIN_PATH} component={LoginPage} />
-          {loginStore.user.is_manager && (
+          {loginStore?.user?.is_manager && (
             <PrivateRoute
               exact
               path={HOMEPAGE_PATH}
               component={HomepageManager}
             />
           )}
-          {!loginStore.user.is_manager && (
+          {!loginStore?.user?.is_manager && (
             <PrivateRoute
               exact
               path={HOMEPAGE_PATH}

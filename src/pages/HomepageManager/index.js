@@ -8,11 +8,17 @@ import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import LoopIcon from "../../images/Loop";
 import {
-  ActionColWrapper, FiltersWrapper,
+  ActionColWrapper,
+  FiltersWrapper,
   GridImage,
-  GridText, GridWrapper, ManagerHomepageContent,
+  GridText,
+  GridWrapper,
+  ManagerHomepageContent,
   Rating,
-  StyledActionColButton, StyledManagerHomepageSearch, StyledManagerHomepageSelect, StyledTable
+  StyledActionColButton,
+  StyledManagerHomepageSearch,
+  StyledManagerHomepageSelect,
+  StyledTable,
 } from "../../styled-components/HomepageManager";
 
 const { Option } = Select;
@@ -58,7 +64,15 @@ const columns = [
     render: (data) => {
       return (
         <ActionColWrapper>
-          <StyledActionColButton type="primary" htmlType="button" href={`/view-profile/${data.id}`}>
+          <StyledActionColButton
+            type="primary"
+            htmlType="button"
+            href={`/view-profile/${data.id}`}
+            onClick={event => {
+              event.preventDefault();
+              alert("Coming soon...");
+            }}
+          >
             View profile
           </StyledActionColButton>
         </ActionColWrapper>
@@ -110,12 +124,12 @@ const HomepageManager = ({ history, location }) => {
       history.push(`${createSearchString(urlParams)}`);
     } else {
       history.push(
-          `${createSearchString({
-            ...getUrlParams(),
-            sort_column: sorter.field,
-            sort_direction: sorter.order,
-            page: pagination.current
-          })}`
+        `${createSearchString({
+          ...getUrlParams(),
+          sort_column: sorter.field,
+          sort_direction: sorter.order,
+          page: pagination.current,
+        })}`
       );
     }
   };

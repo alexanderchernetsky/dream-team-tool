@@ -121,7 +121,15 @@ const ReviewsFeedItem = ({
         <Text>{personalCharacteristics}</Text>
         <Text>{weakSides}</Text>
         <Text>{otherComments}</Text>
-        <StyledLink to={`/review/${id}`}>Full review <ArrowIcon /></StyledLink>
+        <StyledLink
+          to={`/review/${id}`}
+          onClick={(event) => {
+            event.preventDefault();
+            alert("Coming soon...");
+          }}
+        >
+          Full review <ArrowIcon />
+        </StyledLink>
       </Review>
     </ReviewWrapper>
   );

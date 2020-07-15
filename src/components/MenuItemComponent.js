@@ -17,7 +17,7 @@ const MenuItemWrapper = styled.div`
   box-sizing: border-box;
   transition: all 0.5s ease-out;
   :hover {
-    color: ${ax("menu-item-hover-color")}; 
+    color: ${ax("menu-item-hover-color")};
     background-color: ${ax("menu-item-hover-bg-color")};
     svg {
       path {
@@ -41,13 +41,27 @@ const IconWrapper = styled.span`
   }
 `;
 
-const MenuItemComponent = ({ label, IconComponent, linkTo, history }) => {
-  const onMenuItemClickHandler = (link) => {
+const MenuItemComponent = ({
+  label,
+  IconComponent,
+  linkTo,
+  history,
+  dataTestId,
+  disabled,
+}) => {
+  const onMenuItemClickHandler = (link, disabled) => {
+    if (disabled) {
+      alert("Comming soon...");
+      return;
+    }
     history.push(link);
   };
 
   return (
-    <MenuItemWrapper onClick={() => onMenuItemClickHandler(linkTo)}>
+    <MenuItemWrapper
+      onClick={() => onMenuItemClickHandler(linkTo, disabled)}
+      data-test-id={dataTestId}
+    >
       <Label>{label}</Label>
       <IconWrapper>
         <IconComponent />
@@ -59,12 +73,16 @@ const MenuItemComponent = ({ label, IconComponent, linkTo, history }) => {
 MenuItemComponent.defaultProps = {
   label: "Menu Item",
   IconComponent: FolderIcon,
+  dataTestId: "default-menu-item",
+  disabled: false,
 };
 
 MenuItemComponent.propTypes = {
   label: PropTypes.string,
   IconComponent: PropTypes.func,
   linkTo: PropTypes.string.isRequired,
+  dataTestId: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default withRouter(MenuItemComponent);
