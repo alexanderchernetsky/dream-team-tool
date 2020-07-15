@@ -73,8 +73,6 @@ const FeedbackPage = ({ history, location }) => {
   };
 
   const onFinish = (values) => {
-    console.log("onFinish values", values);
-
     feedbackPageStore
       .submitFeedbackForm(values, feedbackPageStore?.employeeData?.id)
       .then(() => {

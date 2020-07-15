@@ -12,7 +12,14 @@ const TeamCard = ({ gradient, btnColor, teamName, usersCount, teamId }) => {
     <GradientCard gradient={gradient} buttonColor={btnColor}>
       <TeamName>{teamName}</TeamName>
       <MembersCount>{usersCount} members</MembersCount>
-      <StyledButton to={`/teams/${teamId}`} className="view-button">
+      <StyledButton
+        to={`/teams/${teamId}`}
+        className="view-button"
+        onClick={(event) => {
+          event.preventDefault();
+          alert("Coming soon...");
+        }}
+      >
         View Team
       </StyledButton>
     </GradientCard>

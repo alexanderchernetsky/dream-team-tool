@@ -47,14 +47,19 @@ const MenuItemComponent = ({
   linkTo,
   history,
   dataTestId,
+  disabled,
 }) => {
-  const onMenuItemClickHandler = (link) => {
+  const onMenuItemClickHandler = (link, disabled) => {
+    if (disabled) {
+      alert("Comming soon...");
+      return;
+    }
     history.push(link);
   };
 
   return (
     <MenuItemWrapper
-      onClick={() => onMenuItemClickHandler(linkTo)}
+      onClick={() => onMenuItemClickHandler(linkTo, disabled)}
       data-test-id={dataTestId}
     >
       <Label>{label}</Label>
@@ -69,6 +74,7 @@ MenuItemComponent.defaultProps = {
   label: "Menu Item",
   IconComponent: FolderIcon,
   dataTestId: "default-menu-item",
+  disabled: false,
 };
 
 MenuItemComponent.propTypes = {
@@ -76,6 +82,7 @@ MenuItemComponent.propTypes = {
   IconComponent: PropTypes.func,
   linkTo: PropTypes.string.isRequired,
   dataTestId: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default withRouter(MenuItemComponent);
