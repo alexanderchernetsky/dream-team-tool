@@ -1,4 +1,4 @@
-import capitalize from "./capitalize";
+import capitalize from "./capitalize.ts";
 
 export default function mapResultsToManagerGridSelectOptions(results) {
   const resultsEntries = Object.entries(results);

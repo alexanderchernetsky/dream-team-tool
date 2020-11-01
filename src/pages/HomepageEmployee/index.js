@@ -3,7 +3,7 @@ import { Select, Spin } from "antd";
 import { observer } from "mobx-react";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
-import Header from "../../components/Header";
+import Header from "../../components/Header.tsx";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
