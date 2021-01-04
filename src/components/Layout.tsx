@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import logo from "../images/_DTT.svg";
 import FolderIcon from "../images/menu/Folder";
@@ -34,21 +35,21 @@ const commonMenuItems = [
     icon: PencilIcon,
     linkTo: ADD_FEEDBACK_PATH,
     dataTestId: "write-feedback-menu-item",
-    disabled: false
+    disabled: false,
   },
   {
     label: "Relationship map",
     icon: SmileIcon,
     linkTo: RELATIONSHIP_MAP_PATH,
     dataTestId: "relationship-map-menu-item",
-    disabled: true
+    disabled: true,
   },
   {
     label: "Settings",
     icon: ToolsIcon,
     linkTo: SETTINGS_PATH,
     dataTestId: "settings-menu-item",
-    disabled: true
+    disabled: true,
   },
 ];
 
@@ -58,7 +59,7 @@ const employeeMenuItems = [
     icon: FolderIcon,
     linkTo: HOMEPAGE_PATH,
     dataTestId: "employee-homepage-menu-item",
-    disabled: false
+    disabled: false,
   },
   ...commonMenuItems,
 ];
@@ -69,36 +70,42 @@ const managerMenuItems = [
     icon: HomeIcon,
     linkTo: HOMEPAGE_PATH,
     dataTestId: "manager-homepage-menu-item",
-    disabled: false
+    disabled: false,
   },
   {
     label: "Create a team",
     icon: TeamIcon,
     linkTo: CREATE_TEAM_PATH,
     dataTestId: "create-new-team-menu-item",
-    disabled: false
+    disabled: false,
   },
   {
     label: "Teams",
     icon: TeamsIcon,
     linkTo: TEAMS_LIST_PATH,
     dataTestId: "teams-menu-item",
-    disabled: false
+    disabled: false,
   },
   ...commonMenuItems,
 ];
 
-const Layout = ({ children, history }) => {
+interface ILayout extends RouteComponentProps {
+  children?: React.ReactNode;
+}
+
+const Layout = (props: ILayout) => {
   useEffect(() => {
     loginStore.getAndSetAuthHeader();
   }, []);
 
   const onLogoClick = () => {
-    history.push(HOMEPAGE_PATH);
+    props.history.push(HOMEPAGE_PATH);
   };
 
-  const menuItems = getUser()?.is_manager ? managerMenuItems : employeeMenuItems;
-
+  const menuItems = getUser()?.is_manager
+    ? managerMenuItems
+    : employeeMenuItems;
+  const { children } = props;
   return (
     <PageWrapper>
       {/* Sidebar */}

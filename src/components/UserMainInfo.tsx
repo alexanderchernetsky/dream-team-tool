@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
@@ -67,16 +66,27 @@ const LinksWrapper = styled.div`
   margin-top: 40px;
 `;
 
+interface IUserMainInfo {
+  imageSrc?: string;
+  fullName?: string;
+  jobTitle?: string;
+  age?: number;
+  yearsOfExperience?: number;
+  email?: string;
+  shortDescription?: string;
+  links: any;
+}
+
 const UserMainInfo = ({
-  imageSrc,
-  fullName,
-  jobTitle,
-  age,
-  yearsOfExperience,
-  email,
-  shortDescription,
-  links,
-}) => {
+  imageSrc = noLogoImage,
+  fullName = "Full Name",
+  jobTitle = "Employee",
+  age = 25,
+  yearsOfExperience = 0,
+  email = "example@mail.ru",
+  shortDescription = "Employee short description.",
+  links = [],
+}: IUserMainInfo) => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>
@@ -94,7 +104,7 @@ const UserMainInfo = ({
       </PhotoAndMainInfoWrapper>
       <TextWrapper>{shortDescription}</TextWrapper>
       <LinksWrapper>
-        {links.map((item, index) => {
+        {links.map((item: any, index: number) => {
           return (
             <SocMediaLink
               key={index}
@@ -107,28 +117,6 @@ const UserMainInfo = ({
       </LinksWrapper>
     </Wrapper>
   );
-};
-
-UserMainInfo.defaultProps = {
-  imageSrc: noLogoImage,
-  fullName: "Full Name",
-  jobTitle: "Employee",
-  age: 25,
-  yearsOfExperience: 0,
-  email: "example@mail.ru",
-  shortDescription: "Employee short description.",
-  links: [],
-};
-
-UserMainInfo.propTypes = {
-  imageSrc: PropTypes.string,
-  fullName: PropTypes.string,
-  jobTitle: PropTypes.string,
-  age: PropTypes.number,
-  yearsOfExperience: PropTypes.number,
-  email: PropTypes.string,
-  shortDescription: PropTypes.string,
-  links: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default UserMainInfo;

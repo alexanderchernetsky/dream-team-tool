@@ -1,5 +1,5 @@
-import {Button, Form, Input, Select} from "antd";
-import styled, {css} from "styled-components";
+import { Button, Form, Input, Select } from "antd";
+import styled, { css } from "styled-components";
 import ax from "../accessor";
 
 const { Item } = Form;
@@ -104,7 +104,10 @@ const SectionCard = styled.div`
   margin-bottom: 39px;
 `;
 
-const StyledFormItem = styled(Item)`
+const StyledFormItem = styled(Item)<{
+  withTextArea?: boolean;
+  submitButton?: boolean;
+}>`
   margin: 25px 0 0 35px;
   display: flex;
   flex-direction: row;
@@ -113,15 +116,17 @@ const StyledFormItem = styled(Item)`
   .ant-form-item-control {
     max-width: 183px;
   }
-  ${props => props.withTextArea && css`
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    .ant-form-item-control {
-      width: 100%;
-      max-width: 672px;
-    }
-  `};
+  ${(props) =>
+    props.withTextArea &&
+    css`
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      .ant-form-item-control {
+        width: 100%;
+        max-width: 672px;
+      }
+    `};
   ${(props) =>
     props.submitButton &&
     css`
@@ -164,7 +169,6 @@ const StyledTextArea = styled(TextArea)`
   border-radius: 5px;
 `;
 
-
 export {
   EmployeeHomepageContent,
   FiltersWrapper,
@@ -179,5 +183,5 @@ export {
   StyledFormItem,
   StyledFormSelect,
   StyledButton,
-  StyledTextArea
-}
+  StyledTextArea,
+};

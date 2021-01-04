@@ -2,35 +2,36 @@ import React, { useState } from "react";
 import { Checkbox } from "antd";
 import { observer } from "mobx-react";
 import logo from "../../images/_DTT.svg";
+import { RouteComponentProps } from "react-router";
 import loginStore from "../../stores/LoginStore";
-import {HOMEPAGE_PATH} from "../../constants/routes";
+import { HOMEPAGE_PATH } from "../../constants/routes";
 import {
   ForgotPasswordText,
   LoginPageWrapper,
-  Logo, SignUpLink, SignUpWrapper,
+  Logo,
+  SignUpLink,
+  SignUpWrapper,
   SingInButton,
   StyledForm,
   StyledInput,
-  StyledItem
+  StyledItem,
 } from "../../styled-components/LoginPage/index";
 
-
-
-const LoginPage = ({ history }) => {
+const LoginPage = ({ history }: RouteComponentProps) => {
   const [rememberChecked, setRememberChecked] = useState(false);
 
-  const onFinish = (values) => {
-    loginStore.login({
-      email: values.email,
-      password: values.password,
-    }).then(
-        () => {
-          history.push(HOMEPAGE_PATH);
-        }
-    );
+  const onFinish = (values: any) => {
+    loginStore
+      .login({
+        email: values.email,
+        password: values.password,
+      })
+      .then(() => {
+        history.push(HOMEPAGE_PATH);
+      });
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
 

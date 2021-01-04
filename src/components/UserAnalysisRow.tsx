@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Tooltip } from "antd";
 import noLogoImage from "../images/no_logo_image.png";
@@ -78,7 +77,7 @@ const Bar = styled.div`
   }
 `;
 
-const Part = styled.div`
+const Part = styled.div<{ percent: number }>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -89,15 +88,26 @@ const Part = styled.div`
   color: ${ax("primary-color")};
 `;
 
+interface IUserAnalysisRow {
+  photoSrc?: string;
+  fullName?: string;
+  jobTitle?: string;
+  rating?: number;
+  positive?: number;
+  negative?: number;
+  neutral?: number;
+  id: number;
+}
+
 const UserAnalysisRow = ({
-  photoSrc,
-  fullName,
-  jobTitle,
-  rating,
-  positive,
-  negative,
-  neutral,
-}) => {
+  photoSrc = noLogoImage,
+  fullName = "Full Name",
+  jobTitle = "Employee",
+  rating = 5,
+  positive = 80,
+  negative = 17,
+  neutral = 3,
+}: IUserAnalysisRow) => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>
@@ -132,27 +142,6 @@ const UserAnalysisRow = ({
       </Tooltip>
     </Wrapper>
   );
-};
-
-UserAnalysisRow.defaultProps = {
-  photoSrc: noLogoImage,
-  fullName: "Full Name",
-  jobTitle: "Employee",
-  rating: 5,
-  positive: 80,
-  negative: 17,
-  neutral: 3,
-};
-
-UserAnalysisRow.propTypes = {
-  photoSrc: PropTypes.string,
-  fullName: PropTypes.string,
-  jobTitle: PropTypes.string,
-  rating: PropTypes.number,
-  positive: PropTypes.number,
-  negative: PropTypes.number,
-  neutral: PropTypes.number,
-  id: PropTypes.number.isRequired,
 };
 
 export default UserAnalysisRow;

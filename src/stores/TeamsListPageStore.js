@@ -5,7 +5,7 @@ import showErrorMessage from "../helpers/showErrorMessage";
 class TeamsListPageStore {
   @observable loading = false;
 
-  @observable teams = [];
+  @observable teams = { data: [] };
 
   @action
   getTeams() {

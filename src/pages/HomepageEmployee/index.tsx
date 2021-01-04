@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
 import { observer } from "mobx-react";
+import { RouteComponentProps } from "react-router";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
-import Header from "../../components/Header.tsx";
+import Header from "../../components/Header";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
@@ -37,15 +38,20 @@ const selectOptions = [
   },
 ];
 
-const HomePageEmployee = ({ history, location }) => {
+interface IUrlParams {
+  rating?: string;
+  searchPhrase?: string;
+}
+
+const HomePageEmployee = ({ history, location }: RouteComponentProps) => {
   useEffect(() => {
     store.getFeedItems(getUrlParams());
   }, [location]);
 
   const user = getUser();
 
-  const onSelectChange = (value) => {
-    const urlParams = getUrlParams();
+  const onSelectChange = (value: any) => {
+    const urlParams: IUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.rating;
       history.push(`${createSearchString(urlParams)}`);
@@ -56,17 +62,19 @@ const HomePageEmployee = ({ history, location }) => {
     }
   };
 
-  const searchHandler = (value) => {
-    const urlParams = getUrlParams();
+  const searchHandler = (value: any) => {
+    const urlParams: IUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
     } else {
       history.push(
-        `${createSearchString({ ...getUrlParams(), searchPhrase: value })}`
+        `${createSearchString({ ...urlParams, searchPhrase: value })}`
       );
     }
   };
+
+  const urlParams: IUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -83,7 +91,7 @@ const HomePageEmployee = ({ history, location }) => {
                 placeholder="All feedback"
                 allowClear
                 onChange={onSelectChange}
-                value={getUrlParams().rating || null}
+                value={urlParams.rating || ""}
               >
                 {selectOptions.map((item, index) => {
                   return (
@@ -98,7 +106,7 @@ const HomePageEmployee = ({ history, location }) => {
                 placeholder="Search everything"
                 onSearch={searchHandler}
                 suffix={LoopIcon}
-                defaultValue={getUrlParams().searchPhrase}
+                defaultValue={urlParams.searchPhrase}
                 allowClear
               />
             </FiltersWrapper>
@@ -123,7 +131,7 @@ const HomePageEmployee = ({ history, location }) => {
               </SpinnerWrapper>
             ) : (
               <FeedWrapper>
-                {store?.feedItems?.data?.map((item) => {
+                {store?.feedItems?.data?.map((item: any) => {
                   return (
                     <ReviewsFeedItem
                       key={item.id}

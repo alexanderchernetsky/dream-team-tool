@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
+import { RouteComponentProps } from "react-router";
 import {
   ActionColWrapper,
   GridImage,
@@ -32,12 +33,12 @@ import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { TEAMS_LIST_PATH } from "../../constants/routes";
 
 // add team member button handler
-const addButtonClickHandler = (id) => {
+const addButtonClickHandler = (id: number) => {
   store.addTeamMember(id);
 };
 
 // remove team member button handler
-const removeButtonClickHandler = (id) => {
+const removeButtonClickHandler = (id: number) => {
   store.removeTeamMember(id);
 };
 
@@ -46,14 +47,14 @@ const commonUserColumn = {
   title: "User",
   dataIndex: "user",
   key: "user",
-  render: (src) => <GridImage src={src} alt="user" />,
+  render: (src: string) => <GridImage src={src} alt="user" />,
 };
 
 const commonFocusColumn = {
   title: "Focus",
   key: "focus",
   dataIndex: "focus",
-  render: (text) => <GridText>{text}</GridText>,
+  render: (text: string) => <GridText>{text}</GridText>,
 };
 
 // Select employee table
@@ -65,7 +66,7 @@ const allEmployeesGridColumns = [
     key: "full_name",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text) => <GridText>{text}</GridText>,
+    render: (text: string) => <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
@@ -73,13 +74,13 @@ const allEmployeesGridColumns = [
     dataIndex: "rating",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text) => <Rating>{text}</Rating>,
+    render: (text: string) => <Rating>{text}</Rating>,
   },
   commonFocusColumn,
   {
     title: "Actions",
     key: "actions",
-    render: (data) => {
+    render: (data: any) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -106,19 +107,19 @@ const selectedUsersGridColumns = [
     title: "Full name",
     dataIndex: "full_name",
     key: "full_name",
-    render: (text) => <GridText>{text}</GridText>,
+    render: (text: string) => <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
     key: "rating",
     dataIndex: "rating",
-    render: (text) => <Rating>{text}</Rating>,
+    render: (text: string) => <Rating>{text}</Rating>,
   },
   commonFocusColumn,
   {
     title: "Actions",
     key: "actions",
-    render: (data) => {
+    render: (data: any) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -149,15 +150,36 @@ const legendItems = [
   },
 ];
 
-const CreateTeamPage = ({ location, history }) => {
+interface IUrlParams {
+  sort_column?: string;
+  sort_direction?: string;
+  page?: string | number;
+}
+
+interface ILegendItems {
+  color: string;
+  slug: string;
+}
+
+interface IPagination {
+  current?: number;
+  pageSize?: number;
+  total?: number;
+}
+
+const CreateTeamPage = ({ location, history }: RouteComponentProps) => {
   const [teamNameValue, setTeamNameValue] = useState("");
 
   useEffect(() => {
     store.getGridData(getUrlParams());
   }, [location]);
 
-  const tableChangeHandler = (pagination, filters, sorter) => {
-    const urlParams = getUrlParams();
+  const tableChangeHandler = (
+    pagination: IPagination,
+    filters: any,
+    sorter: any
+  ) => {
+    const urlParams: IUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || !sorter?.order) {
       delete urlParams.sort_column;
@@ -181,7 +203,6 @@ const CreateTeamPage = ({ location, history }) => {
       history.push(TEAMS_LIST_PATH);
     });
   };
-
   return (
     <Layout>
       {/* Header */}
@@ -204,7 +225,7 @@ const CreateTeamPage = ({ location, history }) => {
           <EmployeesGridWrapper>
             <GridName>Select employee</GridName>
             <StyledTable
-              columns={allEmployeesGridColumns}
+              columns={allEmployeesGridColumns as any}
               dataSource={store.gridData}
               loading={store.loadingGridData}
               pagination={store.pagination}
@@ -238,11 +259,11 @@ const CreateTeamPage = ({ location, history }) => {
             <AnalysisCard>
               <GridName>Team analysis</GridName>
               <Legend>
-                {legendItems.map((item, index) => {
+                {legendItems.map((item: ILegendItems, index) => {
                   return (
                     <LegendItemWrapper key={index}>
                       <Color color={item.color} />
-                      <Slug slug={item.slug}>{item.slug}</Slug>
+                      <Slug>{item.slug}</Slug>
                     </LegendItemWrapper>
                   );
                 })}

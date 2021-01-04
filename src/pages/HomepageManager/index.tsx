@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Select } from "antd";
+import { RouteComponentProps } from "react-router";
 import store from "../../stores/ManagerHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
@@ -28,7 +29,7 @@ const columns = [
     title: "User",
     dataIndex: "user",
     key: "user",
-    render: (src) => <GridImage src={src} alt="user" />,
+    render: (src: string | undefined) => <GridImage src={src} alt="user" />,
   },
   {
     title: "Full name",
@@ -36,13 +37,13 @@ const columns = [
     key: "full_name",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text) => <GridText>{text}</GridText>,
+    render: (text: string) => <GridText>{text}</GridText>,
   },
   {
     title: "Job title",
     dataIndex: "job_title",
     key: "job_title",
-    render: (text) => <GridText>{text}</GridText>,
+    render: (text: string) => <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
@@ -50,25 +51,25 @@ const columns = [
     dataIndex: "rating",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text) => <Rating>{text}</Rating>,
+    render: (text: string) => <Rating>{text}</Rating>,
   },
   {
     title: "Focus",
     key: "focus",
     dataIndex: "focus",
-    render: (text) => <GridText>{text}</GridText>,
+    render: (text: string) => <GridText>{text}</GridText>,
   },
   {
     title: "Actions",
     key: "actions",
-    render: (data) => {
+    render: (data: any) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
             type="primary"
             htmlType="button"
             href={`/view-profile/${data.id}`}
-            onClick={event => {
+            onClick={(event) => {
               event.preventDefault();
               alert("Coming soon...");
             }}
@@ -81,7 +82,24 @@ const columns = [
   },
 ];
 
-const HomepageManager = ({ history, location }) => {
+interface IUrlParams {
+  rating?: string;
+  searchPhrase?: string;
+  sort_column?: any;
+  sort_direction?: string;
+  page?: number | string;
+  job_title?: any;
+  focus?: any;
+}
+
+interface IPagination {
+  current?: number;
+  pageSize?: number;
+  total?: number;
+  page?: number;
+}
+
+const HomepageManager = ({ history, location }: RouteComponentProps) => {
   useEffect(() => {
     store.getSelectOptions();
   }, []);
@@ -90,8 +108,8 @@ const HomepageManager = ({ history, location }) => {
     store.getGridData(getUrlParams());
   }, [location]);
 
-  const onSelectChange = (selectName, value) => {
-    const urlParams = getUrlParams();
+  const onSelectChange = (selectName: string, value: any) => {
+    const urlParams: IUrlParams & any = getUrlParams();
     if (!value) {
       delete urlParams[`${selectName}`];
       history.push(`${createSearchString(urlParams)}`);
@@ -102,20 +120,24 @@ const HomepageManager = ({ history, location }) => {
     }
   };
 
-  const searchHandler = (value) => {
-    const urlParams = getUrlParams();
+  const searchHandler = (value: any) => {
+    const urlParams: IUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
     } else {
       history.push(
-        `${createSearchString({ ...getUrlParams(), searchPhrase: value })}`
+        `${createSearchString({ ...urlParams, searchPhrase: value })}`
       );
     }
   };
 
-  const tableChangeHandler = (pagination, filters, sorter) => {
-    const urlParams = getUrlParams();
+  const tableChangeHandler = (
+    pagination: IPagination,
+    filters: any,
+    sorter: any
+  ) => {
+    const urlParams: IUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || !sorter?.order) {
       delete urlParams.sort_column;
@@ -125,7 +147,7 @@ const HomepageManager = ({ history, location }) => {
     } else {
       history.push(
         `${createSearchString({
-          ...getUrlParams(),
+          ...urlParams,
           sort_column: sorter.field,
           sort_direction: sorter.order,
           page: pagination.current,
@@ -133,6 +155,7 @@ const HomepageManager = ({ history, location }) => {
       );
     }
   };
+  const urlParams: IUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -146,7 +169,7 @@ const HomepageManager = ({ history, location }) => {
             placeholder="Job title"
             allowClear
             onChange={(value) => onSelectChange("job_title", value)}
-            value={getUrlParams().job_title || null}
+            value={urlParams.job_title || null}
           >
             {store?.selectOptionsJobTitle?.map((item, index) => {
               return (
@@ -161,7 +184,7 @@ const HomepageManager = ({ history, location }) => {
             placeholder="Focus"
             allowClear
             onChange={(value) => onSelectChange("focus", value)}
-            value={getUrlParams().focus || null}
+            value={urlParams.focus || null}
           >
             {store?.selectOptionsFocus?.map((item, index) => {
               return (
@@ -177,13 +200,13 @@ const HomepageManager = ({ history, location }) => {
             placeholder="Search by full name"
             onSearch={searchHandler}
             suffix={LoopIcon}
-            defaultValue={getUrlParams().searchPhrase}
+            defaultValue={urlParams.searchPhrase}
             allowClear
           />
         </FiltersWrapper>
         <GridWrapper>
           <StyledTable
-            columns={columns}
+            columns={columns as any}
             dataSource={store.gridData}
             loading={store.loadingGridData}
             pagination={store.pagination}

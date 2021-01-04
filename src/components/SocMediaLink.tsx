@@ -1,12 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import { withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 import ax from "../styled-components/accessor";
 import GithubIcon from "../images/socialMedia/Github";
 import SlackIcon from "../images/socialMedia/Slack";
 
-function getIconForName(name) {
+function getIconForName(name: string) {
   switch (name) {
     case "github":
       return <GithubIcon />;
@@ -29,19 +29,19 @@ const StyledLink = styled.a`
   padding: 6px 17px;
 `;
 
-const SocMediaLinkComponent = ({ name, link, profileName }) => {
-  return (
-      <StyledLink href={link} target="_blank">
-        {getIconForName(name)}
-        <ProfileName>{profileName}</ProfileName>
-      </StyledLink>
-  );
-};
+interface ISocMediaLink extends RouteComponentProps {
+  name: string;
+  link: string;
+  profileName: string;
+}
 
-SocMediaLinkComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  profileName: PropTypes.string.isRequired,
+const SocMediaLinkComponent = ({ name, link, profileName }: ISocMediaLink) => {
+  return (
+    <StyledLink href={link} target="_blank">
+      {getIconForName(name)}
+      <ProfileName>{profileName}</ProfileName>
+    </StyledLink>
+  );
 };
 
 export default withRouter(SocMediaLinkComponent);

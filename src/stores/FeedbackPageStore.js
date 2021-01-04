@@ -13,7 +13,7 @@ class FeedbackPageStore {
 
   @observable employeesList = [];
 
-  @observable employeeData = [];
+  @observable employeeData = {};
 
   @action
   getEmployeesList(params) {
@@ -50,13 +50,13 @@ class FeedbackPageStore {
   submitFeedbackForm(formData, targetUserId) {
     this.submittingFeedbackForm = true;
     return Manager.sendFeedbackForm(formData, targetUserId)
-        .then((result) => {
-          showSuccessMessage(result.message);
-        })
-        .catch((error) => showErrorMessage(error))
-        .finally(() => {
-          this.submittingFeedbackForm = false;
-        });
+      .then((result) => {
+        showSuccessMessage(result.message);
+      })
+      .catch((error) => showErrorMessage(error))
+      .finally(() => {
+        this.submittingFeedbackForm = false;
+      });
   }
 }
 

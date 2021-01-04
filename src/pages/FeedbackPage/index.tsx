@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
+import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
@@ -46,10 +47,24 @@ const requiredTextAreaRules = [
   { max: 32500, message: "This field should be less than 32500 characters." },
 ];
 
-const FeedbackPage = ({ history, location }) => {
+interface IUrlParams {
+  user?: string;
+}
+
+interface IEmployeeData {
+  id?: string | number;
+  image_src?: string;
+  full_name?: string;
+  profile?: {
+    job_title?: string;
+  };
+}
+
+const FeedbackPage = ({ history, location }: RouteComponentProps) => {
   useEffect(() => {
-    const targetUserId = getUrlParams().user;
-    if (getUrlParams().user) {
+    const urlParams: IUrlParams = getUrlParams();
+    const targetUserId = urlParams.user;
+    if (targetUserId) {
       feedbackPageStore.getSpecificEmployeeData(targetUserId);
     }
     return () => {
@@ -61,8 +76,8 @@ const FeedbackPage = ({ history, location }) => {
     feedbackPageStore.getEmployeesList();
   }, []);
 
-  const onSelectChange = (value) => {
-    const urlParams = getUrlParams();
+  const onSelectChange = (value: any) => {
+    const urlParams: IUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.user;
       feedbackPageStore.removeSpecificEmployeeData();
@@ -72,18 +87,18 @@ const FeedbackPage = ({ history, location }) => {
     }
   };
 
-  const onFinish = (values) => {
-    feedbackPageStore
-      .submitFeedbackForm(values, feedbackPageStore?.employeeData?.id)
-      .then(() => {
-        history.push(ADD_FEEDBACK_PATH);
-      });
+  const onFinish = (values: any) => {
+    const employeeData: IEmployeeData = feedbackPageStore?.employeeData;
+    feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {
+      history.push(ADD_FEEDBACK_PATH);
+    });
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
+  const urlParams: IUrlParams = getUrlParams();
+  const employeeData: IEmployeeData = feedbackPageStore?.employeeData;
   return (
     <Layout>
       {/* Header */}
@@ -101,9 +116,9 @@ const FeedbackPage = ({ history, location }) => {
               placeholder="Please select user"
               allowClear
               onChange={onSelectChange}
-              value={getUrlParams().user || null}
+              value={urlParams.user || ""}
             >
-              {feedbackPageStore?.employeesList?.map((item, index) => {
+              {feedbackPageStore?.employeesList?.map((item: any, index) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}
@@ -120,16 +135,14 @@ const FeedbackPage = ({ history, location }) => {
           </SpinnerWrapper>
         ) : (
           <>
-            {!feedbackPageStore?.employeeData?.id && (
-              <NoResults>Please select the user.</NoResults>
-            )}
-            {feedbackPageStore?.employeeData?.id && (
+            {employeeData.id && <NoResults>Please select the user.</NoResults>}
+            {employeeData.id && (
               <FeedbackFormWrapper>
                 {/* Target user info */}
                 <TargetUserInfo
-                  photoSrc={feedbackPageStore?.employeeData?.image_src}
-                  fullName={feedbackPageStore?.employeeData?.full_name}
-                  jobTitle={feedbackPageStore?.employeeData?.profile?.job_title}
+                  photoSrc={employeeData.image_src}
+                  fullName={employeeData.full_name}
+                  jobTitle={employeeData.profile?.job_title}
                 />
                 {/* Feedback form */}
                 <StyledFeedbackForm
@@ -427,7 +440,7 @@ const FeedbackPage = ({ history, location }) => {
                   <SectionCard>
                     {/* 1 */}
                     <StyledFormItem
-                      label={`How could you estimate your experience of working with ${feedbackPageStore?.employeeData?.full_name} in general?`}
+                      label={`How could you estimate your experience of working with ${employeeData.full_name} in general?`}
                       name="workExperienceWithAnEmployee"
                       rules={requiredFieldRules}
                     >
@@ -442,7 +455,7 @@ const FeedbackPage = ({ history, location }) => {
                     {/* 2 */}
                     <StyledFormItem
                       withTextArea
-                      label={`How do you think what are the strong personal characteristics of ${feedbackPageStore?.employeeData?.full_name}?`}
+                      label={`How do you think what are the strong personal characteristics of ${employeeData.full_name}?`}
                       name="strongPersonalCharacteristics"
                       rules={requiredTextAreaRules}
                     >
@@ -453,7 +466,7 @@ const FeedbackPage = ({ history, location }) => {
                     {/* 3 */}
                     <StyledFormItem
                       withTextArea
-                      label={`What are weak sides of ${feedbackPageStore?.employeeData?.full_name}?`}
+                      label={`What are weak sides of ${employeeData.full_name}?`}
                       name="weakSides"
                       rules={requiredTextAreaRules}
                     >

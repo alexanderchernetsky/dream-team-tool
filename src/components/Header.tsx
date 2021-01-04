@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { RouteComponentProps } from "react-router";
 import { Button } from "antd";
 import { withRouter } from "react-router-dom";
 import ax from "../styled-components/accessor";
@@ -29,7 +30,12 @@ const PageTitle = styled.div`
   line-height: 38px;
 `;
 
-const Header = ({ children, history, pageTitle }) => {
+interface IHeader extends RouteComponentProps {
+  pageTitle: string;
+  children?: React.ReactNode;
+}
+
+const Header = ({ history, pageTitle, children }: IHeader) => {
   const logOutClickHandler = () => {
     loginStore.logOut();
     history.push(LOGIN_PATH);

@@ -5,19 +5,21 @@ import showErrorMessage from "../helpers/showErrorMessage";
 class EmployeeHomepageStore {
   @observable loading = false;
 
-  @observable feedItems = [];
+  @observable feedItems = {
+    data: [],
+  };
 
   @action
   getFeedItems(params) {
     this.loading = true;
     return Manager.getFeedItems(params)
-        .then((result) => {
-          this.feedItems = result.data;
-        })
-        .catch((error) => showErrorMessage(error))
-        .finally(() => {
-          this.loading = false;
-        });
+      .then((result) => {
+        this.feedItems = result.data;
+      })
+      .catch((error) => showErrorMessage(error))
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 

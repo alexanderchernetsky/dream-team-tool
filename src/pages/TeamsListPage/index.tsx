@@ -3,7 +3,10 @@ import { Col, Row, Spin } from "antd";
 import { observer } from "mobx-react";
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
-import {SpinnerWrapper, TeamsPageContent} from "../../styled-components/TeamsPage";
+import {
+  SpinnerWrapper,
+  TeamsPageContent,
+} from "../../styled-components/TeamsPage";
 import store from "../../stores/TeamsListPageStore";
 import randomGradient from "../../helpers/randomGradient";
 import TeamCard from "../../components/TeamCard";
@@ -25,7 +28,7 @@ const TeamsPage = () => {
           </SpinnerWrapper>
         ) : (
           <Row gutter={58}>
-            {store?.teams?.data?.map((team) => {
+            {store?.teams?.data?.map((team: any) => {
               const theme = randomGradient();
               return (
                 <Col span={8} key={team.id}>

@@ -1,11 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
 import ArrowIcon from "../images/Arrow";
+import { RouteComponentProps } from "react-router";
 
 const ReviewWrapper = styled.div`
   width: 100%;
@@ -84,7 +84,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function getColorForReviewBorder(number) {
+function getColorForReviewBorder(number: number) {
   if (number > 0) {
     return "#5FB840"; // positive
   }
@@ -94,17 +94,29 @@ function getColorForReviewBorder(number) {
   return "#B6B5BB"; // neutral
 }
 
+interface IReviewsFeedItem extends RouteComponentProps {
+  photoSrc?: string;
+  fullName?: string;
+  jobTitle?: string;
+  date?: string;
+  personalCharacteristics?: string;
+  weakSides?: string;
+  otherComments?: string;
+  rating?: number;
+  id?: number;
+}
+
 const ReviewsFeedItem = ({
-  photoSrc,
-  fullName,
-  jobTitle,
-  date,
-  personalCharacteristics,
-  weakSides,
-  otherComments,
-  rating,
-  id,
-}) => {
+  photoSrc = noLogoImage,
+  fullName = "Full Name",
+  jobTitle = "Employee",
+  date = "14 apr 2020, 13:11",
+  personalCharacteristics = "An ambitious person is someone who has a strong desire to achieve success by meeting their goals. You might demonstrate ambition when you applied hard work and dedication to overcome a challenge or exceed company objectives.",
+  weakSides = "Not taking criticism well. Impatient. Lazy. Easily bored. Procrastinate.",
+  otherComments = "Karl is fantastic to work with. He has helped us build our new website which is awesome. I'd highly recommend him as quick, creative and very resourceful.",
+  rating = 5,
+  id = 1,
+}: IReviewsFeedItem) => {
   return (
     <ReviewWrapper>
       <PhotoAndMainInfoWrapper>
@@ -133,33 +145,6 @@ const ReviewsFeedItem = ({
       </Review>
     </ReviewWrapper>
   );
-};
-
-ReviewsFeedItem.defaultProps = {
-  photoSrc: noLogoImage,
-  fullName: "Full Name",
-  jobTitle: "Employee",
-  date: "14 apr 2020, 13:11",
-  personalCharacteristics:
-    "An ambitious person is someone who has a strong desire to achieve success by meeting their goals. You might demonstrate ambition when you applied hard work and dedication to overcome a challenge or exceed company objectives.",
-  weakSides:
-    "Not taking criticism well. Impatient. Lazy. Easily bored. Procrastinate.",
-  otherComments:
-    "Karl is fantastic to work with. He has helped us build our new website which is awesome. I'd highly recommend him as quick, creative and very resourceful.",
-  rating: 5,
-  id: 1,
-};
-
-ReviewsFeedItem.propTypes = {
-  photoSrc: PropTypes.string,
-  fullName: PropTypes.string,
-  jobTitle: PropTypes.string,
-  date: PropTypes.string,
-  personalCharacteristics: PropTypes.string,
-  weakSides: PropTypes.string,
-  otherComments: PropTypes.string,
-  rating: PropTypes.number,
-  id: PropTypes.number,
 };
 
 export default withRouter(ReviewsFeedItem);

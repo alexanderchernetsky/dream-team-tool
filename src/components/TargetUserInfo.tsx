@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
@@ -65,7 +64,17 @@ const NameHighlighted = styled.span`
   color: ${ax("primary-color")};
 `;
 
-const TargetUserInfo = ({ photoSrc, fullName, jobTitle }) => {
+interface ITargetUserInfo {
+  photoSrc?: string;
+  fullName?: string;
+  jobTitle?: string;
+}
+
+const TargetUserInfo = ({
+  photoSrc = noLogoImage,
+  fullName = "Full Name",
+  jobTitle = "Employee",
+}: ITargetUserInfo) => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>
@@ -83,18 +92,6 @@ const TargetUserInfo = ({ photoSrc, fullName, jobTitle }) => {
       </TextWrapper>
     </Wrapper>
   );
-};
-
-TargetUserInfo.defaultProps = {
-  photoSrc: noLogoImage,
-  fullName: "Full Name",
-  jobTitle: "Employee",
-};
-
-TargetUserInfo.propTypes = {
-  photoSrc: PropTypes.string,
-  fullName: PropTypes.string,
-  jobTitle: PropTypes.string,
 };
 
 export default TargetUserInfo;
