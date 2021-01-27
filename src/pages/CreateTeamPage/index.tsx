@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { RouteComponentProps } from "react-router";
+import { Key, SorterResult, TablePaginationConfig} from 'antd/lib/table/interface';
 import {
   ActionColWrapper,
   GridImage,
@@ -31,7 +32,6 @@ import {
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { Routes } from "../../constants/routes";
-import { SorterResult } from 'antd/lib/table/interface';
 
 // add team member button handler
 const addButtonClickHandler = (id: number) => {
@@ -172,22 +172,8 @@ interface ILegendItems {
   slug: string;
 }
 
-interface IPagination {
-  current?: number;
-  pageSize?: number;
-  total?: number;
-}
-
-interface IFilters {
-
-}
-
-// SorterResult<ISorter> | SorterResult<ISorter>[]
-interface ISorter {
-  order: "ascend" | "descend";
-  field: string;
-  columnKey: string;
-  column: object;
+interface RecordType {
+  // TODO
 }
 
 const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.ReactElement => {
@@ -198,27 +184,27 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.React
   }, [location]);
 
   const tableChangeHandler = (
-    pagination: IPagination,
-    filters: IFilters,
-    sorter: (SorterResult<ISorter> | SorterResult<ISorter>[])
+    pagination: TablePaginationConfig,
+    filters: Record<string, Key[] | null>,
+    sorter: SorterResult<any> | SorterResult<any>[]
   ) => {
     const urlParams: IUrlParams = getUrlParams();
     // handle sorting or pagination change
-    if (!sorter || !sorter.order) {
+    if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
       delete urlParams.sort_direction;
       urlParams.page = pagination.current;
       history.push(`${createSearchString(urlParams)}`);
-    } else {
-      history.push(
-        `${createSearchString({
-          ...getUrlParams(),
-          sort_column: sorter.field,
-          sort_direction: sorter.order,
-          page: pagination.current,
-        })}`
-      );
-    }
+    } else if (!Array.isArray(sorter)) {
+        history.push(
+            `${createSearchString({
+              ...getUrlParams(),
+              sort_column: sorter.field,
+              sort_direction: sorter.order,
+              page: pagination.current,
+            })}`
+        );
+      }
   };
 
   const saveTeamButtonHandler = () => {
