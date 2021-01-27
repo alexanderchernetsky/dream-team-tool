@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Checkbox } from "antd";
 import { observer } from "mobx-react";
-import logo from "../../images/_DTT.svg";
+import { Store } from "antd/lib/form/interface";
+import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { RouteComponentProps } from "react-router";
+import logo from "../../images/_DTT.svg";
 import loginStore from "../../stores/LoginStore";
 import { Routes } from "../../constants/routes";
 import {
@@ -15,9 +17,7 @@ import {
   StyledForm,
   StyledInput,
   StyledItem,
-} from "../../styled-components/LoginPage/index";
-import { Store } from "antd/lib/form/interface";
-import { ValidateErrorEntity } from "rc-field-form/lib/interface";
+} from "../../styled-components/LoginPage";
 
 const LoginPage = ({ history }: RouteComponentProps) :React.ReactElement => {
   const [rememberChecked, setRememberChecked] = useState(false);

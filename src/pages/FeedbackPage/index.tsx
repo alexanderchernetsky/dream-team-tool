@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
+import { SelectValue } from 'antd/lib/select';
+import { Store } from "antd/lib/form/interface";
+import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import getUrlParams from "../../helpers/getUrlParams";
@@ -25,9 +28,7 @@ import {
   StyledTextArea,
 } from "../../styled-components/FeedbackPage";
 import { Routes } from "../../constants/routes";
-import { SelectValue } from 'antd/lib/select';
-import { Store } from "antd/lib/form/interface";
-import { ValidateErrorEntity } from "rc-field-form/lib/interface";
+
 
 const { Option } = Select;
 
@@ -97,7 +98,6 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactEl
   };
 
   const onFinish = (values: Store) => {
-    console.log(values);
     const employeeData: IEmployeeData = feedbackPageStore?.employeeData;
     feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {
       history.push(Routes.ADD_FEEDBACK_PATH);
@@ -126,7 +126,7 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactEl
               placeholder="Please select user"
               allowClear
               onChange={onSelectChange}
-              value={urlParams.user || ""}
+              value={urlParams.user || undefined}
             >
               {feedbackPageStore?.employeesList?.map((item: IEmployee, index: number) => {
                 return (

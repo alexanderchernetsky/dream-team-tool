@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { RouteComponentProps } from "react-router";
-import { Key, SorterResult, TablePaginationConfig} from 'antd/lib/table/interface';
+import {
+  Key,
+  SorterResult,
+  TablePaginationConfig,
+  ColumnsType,
+} from "antd/lib/table/interface";
 import {
   ActionColWrapper,
   GridImage,
@@ -32,6 +37,7 @@ import {
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { Routes } from "../../constants/routes";
+import { TeamAnalisysUser } from "../../interfaces/user";
 
 // add team member button handler
 const addButtonClickHandler = (id: number) => {
@@ -48,14 +54,16 @@ const commonUserColumn = {
   title: "User",
   dataIndex: "user",
   key: "user",
-  render: (text:string) :React.ReactElement => <GridImage src={text} alt="user" />,
+  render: (text: string): React.ReactElement => (
+    <GridImage src={text} alt="user" />
+  ),
 };
 
 const commonFocusColumn = {
   title: "Focus",
   key: "focus",
   dataIndex: "focus",
-  render: (text:string) :React.ReactElement => <GridText>{text}</GridText>,
+  render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
 };
 
 interface IData {
@@ -77,7 +85,7 @@ const allEmployeesGridColumns = [
     key: "full_name",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text:string) :React.ReactElement => <GridText>{text}</GridText>,
+    render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
@@ -85,13 +93,13 @@ const allEmployeesGridColumns = [
     dataIndex: "rating",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text:string) :React.ReactElement => <Rating>{text}</Rating>,
+    render: (text: string): React.ReactElement => <Rating>{text}</Rating>,
   },
   commonFocusColumn,
   {
     title: "Actions",
     key: "actions",
-    render: (data:IData) :React.ReactElement => {
+    render: (data: IData): React.ReactElement => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -118,19 +126,19 @@ const selectedUsersGridColumns = [
     title: "Full name",
     dataIndex: "full_name",
     key: "full_name",
-    render: (text:string) :React.ReactElement=> <GridText>{text}</GridText>,
+    render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
     key: "rating",
     dataIndex: "rating",
-    render: (text:string) :React.ReactElement => <Rating>{text}</Rating>,
+    render: (text: string): React.ReactElement => <Rating>{text}</Rating>,
   },
   commonFocusColumn,
   {
     title: "Actions",
     key: "actions",
-    render: (data:IData) :React.ReactElement => {
+    render: (data: IData): React.ReactElement => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -172,11 +180,10 @@ interface ILegendItems {
   slug: string;
 }
 
-interface RecordType {
-  // TODO
-}
-
-const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.ReactElement => {
+const CreateTeamPage = ({
+  location,
+  history,
+}: RouteComponentProps): React.ReactElement => {
   const [teamNameValue, setTeamNameValue] = useState("");
 
   useEffect(() => {
@@ -186,7 +193,7 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.React
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
     filters: Record<string, Key[] | null>,
-    sorter: SorterResult<any> | SorterResult<any>[]
+    sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
     const urlParams: IUrlParams = getUrlParams();
     // handle sorting or pagination change
@@ -196,15 +203,15 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.React
       urlParams.page = pagination.current;
       history.push(`${createSearchString(urlParams)}`);
     } else if (!Array.isArray(sorter)) {
-        history.push(
-            `${createSearchString({
-              ...getUrlParams(),
-              sort_column: sorter.field,
-              sort_direction: sorter.order,
-              page: pagination.current,
-            })}`
-        );
-      }
+      history.push(
+        `${createSearchString({
+          ...getUrlParams(),
+          sort_column: sorter.field,
+          sort_direction: sorter.order,
+          page: pagination.current,
+        })}`
+      );
+    }
   };
 
   const saveTeamButtonHandler = () => {
@@ -234,7 +241,7 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.React
           <EmployeesGridWrapper>
             <GridName>Select employee</GridName>
             <StyledTable
-              columns={allEmployeesGridColumns as any}
+              columns={allEmployeesGridColumns as ColumnsType<object>}
               dataSource={store.gridData}
               loading={store.loadingGridData}
               pagination={store.pagination}
@@ -268,7 +275,7 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.React
             <AnalysisCard>
               <GridName>Team analysis</GridName>
               <Legend>
-                {legendItems.map((item: ILegendItems, index) => {
+                {legendItems.map((item: ILegendItems, index: number) => {
                   return (
                     <LegendItemWrapper key={index}>
                       <Color color={item.color} />
@@ -277,21 +284,23 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.React
                   );
                 })}
               </Legend>
-              {store.analysisData.map((item, index) => {
-                return (
-                  <UserAnalysisRow
-                    key={index}
-                    id={item.user?.id}
-                    jobTitle={item.user?.profile?.job_title}
-                    photoSrc={item.user?.image_src}
-                    fullName={item.user?.full_name}
-                    rating={item.user?.profile?.rating}
-                    negative={item.statistic?.negative}
-                    neutral={item.statistic?.neutral}
-                    positive={item.statistic?.positive}
-                  />
-                );
-              })}
+              {store.analysisData.map(
+                (item: TeamAnalisysUser, index: number) => {
+                  return (
+                    <UserAnalysisRow
+                      key={index}
+                      id={item.user?.id}
+                      jobTitle={item.user?.profile?.job_title}
+                      photoSrc={item.user?.image_src}
+                      fullName={item.user?.full_name}
+                      rating={item.user?.profile?.rating}
+                      negative={item.statistic?.negative}
+                      neutral={item.statistic?.neutral}
+                      positive={item.statistic?.positive}
+                    />
+                  );
+                }
+              )}
             </AnalysisCard>
             <TeamAnalysisBtnWrapper>
               <StyledActionColButton

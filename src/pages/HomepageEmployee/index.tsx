@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
 import { observer } from "mobx-react";
 import { RouteComponentProps } from "react-router";
+import { SelectValue } from "antd/lib/select";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
@@ -20,9 +21,7 @@ import {
 import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
 import loginStore from "../../stores/LoginStore";
-import { SelectValue } from 'antd/lib/select';
-import { Store } from "antd/lib/form/interface";
-import { ValidateErrorEntity } from "rc-field-form/lib/interface";
+import { HomepageEmployeeUser } from "../../interfaces/user";
 
 const { Option } = Select;
 
@@ -31,77 +30,7 @@ interface IOption {
   value: string;
 }
 
-interface IProfile {
-  created_at: string;
-  focus: string;
-  id: number;
-  job_title: string;
-  rating: number;
-  short_description: string;
-}
-
-interface IUser {
-  age: number;
-  created_at: string;
-  date_of_birth: string;
-  email: string;
-  first_name: string;
-  first_work_date: string;
-  full_name: string;
-  id: number;
-  image: string | undefined;
-  image_src: string | undefined;
-  last_name: string;
-  remember_token: string | undefined;
-  years_of_experience: number;
-  profile: IProfile;
-}
-
-interface IAttributes {
-  communication_explainsIdeasInSpokenLanguage: string;
-  communication_explainsWrittenIdeas: string;
-  communication_listensAndClarifiesInformation: string;
-  communication_openAndAvailableForCommunication: string;
-  communication_respectAndTactfulInCommunication: string;
-  effectiveness_findsEffectiveSolutionsToSimplifyWork: string;
-  effectiveness_goodInMultitasking: string;
-  effectiveness_meetsDeadlines: string;
-  effectiveness_showsDiligenceInDayToDayWork: string;
-  effectiveness_worksWithoutMistakes: string;
-  independence_ableToTakeResponsibilityForMistakes: string;
-  independence_adequatelyEvaluateSkillsAndAbilities: string;
-  independence_independentWork: string;
-  independence_independentWorkWithDifficulties: string;
-  independence_responsibleForResultsOfHisWork: string;
-  interpersonalQualities_openForNewIdeas: string;
-  interpersonalQualities_providesHonestReviews: string;
-  interpersonalQualities_stressResistance: string;
-  interpersonalQualities_takesIntoConsiderationOtherPointsOfView: string;
-  interpersonalQualities_understandingOfOtherPointsOfView: string;
-  otherComments: string;
-  strongPersonalCharacteristics: string;
-  weakSides: string;
-  workExperienceWithAnEmployee: string;
-  workInTeam_involvedInWork: string;
-  workInTeam_perceiveConstructiveCriticism: string;
-  workInTeam_takesInitiative: string;
-  workInTeam_teamworkToSolveProblems: string;
-  workInTeam_trustworthyTeamMember: string;
-}
-
-interface IItem {
-  attributes: IAttributes;
-  author: IUser;
-  author_id: number;
-  created_at: string;
-  id: number;
-  rating: number;
-  updated_at: string;
-  user_id: number;
-  user: IUser;
-}
-
-const selectOptions :IOption[] = [
+const selectOptions: IOption[] = [
   {
     value: "1",
     label: "Positive",
@@ -121,7 +50,10 @@ interface IUrlParams {
   searchPhrase?: string;
 }
 
-const HomePageEmployee = ({ history, location }: RouteComponentProps) :React.ReactElement => {
+const HomePageEmployee = ({
+  history,
+  location,
+}: RouteComponentProps): React.ReactElement => {
   useEffect(() => {
     store.getFeedItems(getUrlParams());
   }, [location]);
@@ -169,7 +101,7 @@ const HomePageEmployee = ({ history, location }: RouteComponentProps) :React.Rea
                 placeholder="All feedback"
                 allowClear
                 onChange={onSelectChange}
-                value={urlParams.rating || ""}
+                value={urlParams.rating || undefined}
               >
                 {selectOptions.map((item: IOption, index: number) => {
                   return (
@@ -209,7 +141,7 @@ const HomePageEmployee = ({ history, location }: RouteComponentProps) :React.Rea
               </SpinnerWrapper>
             ) : (
               <FeedWrapper>
-                {store?.feedItems?.data?.map((item: IItem) => {
+                {store?.feedItems?.data?.map((item: HomepageEmployeeUser) => {
                   return (
                     <ReviewsFeedItem
                       key={item.id}

@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 import moment from "moment";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
 import ArrowIcon from "../images/Arrow";
-import { RouteComponentProps } from "react-router";
+
 
 const ReviewWrapper = styled.div`
   width: 100%;

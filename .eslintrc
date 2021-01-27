@@ -7,15 +7,17 @@
     "prettier/react",
     "plugin:cypress/recommended"
   ],
-  "plugins": [
-    "jsx-a11y",
-    "prettier"
-  ],
+  "plugins": ["jsx-a11y", "prettier"],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", "tsx"] }
+    ],
     "class-methods-use-this": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off"
   }
 }

@@ -9,7 +9,7 @@ const TeamsPageContent = styled.div`
   min-width: 1150px;
 `;
 
-const GradientCard = styled.div`
+const GradientCard = styled.div<{gradient?: string; buttonColor?: string}>`
   margin: 19px 0;
   padding: 25px 30px;
   background: ${(props) => props.gradient};

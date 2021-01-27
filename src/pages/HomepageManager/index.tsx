@@ -2,6 +2,13 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Select } from "antd";
 import { RouteComponentProps } from "react-router";
+import { SelectValue } from "antd/lib/select";
+import {
+  Key,
+  SorterResult,
+  TablePaginationConfig,
+  ColumnsType,
+} from "antd/lib/table/interface";
 import store from "../../stores/ManagerHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
@@ -21,7 +28,6 @@ import {
   StyledManagerHomepageSelect,
   StyledTable,
 } from "../../styled-components/HomepageManager";
-import { SelectValue } from 'antd/lib/select';
 
 const { Option } = Select;
 
@@ -103,19 +109,15 @@ interface IUrlParams {
   focus?: string;
 }
 
-interface IPagination {
-  current?: number;
-  pageSize?: number;
-  total?: number;
-  page?: number;
-}
-
 interface IOption {
   value: string;
   label: string;
 }
 
-const HomepageManager = ({ history, location }: RouteComponentProps) :React.ReactElement => {
+const HomepageManager = ({
+  history,
+  location,
+}: RouteComponentProps): React.ReactElement => {
   useEffect(() => {
     store.getSelectOptions();
   }, []);
@@ -149,18 +151,18 @@ const HomepageManager = ({ history, location }: RouteComponentProps) :React.Reac
   };
 
   const tableChangeHandler = (
-    pagination: IPagination,
-    filters: any,
-    sorter: any
+    pagination: TablePaginationConfig,
+    filters: Record<string, Key[] | null>,
+    sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
     const urlParams: IUrlParams = getUrlParams();
     // handle sorting or pagination change
-    if (!sorter || !sorter?.order) {
+    if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
       delete urlParams.sort_direction;
       urlParams.page = pagination.current;
       history.push(`${createSearchString(urlParams)}`);
-    } else {
+    } else if (!Array.isArray(sorter)) {
       history.push(
         `${createSearchString({
           ...urlParams,
@@ -185,24 +187,26 @@ const HomepageManager = ({ history, location }: RouteComponentProps) :React.Reac
             placeholder="Job title"
             allowClear
             onChange={(value) => onSelectChange("job_title", value)}
-            value={urlParams.job_title || ""}
+            value={urlParams.job_title || undefined}
           >
-            {store?.selectOptionsJobTitle?.map((item :IOption, index: number) => {
-              return (
-                <Option value={item.value} key={index}>
-                  {item.label}
-                </Option>
-              );
-            })}
+            {store?.selectOptionsJobTitle?.map(
+              (item: IOption, index: number) => {
+                return (
+                  <Option value={item.value} key={index}>
+                    {item.label}
+                  </Option>
+                );
+              }
+            )}
           </StyledManagerHomepageSelect>
           {/* Focus */}
           <StyledManagerHomepageSelect
             placeholder="Focus"
             allowClear
             onChange={(value) => onSelectChange("focus", value)}
-            value={urlParams.focus || ""}
+            value={urlParams.focus || undefined}
           >
-            {store?.selectOptionsFocus?.map((item :IOption, index :number) => {
+            {store?.selectOptionsFocus?.map((item: IOption, index: number) => {
               return (
                 <Option value={item.value} key={index}>
                   {item.label}
@@ -222,7 +226,7 @@ const HomepageManager = ({ history, location }: RouteComponentProps) :React.Reac
         </FiltersWrapper>
         <GridWrapper>
           <StyledTable
-            columns={columns as any}
+            columns={columns as ColumnsType<object>}
             dataSource={store.gridData}
             loading={store.loadingGridData}
             pagination={store.pagination}
