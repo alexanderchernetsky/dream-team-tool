@@ -24,7 +24,10 @@ import {
   StyledSelect,
   StyledTextArea,
 } from "../../styled-components/FeedbackPage";
-import { ADD_FEEDBACK_PATH } from "../../constants/routes";
+import { Routes } from "../../constants/routes";
+import { SelectValue } from 'antd/lib/select';
+import { Store } from "antd/lib/form/interface";
+import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 
 const { Option } = Select;
 
@@ -60,7 +63,12 @@ interface IEmployeeData {
   };
 }
 
-const FeedbackPage = ({ history, location }: RouteComponentProps) => {
+interface IEmployee {
+  label: string;
+  value: string;
+}
+
+const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactElement => {
   useEffect(() => {
     const urlParams: IUrlParams = getUrlParams();
     const targetUserId = urlParams.user;
@@ -76,7 +84,8 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) => {
     feedbackPageStore.getEmployeesList();
   }, []);
 
-  const onSelectChange = (value: any) => {
+  const onSelectChange = (value: SelectValue) => {
+
     const urlParams: IUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.user;
@@ -87,14 +96,15 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) => {
     }
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: Store) => {
+    console.log(values);
     const employeeData: IEmployeeData = feedbackPageStore?.employeeData;
     feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {
-      history.push(ADD_FEEDBACK_PATH);
+      history.push(Routes.ADD_FEEDBACK_PATH);
     });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
     console.log("Failed:", errorInfo);
   };
   const urlParams: IUrlParams = getUrlParams();
@@ -118,7 +128,7 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) => {
               onChange={onSelectChange}
               value={urlParams.user || ""}
             >
-              {feedbackPageStore?.employeesList?.map((item: any, index) => {
+              {feedbackPageStore?.employeesList?.map((item: IEmployee, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}

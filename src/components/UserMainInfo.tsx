@@ -74,7 +74,13 @@ interface IUserMainInfo {
   yearsOfExperience?: number;
   email?: string;
   shortDescription?: string;
-  links: any;
+  links: IProfile[] | undefined;
+}
+
+interface IProfile {
+  link: string;
+  name: string;
+  profile_name: string;
 }
 
 const UserMainInfo = ({
@@ -86,7 +92,7 @@ const UserMainInfo = ({
   email = "example@mail.ru",
   shortDescription = "Employee short description.",
   links = [],
-}: IUserMainInfo) => {
+}: IUserMainInfo) :React.ReactElement => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>
@@ -104,7 +110,7 @@ const UserMainInfo = ({
       </PhotoAndMainInfoWrapper>
       <TextWrapper>{shortDescription}</TextWrapper>
       <LinksWrapper>
-        {links.map((item: any, index: number) => {
+        {links.map((item: IProfile, index: number) => {
           return (
             <SocMediaLink
               key={index}

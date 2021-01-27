@@ -1,15 +1,10 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { getToken } from "../helpers/authentication";
-import { HOMEPAGE_PATH } from "../constants/routes";
-
-interface IPublicRoute {
-  component: any;
-  rest?: any;
-}
+import { Routes } from "../constants/routes";
 
 // handle the public routes
-function PublicRoute({ component: Component, ...rest }: IPublicRoute) {
+function PublicRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
@@ -17,7 +12,7 @@ function PublicRoute({ component: Component, ...rest }: IPublicRoute) {
         !getToken() ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: HOMEPAGE_PATH }} />
+          <Redirect to={{ pathname: Routes.HOMEPAGE_PATH }} />
         )
       }
     />

@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import logo from "../../images/_DTT.svg";
 import { RouteComponentProps } from "react-router";
 import loginStore from "../../stores/LoginStore";
-import { HOMEPAGE_PATH } from "../../constants/routes";
+import { Routes } from "../../constants/routes";
 import {
   ForgotPasswordText,
   LoginPageWrapper,
@@ -16,22 +16,24 @@ import {
   StyledInput,
   StyledItem,
 } from "../../styled-components/LoginPage/index";
+import { Store } from "antd/lib/form/interface";
+import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 
-const LoginPage = ({ history }: RouteComponentProps) => {
+const LoginPage = ({ history }: RouteComponentProps) :React.ReactElement => {
   const [rememberChecked, setRememberChecked] = useState(false);
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: Store) => {
     loginStore
       .login({
         email: values.email,
         password: values.password,
       })
       .then(() => {
-        history.push(HOMEPAGE_PATH);
+        history.push(Routes.HOMEPAGE_PATH);
       });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
     console.log("Failed:", errorInfo);
   };
 

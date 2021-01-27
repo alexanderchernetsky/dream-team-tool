@@ -20,7 +20,7 @@ const TeamCard = ({
   teamName = "Best Team",
   usersCount = 4,
   teamId,
-}: ITeamCard) => {
+}: ITeamCard) :React.ReactElement => {
   return (
     <GradientCard {...gradient} buttonColor={btnColor}>
       <TeamName>{teamName}</TeamName>

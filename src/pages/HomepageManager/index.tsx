@@ -21,8 +21,19 @@ import {
   StyledManagerHomepageSelect,
   StyledTable,
 } from "../../styled-components/HomepageManager";
+import { SelectValue } from 'antd/lib/select';
 
 const { Option } = Select;
+
+interface IData {
+  focus: string;
+  full_name: string;
+  id: number;
+  job_title: string;
+  key: number;
+  rating: number;
+  user: string;
+}
 
 const columns = [
   {
@@ -62,7 +73,7 @@ const columns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: any) => {
+    render: (data: IData) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -85,11 +96,11 @@ const columns = [
 interface IUrlParams {
   rating?: string;
   searchPhrase?: string;
-  sort_column?: any;
+  sort_column?: string;
   sort_direction?: string;
   page?: number | string;
-  job_title?: any;
-  focus?: any;
+  job_title?: string;
+  focus?: string;
 }
 
 interface IPagination {
@@ -99,7 +110,12 @@ interface IPagination {
   page?: number;
 }
 
-const HomepageManager = ({ history, location }: RouteComponentProps) => {
+interface IOption {
+  value: string;
+  label: string;
+}
+
+const HomepageManager = ({ history, location }: RouteComponentProps) :React.ReactElement => {
   useEffect(() => {
     store.getSelectOptions();
   }, []);
@@ -108,7 +124,7 @@ const HomepageManager = ({ history, location }: RouteComponentProps) => {
     store.getGridData(getUrlParams());
   }, [location]);
 
-  const onSelectChange = (selectName: string, value: any) => {
+  const onSelectChange = (selectName: string, value: SelectValue) => {
     const urlParams: IUrlParams & any = getUrlParams();
     if (!value) {
       delete urlParams[`${selectName}`];
@@ -120,7 +136,7 @@ const HomepageManager = ({ history, location }: RouteComponentProps) => {
     }
   };
 
-  const searchHandler = (value: any) => {
+  const searchHandler = (value: string) => {
     const urlParams: IUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
@@ -169,9 +185,9 @@ const HomepageManager = ({ history, location }: RouteComponentProps) => {
             placeholder="Job title"
             allowClear
             onChange={(value) => onSelectChange("job_title", value)}
-            value={urlParams.job_title || null}
+            value={urlParams.job_title || ""}
           >
-            {store?.selectOptionsJobTitle?.map((item, index) => {
+            {store?.selectOptionsJobTitle?.map((item :IOption, index: number) => {
               return (
                 <Option value={item.value} key={index}>
                   {item.label}
@@ -184,9 +200,9 @@ const HomepageManager = ({ history, location }: RouteComponentProps) => {
             placeholder="Focus"
             allowClear
             onChange={(value) => onSelectChange("focus", value)}
-            value={urlParams.focus || null}
+            value={urlParams.focus || ""}
           >
-            {store?.selectOptionsFocus?.map((item, index) => {
+            {store?.selectOptionsFocus?.map((item :IOption, index :number) => {
               return (
                 <Option value={item.value} key={index}>
                   {item.label}

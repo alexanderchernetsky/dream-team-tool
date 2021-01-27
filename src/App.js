@@ -9,12 +9,7 @@ import "antd/dist/antd.css";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
 import {
-  ADD_FEEDBACK_PATH,
-  CREATE_TEAM_PATH,
-  HOMEPAGE_PATH,
-  LOGIN_PATH,
-  TEAMS_LIST_PATH,
-  VIEW_EMPLOYEE_PROFILE_PATH,
+  Routes
 } from "./constants/routes";
 import FeedbackPage from "./pages/FeedbackPage";
 import HomepageManager from "./pages/HomepageManager";
@@ -31,37 +26,37 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <PublicRoute exact path={LOGIN_PATH} component={LoginPage} />
+          <PublicRoute exact path={Routes.LOGIN_PATH} component={LoginPage} />
           {loginStore?.user?.is_manager && (
             <PrivateRoute
               exact
-              path={HOMEPAGE_PATH}
+              path={Routes.HOMEPAGE_PATH}
               component={HomepageManager}
             />
           )}
           {!loginStore?.user?.is_manager && (
             <PrivateRoute
               exact
-              path={HOMEPAGE_PATH}
+              path={Routes.HOMEPAGE_PATH}
               component={HomePageEmployee}
             />
           )}
           <PrivateRoute
             exact
-            path={ADD_FEEDBACK_PATH}
+            path={Routes.ADD_FEEDBACK_PATH}
             component={FeedbackPage}
           />
           <PrivateRoute
             exact
-            path={VIEW_EMPLOYEE_PROFILE_PATH}
+            path={Routes.VIEW_EMPLOYEE_PROFILE_PATH}
             component={HomePageEmployee}
           />
           <PrivateRoute
             exact
-            path={CREATE_TEAM_PATH}
+            path={Routes.CREATE_TEAM_PATH}
             component={CreateTeamPage}
           />
-          <PrivateRoute exact path={TEAMS_LIST_PATH} component={TeamsPage} />
+          <PrivateRoute exact path={Routes.TEAMS_LIST_PATH} component={TeamsPage} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

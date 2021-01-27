@@ -30,7 +30,8 @@ import {
   TeamNameWrapper,
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
-import { TEAMS_LIST_PATH } from "../../constants/routes";
+import { Routes } from "../../constants/routes";
+import { SorterResult } from 'antd/lib/table/interface';
 
 // add team member button handler
 const addButtonClickHandler = (id: number) => {
@@ -47,15 +48,25 @@ const commonUserColumn = {
   title: "User",
   dataIndex: "user",
   key: "user",
-  render: (src: string) => <GridImage src={src} alt="user" />,
+  render: (text:string) :React.ReactElement => <GridImage src={text} alt="user" />,
 };
 
 const commonFocusColumn = {
   title: "Focus",
   key: "focus",
   dataIndex: "focus",
-  render: (text: string) => <GridText>{text}</GridText>,
+  render: (text:string) :React.ReactElement => <GridText>{text}</GridText>,
 };
+
+interface IData {
+  focus: string;
+  full_name: string;
+  id: number;
+  job_title: string;
+  key: number;
+  rating: number;
+  user: string;
+}
 
 // Select employee table
 const allEmployeesGridColumns = [
@@ -66,7 +77,7 @@ const allEmployeesGridColumns = [
     key: "full_name",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text: string) => <GridText>{text}</GridText>,
+    render: (text:string) :React.ReactElement => <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
@@ -74,13 +85,13 @@ const allEmployeesGridColumns = [
     dataIndex: "rating",
     sortable: true,
     sorter: ["ascend", "descend"],
-    render: (text: string) => <Rating>{text}</Rating>,
+    render: (text:string) :React.ReactElement => <Rating>{text}</Rating>,
   },
   commonFocusColumn,
   {
     title: "Actions",
     key: "actions",
-    render: (data: any) => {
+    render: (data:IData) :React.ReactElement => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -107,19 +118,19 @@ const selectedUsersGridColumns = [
     title: "Full name",
     dataIndex: "full_name",
     key: "full_name",
-    render: (text: string) => <GridText>{text}</GridText>,
+    render: (text:string) :React.ReactElement=> <GridText>{text}</GridText>,
   },
   {
     title: "Rating",
     key: "rating",
     dataIndex: "rating",
-    render: (text: string) => <Rating>{text}</Rating>,
+    render: (text:string) :React.ReactElement => <Rating>{text}</Rating>,
   },
   commonFocusColumn,
   {
     title: "Actions",
     key: "actions",
-    render: (data: any) => {
+    render: (data:IData) :React.ReactElement => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -167,7 +178,19 @@ interface IPagination {
   total?: number;
 }
 
-const CreateTeamPage = ({ location, history }: RouteComponentProps) => {
+interface IFilters {
+
+}
+
+// SorterResult<ISorter> | SorterResult<ISorter>[]
+interface ISorter {
+  order: "ascend" | "descend";
+  field: string;
+  columnKey: string;
+  column: object;
+}
+
+const CreateTeamPage = ({ location, history }: RouteComponentProps) :React.ReactElement => {
   const [teamNameValue, setTeamNameValue] = useState("");
 
   useEffect(() => {
@@ -176,12 +199,12 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) => {
 
   const tableChangeHandler = (
     pagination: IPagination,
-    filters: any,
-    sorter: any
+    filters: IFilters,
+    sorter: (SorterResult<ISorter> | SorterResult<ISorter>[])
   ) => {
     const urlParams: IUrlParams = getUrlParams();
     // handle sorting or pagination change
-    if (!sorter || !sorter?.order) {
+    if (!sorter || !sorter.order) {
       delete urlParams.sort_column;
       delete urlParams.sort_direction;
       urlParams.page = pagination.current;
@@ -200,7 +223,7 @@ const CreateTeamPage = ({ location, history }: RouteComponentProps) => {
 
   const saveTeamButtonHandler = () => {
     store.saveTeam(teamNameValue).then(() => {
-      history.push(TEAMS_LIST_PATH);
+      history.push(Routes.TEAMS_LIST_PATH);
     });
   };
   return (

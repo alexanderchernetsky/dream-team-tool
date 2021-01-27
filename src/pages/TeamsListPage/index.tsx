@@ -11,7 +11,7 @@ import store from "../../stores/TeamsListPageStore";
 import randomGradient from "../../helpers/randomGradient";
 import TeamCard from "../../components/TeamCard";
 
-const TeamsPage = () => {
+const TeamsPage = () :React.ReactElement=> {
   useEffect(() => {
     store.getTeams();
   }, []);

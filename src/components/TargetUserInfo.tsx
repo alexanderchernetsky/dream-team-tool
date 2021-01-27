@@ -74,7 +74,7 @@ const TargetUserInfo = ({
   photoSrc = noLogoImage,
   fullName = "Full Name",
   jobTitle = "Employee",
-}: ITargetUserInfo) => {
+}: ITargetUserInfo):React.ReactElement => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>

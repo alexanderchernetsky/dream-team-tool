@@ -84,7 +84,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function getColorForReviewBorder(number: number) {
+function getColorForReviewBorder(number: number) :string {
   if (number > 0) {
     return "#5FB840"; // positive
   }
@@ -116,7 +116,7 @@ const ReviewsFeedItem = ({
   otherComments = "Karl is fantastic to work with. He has helped us build our new website which is awesome. I'd highly recommend him as quick, creative and very resourceful.",
   rating = 5,
   id = 1,
-}: IReviewsFeedItem) => {
+}: IReviewsFeedItem) :React.ReactElement => {
   return (
     <ReviewWrapper>
       <PhotoAndMainInfoWrapper>

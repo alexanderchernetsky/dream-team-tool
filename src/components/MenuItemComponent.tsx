@@ -43,7 +43,7 @@ const IconWrapper = styled.span`
 
 interface IMenuItem extends RouteComponentProps {
   label?: string;
-  IconComponent?: () => any;
+  IconComponent?: React.ComponentType;
   linkTo: string;
   dataTestId?: string;
   disabled?: boolean;
@@ -56,7 +56,7 @@ const MenuItemComponent = ({
   history,
   dataTestId = "default-menu-item",
   disabled = false,
-}: IMenuItem) => {
+}: IMenuItem) :React.ReactElement => {
   const onMenuItemClickHandler = (link: string, flag: boolean) => {
     if (flag) {
       alert("Comming soon...");

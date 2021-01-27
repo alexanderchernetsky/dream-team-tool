@@ -5,7 +5,7 @@ import { Button } from "antd";
 import { withRouter } from "react-router-dom";
 import ax from "../styled-components/accessor";
 import loginStore from "../stores/LoginStore";
-import { LOGIN_PATH } from "../constants/routes";
+import { Routes } from "../constants/routes";
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -35,10 +35,10 @@ interface IHeader extends RouteComponentProps {
   children?: React.ReactNode;
 }
 
-const Header = ({ history, pageTitle, children }: IHeader) => {
+const Header = ({ history, pageTitle, children }: IHeader) :React.ReactElement => {
   const logOutClickHandler = () => {
     loginStore.logOut();
-    history.push(LOGIN_PATH);
+    history.push(Routes.LOGIN_PATH);
   };
 
   return (

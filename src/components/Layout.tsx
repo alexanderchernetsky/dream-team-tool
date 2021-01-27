@@ -16,12 +16,7 @@ import {
   SideBar,
 } from "../styled-components/Layout";
 import {
-  ADD_FEEDBACK_PATH,
-  CREATE_TEAM_PATH,
-  HOMEPAGE_PATH,
-  RELATIONSHIP_MAP_PATH,
-  SETTINGS_PATH,
-  TEAMS_LIST_PATH,
+  Routes
 } from "../constants/routes";
 import { getUser } from "../helpers/authentication";
 import HomeIcon from "../images/menu/Home";
@@ -29,60 +24,68 @@ import TeamIcon from "../images/menu/Team";
 import loginStore from "../stores/LoginStore";
 import TeamsIcon from "../images/menu/TeamsIcon";
 
-const commonMenuItems = [
+interface IMenuItem {
+  label:string;
+  icon: React.ComponentType;
+  linkTo:string;
+  dataTestId: string;
+  disabled:boolean;
+}
+
+const commonMenuItems :IMenuItem[] = [
   {
     label: "Write a feedback",
     icon: PencilIcon,
-    linkTo: ADD_FEEDBACK_PATH,
+    linkTo: Routes.ADD_FEEDBACK_PATH,
     dataTestId: "write-feedback-menu-item",
     disabled: false,
   },
   {
     label: "Relationship map",
     icon: SmileIcon,
-    linkTo: RELATIONSHIP_MAP_PATH,
+    linkTo: Routes.RELATIONSHIP_MAP_PATH,
     dataTestId: "relationship-map-menu-item",
     disabled: true,
   },
   {
     label: "Settings",
     icon: ToolsIcon,
-    linkTo: SETTINGS_PATH,
+    linkTo: Routes.SETTINGS_PATH,
     dataTestId: "settings-menu-item",
     disabled: true,
   },
 ];
 
-const employeeMenuItems = [
+const employeeMenuItems :IMenuItem[] = [
   {
     label: "Feedback on you",
     icon: FolderIcon,
-    linkTo: HOMEPAGE_PATH,
+    linkTo: Routes.HOMEPAGE_PATH,
     dataTestId: "employee-homepage-menu-item",
     disabled: false,
   },
   ...commonMenuItems,
 ];
 
-const managerMenuItems = [
+const managerMenuItems :IMenuItem[] = [
   {
     label: "Home",
     icon: HomeIcon,
-    linkTo: HOMEPAGE_PATH,
+    linkTo: Routes.HOMEPAGE_PATH,
     dataTestId: "manager-homepage-menu-item",
     disabled: false,
   },
   {
     label: "Create a team",
     icon: TeamIcon,
-    linkTo: CREATE_TEAM_PATH,
+    linkTo: Routes.CREATE_TEAM_PATH,
     dataTestId: "create-new-team-menu-item",
     disabled: false,
   },
   {
     label: "Teams",
     icon: TeamsIcon,
-    linkTo: TEAMS_LIST_PATH,
+    linkTo: Routes.TEAMS_LIST_PATH,
     dataTestId: "teams-menu-item",
     disabled: false,
   },
@@ -93,13 +96,13 @@ interface ILayout extends RouteComponentProps {
   children?: React.ReactNode;
 }
 
-const Layout = (props: ILayout) => {
+const Layout = (props: ILayout) :React.ReactElement => {
   useEffect(() => {
     loginStore.getAndSetAuthHeader();
   }, []);
 
   const onLogoClick = () => {
-    props.history.push(HOMEPAGE_PATH);
+    props.history.push(Routes.HOMEPAGE_PATH);
   };
 
   const menuItems = getUser()?.is_manager
