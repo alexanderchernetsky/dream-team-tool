@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
-import { SelectValue } from 'antd/lib/select';
+import { SelectValue } from "antd/lib/select";
 import { Store } from "antd/lib/form/interface";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import Layout from "../../components/Layout";
@@ -28,7 +28,9 @@ import {
   StyledTextArea,
 } from "../../styled-components/FeedbackPage";
 import { Routes } from "../../constants/routes";
-
+import { FeedbackPageUrlParams } from "../../interfaces/urlParams";
+import { IUser } from "../../interfaces/user";
+import { SelectOption } from "../../interfaces/common";
 
 const { Option } = Select;
 
@@ -51,27 +53,12 @@ const requiredTextAreaRules = [
   { max: 32500, message: "This field should be less than 32500 characters." },
 ];
 
-interface IUrlParams {
-  user?: string;
-}
-
-interface IEmployeeData {
-  id?: string | number;
-  image_src?: string;
-  full_name?: string;
-  profile?: {
-    job_title?: string;
-  };
-}
-
-interface IEmployee {
-  label: string;
-  value: string;
-}
-
-const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactElement => {
+const FeedbackPage = ({
+  history,
+  location,
+}: RouteComponentProps): React.ReactElement => {
   useEffect(() => {
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: FeedbackPageUrlParams = getUrlParams();
     const targetUserId = urlParams.user;
     if (targetUserId) {
       feedbackPageStore.getSpecificEmployeeData(targetUserId);
@@ -82,12 +69,12 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactEl
   }, [location]);
 
   useEffect(() => {
-    feedbackPageStore.getEmployeesList();
+    const urlParams: FeedbackPageUrlParams = getUrlParams();
+    feedbackPageStore.getEmployeesList(urlParams);
   }, []);
 
   const onSelectChange = (value: SelectValue) => {
-
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: FeedbackPageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.user;
       feedbackPageStore.removeSpecificEmployeeData();
@@ -98,7 +85,8 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactEl
   };
 
   const onFinish = (values: Store) => {
-    const employeeData: IEmployeeData = feedbackPageStore?.employeeData;
+    const employeeData: IUser = feedbackPageStore?.employeeData;
+
     feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {
       history.push(Routes.ADD_FEEDBACK_PATH);
     });
@@ -107,8 +95,8 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactEl
   const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
     console.log("Failed:", errorInfo);
   };
-  const urlParams: IUrlParams = getUrlParams();
-  const employeeData: IEmployeeData = feedbackPageStore?.employeeData;
+  const urlParams: FeedbackPageUrlParams = getUrlParams();
+  const employeeData: IUser = feedbackPageStore?.employeeData;
   return (
     <Layout>
       {/* Header */}
@@ -128,13 +116,15 @@ const FeedbackPage = ({ history, location }: RouteComponentProps) :React.ReactEl
               onChange={onSelectChange}
               value={urlParams.user || undefined}
             >
-              {feedbackPageStore?.employeesList?.map((item: IEmployee, index: number) => {
-                return (
-                  <Option value={item.value} key={index}>
-                    {item.label}
-                  </Option>
-                );
-              })}
+              {feedbackPageStore?.employeesList?.map(
+                (item: SelectOption, index: number) => {
+                  return (
+                    <Option value={item.value} key={index}>
+                      {item.label}
+                    </Option>
+                  );
+                }
+              )}
             </StyledSelect>
           )}
         </FiltersWrapper>

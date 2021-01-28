@@ -37,7 +37,8 @@ import {
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { Routes } from "../../constants/routes";
-import { TeamAnalisysUser } from "../../interfaces/user";
+import { TeamAnalisysUser, GridDataUser } from "../../interfaces/user";
+import { CreateTeamPageUrlParams } from "../../interfaces/urlParams";
 
 // add team member button handler
 const addButtonClickHandler = (id: number) => {
@@ -66,16 +67,6 @@ const commonFocusColumn = {
   render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
 };
 
-interface IData {
-  focus: string;
-  full_name: string;
-  id: number;
-  job_title: string;
-  key: number;
-  rating: number;
-  user: string;
-}
-
 // Select employee table
 const allEmployeesGridColumns = [
   commonUserColumn,
@@ -99,7 +90,7 @@ const allEmployeesGridColumns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: IData): React.ReactElement => {
+    render: (data: GridDataUser): React.ReactElement => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -107,7 +98,7 @@ const allEmployeesGridColumns = [
             htmlType="button"
             onClick={() => addButtonClickHandler(data.id)}
             disabled={store.selectedUsersGridData.some(
-              (item) => item.id === data.id
+              (item: GridDataUser) => item.id === data.id
             )}
             data-test-id="add-employee-to-new-team-btn"
           >
@@ -138,7 +129,7 @@ const selectedUsersGridColumns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: IData): React.ReactElement => {
+    render: (data: GridDataUser): React.ReactElement => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -169,12 +160,6 @@ const legendItems = [
   },
 ];
 
-interface IUrlParams {
-  sort_column?: string;
-  sort_direction?: string;
-  page?: string | number;
-}
-
 interface ILegendItems {
   color: string;
   slug: string;
@@ -195,7 +180,7 @@ const CreateTeamPage = ({
     filters: Record<string, Key[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: CreateTeamPageUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;

@@ -7,14 +7,25 @@ import {
   setUserSession,
 } from "../helpers/authentication";
 import showErrorMessage from "../helpers/showErrorMessage";
+import { IUser } from "../interfaces/user";
 
-class LoginStore {
-  @observable loginInProgress = false;
+interface IParams {
+  email: string;
+  password: string;
+}
 
-  @observable user = null;
+interface ILogin {
+  loginInProgress: boolean;
+  user: IUser | null;
+}
+
+class LoginStore implements ILogin {
+  @observable loginInProgress: boolean = false;
+
+  @observable user: IUser | null = null;
 
   @action
-  login(params) {
+  login(params: IParams) {
     this.loginInProgress = true;
     return Manager.login(params)
       .then((result) => {

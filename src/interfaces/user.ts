@@ -1,3 +1,9 @@
+interface ISocialLink {
+  link: string;
+  name: string;
+  profile_name: string;
+}
+
 interface IProfile {
   created_at: string;
   focus: string;
@@ -5,9 +11,22 @@ interface IProfile {
   job_title: string;
   rating: number;
   short_description: string;
+  social_links?: ISocialLink[];
+  updated_at?: string;
+  user_id?: number;
 }
 
-interface IUser {
+interface IRole {
+  created_at: string;
+  id: number;
+  name: string;
+  pivot: {
+    role_id: number;
+    user_id: number;
+  };
+}
+
+export interface IUser {
   age: number;
   created_at: string;
   date_of_birth: string;
@@ -22,6 +41,8 @@ interface IUser {
   remember_token: string | undefined;
   years_of_experience: number;
   profile: IProfile;
+  is_manager?: boolean;
+  roles?: IRole[];
 }
 
 interface IAttributes {
@@ -84,7 +105,27 @@ export interface HomepageEmployeeUser {
   user: IUser;
 }
 
+export interface HomepageManagerUser {
+  focus: string;
+  full_name: string;
+  id: number;
+  job_title: string;
+  key: number;
+  rating: number;
+  user: string;
+}
+
 export interface TeamAnalisysUser {
   statistic: IStatistic;
   user: IUser & IReview[];
+}
+
+export interface GridDataUser {
+  focus: string;
+  full_name: string;
+  id: number;
+  job_title: string;
+  key: number;
+  rating: number;
+  user: string;
 }

@@ -28,18 +28,10 @@ import {
   StyledManagerHomepageSelect,
   StyledTable,
 } from "../../styled-components/HomepageManager";
-
+import { HomepageManagerUser } from "../../interfaces/user";
+import { HomepageManagerUrlParams } from "../../interfaces/urlParams";
+import { SelectOption } from "../../interfaces/common";
 const { Option } = Select;
-
-interface IData {
-  focus: string;
-  full_name: string;
-  id: number;
-  job_title: string;
-  key: number;
-  rating: number;
-  user: string;
-}
 
 const columns = [
   {
@@ -79,7 +71,7 @@ const columns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: IData) => {
+    render: (data: HomepageManagerUser) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -99,21 +91,6 @@ const columns = [
   },
 ];
 
-interface IUrlParams {
-  rating?: string;
-  searchPhrase?: string;
-  sort_column?: string;
-  sort_direction?: string;
-  page?: number | string;
-  job_title?: string;
-  focus?: string;
-}
-
-interface IOption {
-  value: string;
-  label: string;
-}
-
 const HomepageManager = ({
   history,
   location,
@@ -127,10 +104,12 @@ const HomepageManager = ({
   }, [location]);
 
   const onSelectChange = (selectName: string, value: SelectValue) => {
-    const urlParams: IUrlParams & any = getUrlParams();
+    const urlParams: HomepageManagerUrlParams = getUrlParams();
     if (!value) {
-      delete urlParams[`${selectName}`];
-      history.push(`${createSearchString(urlParams)}`);
+      if (!Array.isArray(urlParams)) {
+        delete urlParams[selectName as keyof HomepageManagerUrlParams];
+        history.push(`${createSearchString(urlParams)}`);
+      }
     } else {
       history.push(
         `${createSearchString({ ...getUrlParams(), [`${selectName}`]: value })}`
@@ -139,7 +118,7 @@ const HomepageManager = ({
   };
 
   const searchHandler = (value: string) => {
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: HomepageManagerUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -155,7 +134,7 @@ const HomepageManager = ({
     filters: Record<string, Key[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: HomepageManagerUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
@@ -173,7 +152,7 @@ const HomepageManager = ({
       );
     }
   };
-  const urlParams: IUrlParams = getUrlParams();
+  const urlParams: HomepageManagerUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -190,7 +169,7 @@ const HomepageManager = ({
             value={urlParams.job_title || undefined}
           >
             {store?.selectOptionsJobTitle?.map(
-              (item: IOption, index: number) => {
+              (item: SelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}
@@ -206,13 +185,15 @@ const HomepageManager = ({
             onChange={(value) => onSelectChange("focus", value)}
             value={urlParams.focus || undefined}
           >
-            {store?.selectOptionsFocus?.map((item: IOption, index: number) => {
-              return (
-                <Option value={item.value} key={index}>
-                  {item.label}
-                </Option>
-              );
-            })}
+            {store?.selectOptionsFocus?.map(
+              (item: SelectOption, index: number) => {
+                return (
+                  <Option value={item.value} key={index}>
+                    {item.label}
+                  </Option>
+                );
+              }
+            )}
           </StyledManagerHomepageSelect>
           {/* Search */}
           <StyledManagerHomepageSearch

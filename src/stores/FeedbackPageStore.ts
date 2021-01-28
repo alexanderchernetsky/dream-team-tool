@@ -1,22 +1,34 @@
 import { observable, action } from "mobx";
+import { Store } from "antd/lib/form/interface";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapResultsToSelectOptions from "../helpers/mapResultsToSelectOptions";
 import showSuccessMessage from "../helpers/showSuccessMessage";
+import { FeedbackPageUrlParams } from "../interfaces/urlParams";
+import { IUser } from "../interfaces/user";
+import { SelectOption } from "../interfaces/common";
 
-class FeedbackPageStore {
-  @observable loadingEmployeesList = false;
+interface IFeedbackPage {
+  loadingEmployeesList: boolean;
+  loadingSpecificEmployeeData: boolean;
+  submittingFeedbackForm: boolean;
+  employeesList: SelectOption[];
+  employeeData: IUser;
+}
 
-  @observable loadingSpecificEmployeeData = false;
+class FeedbackPageStore implements IFeedbackPage {
+  @observable loadingEmployeesList: boolean = false;
 
-  @observable submittingFeedbackForm = false;
+  @observable loadingSpecificEmployeeData: boolean = false;
 
-  @observable employeesList = [];
+  @observable submittingFeedbackForm: boolean = false;
 
-  @observable employeeData = {};
+  @observable employeesList: SelectOption[] = [];
+
+  @observable employeeData: IUser = <IUser>{};
 
   @action
-  getEmployeesList(params) {
+  getEmployeesList(params: FeedbackPageUrlParams) {
     this.loadingEmployeesList = true;
     return Manager.getEmployeesList(params)
       .then((result) => {
@@ -29,7 +41,7 @@ class FeedbackPageStore {
   }
 
   @action
-  getSpecificEmployeeData(id) {
+  getSpecificEmployeeData(id: string | number) {
     this.loadingSpecificEmployeeData = true;
     return Manager.getSpecificEmployeeData(id)
       .then((result) => {
@@ -43,15 +55,16 @@ class FeedbackPageStore {
 
   @action
   removeSpecificEmployeeData() {
-    this.employeeData = [];
+    this.employeeData = <IUser>{};
   }
 
   @action
-  submitFeedbackForm(formData, targetUserId) {
+  submitFeedbackForm(formData: Store, targetUserId: number | string) {
     this.submittingFeedbackForm = true;
     return Manager.sendFeedbackForm(formData, targetUserId)
       .then((result) => {
-        showSuccessMessage(result.message);
+        //showSuccessMessage(result.message);
+        showSuccessMessage("success");
       })
       .catch((error) => showErrorMessage(error))
       .finally(() => {

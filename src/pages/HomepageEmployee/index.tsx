@@ -22,6 +22,7 @@ import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
 import loginStore from "../../stores/LoginStore";
 import { HomepageEmployeeUser } from "../../interfaces/user";
+import { EmployyeHomepageUrlParams } from "../../interfaces/urlParams";
 
 const { Option } = Select;
 
@@ -45,11 +46,6 @@ const selectOptions: IOption[] = [
   },
 ];
 
-interface IUrlParams {
-  rating?: string;
-  searchPhrase?: string;
-}
-
 const HomePageEmployee = ({
   history,
   location,
@@ -61,7 +57,7 @@ const HomePageEmployee = ({
   const user = getUser();
 
   const onSelectChange = (value: SelectValue) => {
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: EmployyeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.rating;
       history.push(`${createSearchString(urlParams)}`);
@@ -73,7 +69,7 @@ const HomePageEmployee = ({
   };
 
   const searchHandler = (value: string) => {
-    const urlParams: IUrlParams = getUrlParams();
+    const urlParams: EmployyeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -84,7 +80,7 @@ const HomePageEmployee = ({
     }
   };
 
-  const urlParams: IUrlParams = getUrlParams();
+  const urlParams: EmployyeHomepageUrlParams = getUrlParams();
 
   return (
     <Layout>

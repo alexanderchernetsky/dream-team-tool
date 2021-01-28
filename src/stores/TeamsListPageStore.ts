@@ -1,11 +1,21 @@
 import { observable, action } from "mobx";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
+import { ITeam } from "../interfaces/team";
 
-class TeamsListPageStore {
-  @observable loading = false;
+interface ITeamsPage {
+  loading: boolean;
+  teams: {
+    data: ITeam[];
+  };
+}
 
-  @observable teams = { data: [] };
+class TeamsListPageStore implements ITeamsPage {
+  @observable loading: boolean = false;
+
+  @observable teams: {
+    data: ITeam[];
+  } = { data: [] };
 
   @action
   getTeams() {
