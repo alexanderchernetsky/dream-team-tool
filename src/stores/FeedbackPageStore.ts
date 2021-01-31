@@ -7,16 +7,9 @@ import showSuccessMessage from "../helpers/showSuccessMessage";
 import { FeedbackPageUrlParams } from "../interfaces/urlParams";
 import { IUser } from "../interfaces/user";
 import { SelectOption } from "../interfaces/common";
+import { IFeedbackPageStore } from "../interfaces/FeedbackPage";
 
-interface IFeedbackPage {
-  loadingEmployeesList: boolean;
-  loadingSpecificEmployeeData: boolean;
-  submittingFeedbackForm: boolean;
-  employeesList: SelectOption[];
-  employeeData: IUser;
-}
-
-class FeedbackPageStore implements IFeedbackPage {
+class FeedbackPageStore implements IFeedbackPageStore {
   @observable loadingEmployeesList: boolean = false;
 
   @observable loadingSpecificEmployeeData: boolean = false;
@@ -62,8 +55,7 @@ class FeedbackPageStore implements IFeedbackPage {
   submitFeedbackForm(formData: Store, targetUserId: number | string) {
     this.submittingFeedbackForm = true;
     return Manager.sendFeedbackForm(formData, targetUserId)
-      .then((result) => {
-        //showSuccessMessage(result.message);
+      .then(() => {
         showSuccessMessage("success");
       })
       .catch((error) => showErrorMessage(error))

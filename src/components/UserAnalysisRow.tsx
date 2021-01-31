@@ -107,7 +107,7 @@ const UserAnalysisRow = ({
   positive = 80,
   negative = 17,
   neutral = 3,
-}: IUserAnalysisRow):React.ReactElement => {
+}: IUserAnalysisRow): React.ReactElement => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>

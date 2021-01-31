@@ -6,7 +6,7 @@ import ax from "../styled-components/accessor";
 import GithubIcon from "../images/socialMedia/Github";
 import SlackIcon from "../images/socialMedia/Slack";
 
-function getIconForName(name: string):React.ReactNode {
+function getIconForName(name: string): React.ReactNode {
   switch (name) {
     case "github":
       return <GithubIcon />;
@@ -35,7 +35,11 @@ interface ISocMediaLink extends RouteComponentProps {
   profileName: string;
 }
 
-const SocMediaLinkComponent = ({ name, link, profileName }: ISocMediaLink) :React.ReactElement => {
+const SocMediaLinkComponent = ({
+  name,
+  link,
+  profileName,
+}: ISocMediaLink): React.ReactElement => {
   return (
     <StyledLink href={link} target="_blank">
       {getIconForName(name)}

@@ -19,7 +19,7 @@ import {
   StyledItem,
 } from "../../styled-components/LoginPage";
 
-const LoginPage = ({ history }: RouteComponentProps) :React.ReactElement => {
+const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
   const [rememberChecked, setRememberChecked] = useState(false);
 
   const onFinish = (values: Store) => {

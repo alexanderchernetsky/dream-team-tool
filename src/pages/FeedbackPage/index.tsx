@@ -97,6 +97,7 @@ const FeedbackPage = ({
   };
   const urlParams: FeedbackPageUrlParams = getUrlParams();
   const employeeData: IUser = feedbackPageStore?.employeeData;
+
   return (
     <Layout>
       {/* Header */}
@@ -135,7 +136,7 @@ const FeedbackPage = ({
           </SpinnerWrapper>
         ) : (
           <>
-            {employeeData.id && <NoResults>Please select the user.</NoResults>}
+            {!employeeData.id && <NoResults>Please select the user.</NoResults>}
             {employeeData.id && (
               <FeedbackFormWrapper>
                 {/* Target user info */}

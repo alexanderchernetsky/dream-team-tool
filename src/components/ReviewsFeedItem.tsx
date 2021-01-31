@@ -7,7 +7,6 @@ import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
 import ArrowIcon from "../images/Arrow";
 
-
 const ReviewWrapper = styled.div`
   width: 100%;
   max-width: 700px;
@@ -85,7 +84,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function getColorForReviewBorder(number: number) :string {
+function getColorForReviewBorder(number: number): string {
   if (number > 0) {
     return "#5FB840"; // positive
   }
@@ -117,7 +116,7 @@ const ReviewsFeedItem = ({
   otherComments = "Karl is fantastic to work with. He has helped us build our new website which is awesome. I'd highly recommend him as quick, creative and very resourceful.",
   rating = 5,
   id = 1,
-}: IReviewsFeedItem) :React.ReactElement => {
+}: IReviewsFeedItem): React.ReactElement => {
   return (
     <ReviewWrapper>
       <PhotoAndMainInfoWrapper>

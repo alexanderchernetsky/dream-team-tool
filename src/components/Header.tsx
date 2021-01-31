@@ -35,7 +35,11 @@ interface IHeader extends RouteComponentProps {
   children?: React.ReactNode;
 }
 
-const Header = ({ history, pageTitle, children }: IHeader) :React.ReactElement => {
+const Header = ({
+  history,
+  pageTitle,
+  children,
+}: IHeader): React.ReactElement => {
   const logOutClickHandler = () => {
     loginStore.logOut();
     history.push(Routes.LOGIN_PATH);

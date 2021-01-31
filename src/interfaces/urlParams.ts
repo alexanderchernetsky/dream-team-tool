@@ -4,7 +4,7 @@ export interface CreateTeamPageUrlParams {
   page?: string | number;
 }
 
-export interface EmployyeHomepageUrlParams {
+export interface EmployeeHomepageUrlParams {
   rating?: string;
   searchPhrase?: string;
 }

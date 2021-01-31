@@ -43,6 +43,9 @@ export interface IUser {
   profile: IProfile;
   is_manager?: boolean;
   roles?: IRole[];
+  job_title?: string;
+  rating?: string;
+  focus?: string;
 }
 
 interface IAttributes {
@@ -105,27 +108,17 @@ export interface HomepageEmployeeUser {
   user: IUser;
 }
 
-export interface HomepageManagerUser {
-  focus: string;
-  full_name: string;
-  id: number;
-  job_title: string;
-  key: number;
-  rating: number;
-  user: string;
-}
-
 export interface TeamAnalisysUser {
   statistic: IStatistic;
   user: IUser & IReview[];
 }
 
 export interface GridDataUser {
-  focus: string;
+  focus?: string;
   full_name: string;
   id: number;
-  job_title: string;
+  job_title?: string;
   key: number;
-  rating: number;
-  user: string;
+  rating?: number | string;
+  user?: string;
 }

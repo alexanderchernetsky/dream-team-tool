@@ -10,7 +10,8 @@ import {
 import store from "../../stores/TeamsListPageStore";
 import randomGradient from "../../helpers/randomGradient";
 import TeamCard from "../../components/TeamCard";
-import { ITeam } from "../../interfaces/team";
+import { ITeam } from "../../interfaces/TeamsList";
+import { IGradient } from "../../interfaces/common";
 
 const TeamsPage = (): React.ReactElement => {
   useEffect(() => {
@@ -30,7 +31,7 @@ const TeamsPage = (): React.ReactElement => {
         ) : (
           <Row gutter={58}>
             {store?.teams?.data?.map((team: ITeam) => {
-              const theme = randomGradient();
+              const theme: IGradient = randomGradient();
               return (
                 <Col span={8} key={team.id}>
                   <TeamCard

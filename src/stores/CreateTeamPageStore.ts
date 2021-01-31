@@ -6,16 +6,7 @@ import mapToGridData from "../helpers/mapToGridData";
 import showSuccessMessage from "../helpers/showSuccessMessage";
 import { TeamAnalisysUser, GridDataUser } from "../interfaces/user";
 import { CreateTeamPageUrlParams } from "../interfaces/urlParams";
-
-interface ICreateTeamStore {
-  loadingGridData: boolean;
-  loadingAnalysisData: boolean;
-  savingTeamInProgress: boolean;
-  gridData: GridDataUser[];
-  selectedUsersGridData: GridDataUser[];
-  analysisData: TeamAnalisysUser[];
-  pagination: TablePaginationConfig;
-}
+import { ICreateTeamStore } from "../interfaces/CreateTeamPage";
 
 class CreateTeamStore implements ICreateTeamStore {
   @observable loadingGridData: boolean = false;

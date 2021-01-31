@@ -39,6 +39,7 @@ import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { Routes } from "../../constants/routes";
 import { TeamAnalisysUser, GridDataUser } from "../../interfaces/user";
 import { CreateTeamPageUrlParams } from "../../interfaces/urlParams";
+import { ILegendItems } from "../../interfaces/CreateTeamPage";
 
 // add team member button handler
 const addButtonClickHandler = (id: number) => {
@@ -160,11 +161,6 @@ const legendItems = [
   },
 ];
 
-interface ILegendItems {
-  color: string;
-  slug: string;
-}
-
 const CreateTeamPage = ({
   location,
   history,
@@ -204,6 +200,7 @@ const CreateTeamPage = ({
       history.push(Routes.TEAMS_LIST_PATH);
     });
   };
+
   return (
     <Layout>
       {/* Header */}

@@ -1,4 +1,6 @@
-const gradients = [
+import { IGradient } from "../interfaces/common";
+
+const gradients: IGradient[] = [
   {
     gradient: "linear-gradient(90deg, #FFC7B6 0%, #FF65A6 100%)",
     buttonColor: "#FF79A9",
@@ -37,7 +39,7 @@ const gradients = [
   },
 ];
 
-const randomGradient = () => {
+const randomGradient = (): IGradient => {
   return gradients[Math.floor(Math.random() * gradients.length)];
 };
 

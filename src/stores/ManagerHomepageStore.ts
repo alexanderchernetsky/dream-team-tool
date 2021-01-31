@@ -4,20 +4,12 @@ import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapToGridData from "../helpers/mapToGridData";
 import mapResultsToManagerGridSelectOptions from "../helpers/mapResultsToManagerGridSelectOptions";
-import { HomepageManagerUser } from "../interfaces/user";
+import { GridDataUser } from "../interfaces/user";
 import { HomepageManagerUrlParams } from "../interfaces/urlParams";
 import { SelectOption } from "../interfaces/common";
+import { IManagerHomepageStore } from "../interfaces/HomepageManager";
 
-interface IManagerHomepage {
-  loadingSelectOptions: boolean;
-  loadingGridData: boolean;
-  selectOptionsJobTitle: SelectOption[];
-  pagination: TablePaginationConfig;
-  selectOptionsFocus: SelectOption[];
-  gridData: HomepageManagerUser[];
-}
-
-class ManagerHomepageStore implements IManagerHomepage {
+class ManagerHomepageStore implements IManagerHomepageStore {
   @observable loadingSelectOptions: boolean = false;
 
   @observable loadingGridData: boolean = false;
@@ -28,7 +20,7 @@ class ManagerHomepageStore implements IManagerHomepage {
 
   @observable selectOptionsFocus: SelectOption[] = [];
 
-  @observable gridData: HomepageManagerUser[] = [];
+  @observable gridData: GridDataUser[] = [];
 
   @action
   getSelectOptions() {

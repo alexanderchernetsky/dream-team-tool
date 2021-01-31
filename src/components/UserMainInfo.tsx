@@ -92,7 +92,7 @@ const UserMainInfo = ({
   email = "example@mail.ru",
   shortDescription = "Employee short description.",
   links = [],
-}: IUserMainInfo) :React.ReactElement => {
+}: IUserMainInfo): React.ReactElement => {
   return (
     <Wrapper>
       <PhotoAndMainInfoWrapper>

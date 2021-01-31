@@ -8,16 +8,7 @@ import {
 } from "../helpers/authentication";
 import showErrorMessage from "../helpers/showErrorMessage";
 import { IUser } from "../interfaces/user";
-
-interface IParams {
-  email: string;
-  password: string;
-}
-
-interface ILogin {
-  loginInProgress: boolean;
-  user: IUser | null;
-}
+import { IParams, ILogin } from "../interfaces/LoginPage";
 
 class LoginStore implements ILogin {
   @observable loginInProgress: boolean = false;

@@ -1,5 +1,7 @@
-function mapToGridData(results) {
-  return results.map(item => {
+import { IUser, GridDataUser } from "../interfaces/user";
+
+function mapToGridData(results: IUser[]): GridDataUser[] {
+  return results.map((item: IUser) => {
     return {
       key: item.id,
       user: item.image_src,
@@ -7,9 +9,9 @@ function mapToGridData(results) {
       job_title: item.job_title,
       rating: item.rating,
       focus: item.focus,
-      id: item.id
-    }
-  })
+      id: item.id,
+    };
+  });
 }
 
 export default mapToGridData;

@@ -5,3 +5,10 @@ export interface ITeam {
   updated_at: string;
   users_count: number;
 }
+
+export interface ITeamsListStore {
+  loading: boolean;
+  teams: {
+    data: ITeam[];
+  };
+}

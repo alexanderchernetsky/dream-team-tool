@@ -56,10 +56,10 @@ const MenuItemComponent = ({
   history,
   dataTestId = "default-menu-item",
   disabled = false,
-}: IMenuItem) :React.ReactElement => {
+}: IMenuItem): React.ReactElement => {
   const onMenuItemClickHandler = (link: string, flag: boolean) => {
     if (flag) {
-      alert("Comming soon...");
+      alert("Coming soon...");
       return;
     }
     history.push(link);

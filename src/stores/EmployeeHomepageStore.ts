@@ -1,33 +1,25 @@
 import { observable, action } from "mobx";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
-import { HomepageEmployeeUser } from "../interfaces/user";
-import { EmployyeHomepageUrlParams } from "../interfaces/urlParams";
+import { EmployeeHomepageUrlParams } from "../interfaces/urlParams";
+import {
+  IHomepageEmployeeStore,
+  IFeedItems,
+} from "../interfaces/HomepageEmployee";
 
-interface IFeedItems {
-  data: HomepageEmployeeUser[];
-}
-
-interface IHomepageEmployee {
-  feedItems: IFeedItems;
-  loading: boolean;
-}
-
-class EmployeeHomepageStore implements IHomepageEmployee {
+class EmployeeHomepageStore implements IHomepageEmployeeStore {
   @observable loading: boolean = false;
 
-  @observable feedItems: IFeedItems = {
-    data: [],
-  };
+  @observable feedItems: IFeedItems = <IFeedItems>{};
 
   @action
-  getFeedItems(params: EmployyeHomepageUrlParams) {
+  getFeedItems(params: EmployeeHomepageUrlParams) {
     this.loading = true;
     return Manager.getFeedItems(params)
       .then((result) => {
         this.feedItems = result.data;
       })
-      .catch((error) => showErrorMessage(error))
+      .catch((error: Response) => showErrorMessage(error))
       .finally(() => {
         this.loading = false;
       });

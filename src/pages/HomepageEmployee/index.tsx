@@ -22,16 +22,12 @@ import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
 import loginStore from "../../stores/LoginStore";
 import { HomepageEmployeeUser } from "../../interfaces/user";
-import { EmployyeHomepageUrlParams } from "../../interfaces/urlParams";
+import { EmployeeHomepageUrlParams } from "../../interfaces/urlParams";
+import { SelectOption } from "../../interfaces/common";
 
 const { Option } = Select;
 
-interface IOption {
-  label: string;
-  value: string;
-}
-
-const selectOptions: IOption[] = [
+const selectOptions: SelectOption[] = [
   {
     value: "1",
     label: "Positive",
@@ -57,7 +53,7 @@ const HomePageEmployee = ({
   const user = getUser();
 
   const onSelectChange = (value: SelectValue) => {
-    const urlParams: EmployyeHomepageUrlParams = getUrlParams();
+    const urlParams: EmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.rating;
       history.push(`${createSearchString(urlParams)}`);
@@ -69,7 +65,7 @@ const HomePageEmployee = ({
   };
 
   const searchHandler = (value: string) => {
-    const urlParams: EmployyeHomepageUrlParams = getUrlParams();
+    const urlParams: EmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -80,7 +76,7 @@ const HomePageEmployee = ({
     }
   };
 
-  const urlParams: EmployyeHomepageUrlParams = getUrlParams();
+  const urlParams: EmployeeHomepageUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -99,7 +95,7 @@ const HomePageEmployee = ({
                 onChange={onSelectChange}
                 value={urlParams.rating || undefined}
               >
-                {selectOptions.map((item: IOption, index: number) => {
+                {selectOptions.map((item: SelectOption, index: number) => {
                   return (
                     <Option value={item.value} key={index}>
                       {item.label}

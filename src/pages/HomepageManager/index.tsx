@@ -28,9 +28,10 @@ import {
   StyledManagerHomepageSelect,
   StyledTable,
 } from "../../styled-components/HomepageManager";
-import { HomepageManagerUser } from "../../interfaces/user";
+import { GridDataUser } from "../../interfaces/user";
 import { HomepageManagerUrlParams } from "../../interfaces/urlParams";
 import { SelectOption } from "../../interfaces/common";
+
 const { Option } = Select;
 
 const columns = [
@@ -71,7 +72,7 @@ const columns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: HomepageManagerUser) => {
+    render: (data: GridDataUser) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton

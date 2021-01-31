@@ -15,9 +15,7 @@ import {
   PageWrapper,
   SideBar,
 } from "../styled-components/Layout";
-import {
-  Routes
-} from "../constants/routes";
+import { Routes } from "../constants/routes";
 import { getUser } from "../helpers/authentication";
 import HomeIcon from "../images/menu/Home";
 import TeamIcon from "../images/menu/Team";
@@ -25,14 +23,14 @@ import loginStore from "../stores/LoginStore";
 import TeamsIcon from "../images/menu/TeamsIcon";
 
 interface IMenuItem {
-  label:string;
+  label: string;
   icon: React.ComponentType;
-  linkTo:string;
+  linkTo: string;
   dataTestId: string;
-  disabled:boolean;
+  disabled: boolean;
 }
 
-const commonMenuItems :IMenuItem[] = [
+const commonMenuItems: IMenuItem[] = [
   {
     label: "Write a feedback",
     icon: PencilIcon,
@@ -56,7 +54,7 @@ const commonMenuItems :IMenuItem[] = [
   },
 ];
 
-const employeeMenuItems :IMenuItem[] = [
+const employeeMenuItems: IMenuItem[] = [
   {
     label: "Feedback on you",
     icon: FolderIcon,
@@ -67,7 +65,7 @@ const employeeMenuItems :IMenuItem[] = [
   ...commonMenuItems,
 ];
 
-const managerMenuItems :IMenuItem[] = [
+const managerMenuItems: IMenuItem[] = [
   {
     label: "Home",
     icon: HomeIcon,
@@ -96,7 +94,7 @@ interface ILayout extends RouteComponentProps {
   children?: React.ReactNode;
 }
 
-const Layout = (props: ILayout) :React.ReactElement => {
+const Layout = (props: ILayout): React.ReactElement => {
   useEffect(() => {
     loginStore.getAndSetAuthHeader();
   }, []);
@@ -109,6 +107,7 @@ const Layout = (props: ILayout) :React.ReactElement => {
     ? managerMenuItems
     : employeeMenuItems;
   const { children } = props;
+
   return (
     <PageWrapper>
       {/* Sidebar */}
