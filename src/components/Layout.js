@@ -5,7 +5,7 @@ import FolderIcon from "../images/menu/Folder";
 import PencilIcon from "../images/menu/Pencil";
 import SmileIcon from "../images/menu/Smile";
 import ToolsIcon from "../images/menu/Tools";
-import MenuItemComponent from "./MenuItemComponent";
+import MenuItemComponent from "./MenuItemComponent/MenuItemComponent";
 import {
   CompanyLogo,
   CompanyLogoWrapper,

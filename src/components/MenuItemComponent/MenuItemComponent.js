@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import ax from "../styled-components/accessor";
-import FolderIcon from "../images/menu/Folder";
+import ax from "../../styled-components/accessor";
+import FolderIcon from "../../images/menu/Folder";
 
 const MenuItemWrapper = styled.div`
   width: 100%;
@@ -61,6 +61,7 @@ const MenuItemComponent = ({
     <MenuItemWrapper
       onClick={() => onMenuItemClickHandler(linkTo, disabled)}
       data-test-id={dataTestId}
+      data-testid={dataTestId}
     >
       <Label>{label}</Label>
       <IconWrapper>
@@ -78,9 +79,9 @@ MenuItemComponent.defaultProps = {
 };
 
 MenuItemComponent.propTypes = {
+  linkTo: PropTypes.string.isRequired,
   label: PropTypes.string,
   IconComponent: PropTypes.func,
-  linkTo: PropTypes.string.isRequired,
   dataTestId: PropTypes.string,
   disabled: PropTypes.bool,
 };
