@@ -13,6 +13,7 @@ describe('login', () => {
             localStorage.setItem('token', JSON.stringify(token));
             localStorage.setItem('user', JSON.stringify(response?.body?.user));
             Manager.setAuthHeader(`Bearer ${getToken()}`);
+            // TODO: all subsequent requests fail with 401, bearer token is NOT set correctly
         });
 
         cy.visit('/')
