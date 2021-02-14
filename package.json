@@ -17,7 +17,7 @@
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "3.4.0",
     "styled-ax": "^1.1.1",
     "styled-components": "^5.1.1",
     "styled-media-query": "^2.1.2"
@@ -31,7 +31,7 @@
     "cy:run": "cypress run --browser chrome",
     "cy:all": "cypress run",
     "cy-e2e:ci": "cypress run --reporter teamcity",
-    "cy:ci": "start-server-and-test start http-get://localhost:3000 cy-e2e:ci"
+    "cy:ci": "start-server-and-test 'yarn start' http-get://localhost:8080 'yarn cy-e2e:ci'"
   },
   "eslintConfig": {
     "extends": "react-app"
