@@ -31,7 +31,8 @@
     "cy:run": "cypress run --browser chrome",
     "cy:all": "cypress run",
     "cy-e2e:ci": "cypress run --reporter teamcity",
-    "cy:ci": "start-server-and-test start http://localhost:3000 cy-e2e:ci"
+    "cy:ci": "start-server-and-test start http://localhost:3000 cy-e2e:ci",
+    "cy:ci-2": "REACT_APP_API_PATH_BACK=https://dream-team-api.bubeha.com/api cypress run --reporter teamcity"
   },
   "eslintConfig": {
     "extends": "react-app"
