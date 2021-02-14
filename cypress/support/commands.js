@@ -11,7 +11,7 @@
 //
 // -- This is a parent command --
 Cypress.Commands.add("login", (email, password) => {
-  // TODO: login should be accomplished programmatically without using UI
+  // TODO: login should be accomplished programmatically, without using UI
   cy.visit("/login");
   cy.get('[data-test-id="login-email"]').type(email);
   cy.get('[data-test-id="login-password"]').type(password);
