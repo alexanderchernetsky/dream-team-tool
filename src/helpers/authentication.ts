@@ -15,13 +15,13 @@ export const getToken = (): string | null => {
 };
 
 // remove the token and user from the local storage
-export const removeUserSession = () => {
+export const removeUserSession = (): void => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
 };
 
 // set the token and user to the local storage
-export const setUserSession = (token: string, user: IUser) => {
+export const setUserSession = (token: string, user: IUser): void => {
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
 };

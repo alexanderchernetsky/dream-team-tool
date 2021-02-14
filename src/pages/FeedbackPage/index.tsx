@@ -34,7 +34,7 @@ import { SelectOption } from "../../interfaces/common";
 
 const { Option } = Select;
 
-const selectOptions = (
+const selectOptions: React.ReactElement = (
   <>
     <Option value="2">Always</Option>
     <Option value="1">Often</Option>
@@ -68,12 +68,12 @@ const FeedbackPage = ({
     };
   }, [location]);
 
-  useEffect(() => {
+  useEffect((): void => {
     const urlParams: FeedbackPageUrlParams = getUrlParams();
     feedbackPageStore.getEmployeesList(urlParams);
   }, []);
 
-  const onSelectChange = (value: SelectValue) => {
+  const onSelectChange = (value: SelectValue): void => {
     const urlParams: FeedbackPageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.user;
@@ -84,7 +84,7 @@ const FeedbackPage = ({
     }
   };
 
-  const onFinish = (values: Store) => {
+  const onFinish = (values: Store): void => {
     const employeeData: IUser = feedbackPageStore?.employeeData;
 
     feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {
@@ -92,7 +92,7 @@ const FeedbackPage = ({
     });
   };
 
-  const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
+  const onFinishFailed = (errorInfo: ValidateErrorEntity): void=> {
     console.log("Failed:", errorInfo);
   };
   const urlParams: FeedbackPageUrlParams = getUrlParams();

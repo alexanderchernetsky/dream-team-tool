@@ -22,7 +22,7 @@ import {
 const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
   const [rememberChecked, setRememberChecked] = useState(false);
 
-  const onFinish = (values: Store) => {
+  const onFinish = (values: Store): void => {
     loginStore
       .login({
         email: values.email,
@@ -33,7 +33,7 @@ const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
       });
   };
 
-  const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
+  const onFinishFailed = (errorInfo: ValidateErrorEntity): void => {
     console.log("Failed:", errorInfo);
   };
 

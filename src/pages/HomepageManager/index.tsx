@@ -96,15 +96,15 @@ const HomepageManager = ({
   history,
   location,
 }: RouteComponentProps): React.ReactElement => {
-  useEffect(() => {
+  useEffect((): void => {
     store.getSelectOptions();
   }, []);
 
-  useEffect(() => {
+  useEffect((): void => {
     store.getGridData(getUrlParams());
   }, [location]);
 
-  const onSelectChange = (selectName: string, value: SelectValue) => {
+  const onSelectChange = (selectName: string, value: SelectValue): void => {
     const urlParams: HomepageManagerUrlParams = getUrlParams();
     if (!value) {
       if (!Array.isArray(urlParams)) {
@@ -118,7 +118,7 @@ const HomepageManager = ({
     }
   };
 
-  const searchHandler = (value: string) => {
+  const searchHandler = (value: string): void => {
     const urlParams: HomepageManagerUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
@@ -134,7 +134,7 @@ const HomepageManager = ({
     pagination: TablePaginationConfig,
     filters: Record<string, Key[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
-  ) => {
+  ): void => {
     const urlParams: HomepageManagerUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {

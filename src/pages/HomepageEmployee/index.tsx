@@ -52,7 +52,7 @@ const HomePageEmployee = ({
 
   const user = getUser();
 
-  const onSelectChange = (value: SelectValue) => {
+  const onSelectChange = (value: SelectValue): void => {
     const urlParams: EmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.rating;
@@ -64,7 +64,7 @@ const HomePageEmployee = ({
     }
   };
 
-  const searchHandler = (value: string) => {
+  const searchHandler = (value: string): void => {
     const urlParams: EmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;

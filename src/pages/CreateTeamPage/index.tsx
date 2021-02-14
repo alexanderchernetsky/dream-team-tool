@@ -42,7 +42,7 @@ import { CreateTeamPageUrlParams } from "../../interfaces/urlParams";
 import { ILegendItems } from "../../interfaces/CreateTeamPage";
 
 // add team member button handler
-const addButtonClickHandler = (id: number) => {
+const addButtonClickHandler = (id: number): void => {
   store.addTeamMember(id);
 };
 
@@ -146,7 +146,7 @@ const selectedUsersGridColumns = [
   },
 ];
 
-const legendItems = [
+const legendItems: ILegendItems[] = [
   {
     color: "#A5F081",
     slug: "Positive",
@@ -167,7 +167,7 @@ const CreateTeamPage = ({
 }: RouteComponentProps): React.ReactElement => {
   const [teamNameValue, setTeamNameValue] = useState("");
 
-  useEffect(() => {
+  useEffect((): void => {
     store.getGridData(getUrlParams());
   }, [location]);
 
@@ -235,7 +235,7 @@ const CreateTeamPage = ({
             <GridName>Team</GridName>
             <StyledTable
               columns={selectedUsersGridColumns}
-              dataSource={store.selectedUsersGridData}
+              dataSource={[...store.selectedUsersGridData]}
               pagination={false}
             />
           </SelectedGridWrapper>
@@ -247,6 +247,7 @@ const CreateTeamPage = ({
             htmlType="button"
             onClick={() => store.getAnalysisData()}
             loading={store.loadingAnalysisData}
+            disabled={!store.selectedUsersGridData.length}
           >
             Team analysis
           </StyledActionColButton>

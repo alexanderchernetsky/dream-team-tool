@@ -14,7 +14,7 @@ import { ITeam } from "../../interfaces/TeamsList";
 import { IGradient } from "../../interfaces/common";
 
 const TeamsPage = (): React.ReactElement => {
-  useEffect(() => {
+  useEffect((): void => {
     store.getTeams();
   }, []);
 

@@ -1,6 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
+import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import ax from "../../styled-components/accessor";
 import FolderIcon from "../../images/menu/Folder";
@@ -41,17 +41,25 @@ const IconWrapper = styled.span`
   }
 `;
 
+interface IMenuItem extends RouteComponentProps {
+  label?: string;
+  IconComponent?: React.ComponentType;
+  linkTo: string;
+  dataTestId?: string;
+  disabled?: boolean;
+}
+
 const MenuItemComponent = ({
-  label,
-  IconComponent,
+  label = "Menu Item",
+  IconComponent = FolderIcon,
   linkTo,
   history,
-  dataTestId,
-  disabled,
-}) => {
-  const onMenuItemClickHandler = (link, disabled) => {
-    if (disabled) {
-      alert("Comming soon...");
+  dataTestId = "default-menu-item",
+  disabled = false,
+}: IMenuItem): React.ReactElement => {
+  const onMenuItemClickHandler = (link: string, flag: boolean) => {
+    if (flag) {
+      alert("Coming soon...");
       return;
     }
     history.push(link);
@@ -61,7 +69,6 @@ const MenuItemComponent = ({
     <MenuItemWrapper
       onClick={() => onMenuItemClickHandler(linkTo, disabled)}
       data-test-id={dataTestId}
-      data-testid={dataTestId}
     >
       <Label>{label}</Label>
       <IconWrapper>
@@ -69,21 +76,6 @@ const MenuItemComponent = ({
       </IconWrapper>
     </MenuItemWrapper>
   );
-};
-
-MenuItemComponent.defaultProps = {
-  label: "Menu Item",
-  IconComponent: FolderIcon,
-  dataTestId: "default-menu-item",
-  disabled: false,
-};
-
-MenuItemComponent.propTypes = {
-  linkTo: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  IconComponent: PropTypes.func,
-  dataTestId: PropTypes.string,
-  disabled: PropTypes.bool,
 };
 
 export default withRouter(MenuItemComponent);
