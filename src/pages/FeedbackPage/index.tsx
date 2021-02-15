@@ -3,7 +3,6 @@ import { Select, Spin } from "antd";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
 import { SelectValue } from "antd/lib/select";
-import { Store } from "antd/lib/form/interface";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
@@ -84,7 +83,7 @@ const FeedbackPage = ({
     }
   };
 
-  const onFinish = (values: Store): void => {
+  const onFinish = (values: unknown): void => {
     const employeeData: IUser = feedbackPageStore?.employeeData;
 
     feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {

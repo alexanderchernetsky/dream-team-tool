@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Checkbox } from "antd";
 import { observer } from "mobx-react";
-import { Store } from "antd/lib/form/interface";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { RouteComponentProps } from "react-router";
 import logo from "../../images/_DTT.svg";
@@ -18,19 +17,25 @@ import {
   StyledInput,
   StyledItem,
 } from "../../styled-components/LoginPage";
+import {ILoginPage} from "../../interfaces/LoginPage";
 
 const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
   const [rememberChecked, setRememberChecked] = useState(false);
 
-  const onFinish = (values: Store): void => {
-    loginStore
-      .login({
-        email: values.email,
-        password: values.password,
-      })
-      .then(() => {
-        history.push(Routes.HOMEPAGE_PATH);
-      });
+  const onFinish = (values: unknown): void => {
+    if(typeof values === "object") {
+      const {email, password}: ILoginPage = values as ILoginPage;
+      if(email && password) {
+        loginStore
+          .login({
+            email: email,
+            password: password,
+          })
+          .then(() => {
+            history.push(Routes.HOMEPAGE_PATH);
+          });
+      }
+    }
   };
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity): void => {

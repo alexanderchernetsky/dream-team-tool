@@ -1,5 +1,4 @@
 import { observable, action } from "mobx";
-import { Store } from "antd/lib/form/interface";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapResultsToSelectOptions from "../helpers/mapResultsToSelectOptions";
@@ -52,7 +51,7 @@ class FeedbackPageStore implements IFeedbackPageStore {
   }
 
   @action
-  submitFeedbackForm(formData: Store, targetUserId: number | string) {
+  submitFeedbackForm(formData: unknown, targetUserId: number | string) {
     this.submittingFeedbackForm = true;
     return Manager.sendFeedbackForm(formData, targetUserId)
       .then(() => {

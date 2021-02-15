@@ -173,7 +173,7 @@ const CreateTeamPage = ({
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
-    filters: Record<string, Key[] | null>,
+    filters: Record<string, (string | number | boolean)[] | null> ,
     sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
     const urlParams: CreateTeamPageUrlParams = getUrlParams();

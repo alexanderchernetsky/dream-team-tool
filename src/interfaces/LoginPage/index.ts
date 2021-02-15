@@ -9,3 +9,8 @@ export interface ILogin {
   loginInProgress: boolean;
   user: IUser | null;
 }
+
+export interface ILoginPage {
+  email: string;
+  password: string;
+}

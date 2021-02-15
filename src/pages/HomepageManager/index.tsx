@@ -4,7 +4,6 @@ import { Select } from "antd";
 import { RouteComponentProps } from "react-router";
 import { SelectValue } from "antd/lib/select";
 import {
-  Key,
   SorterResult,
   TablePaginationConfig,
   ColumnsType,
@@ -132,7 +131,7 @@ const HomepageManager = ({
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
-    filters: Record<string, Key[] | null>,
+    filters: Record<string, (string | number | boolean)[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
   ): void => {
     const urlParams: HomepageManagerUrlParams = getUrlParams();
