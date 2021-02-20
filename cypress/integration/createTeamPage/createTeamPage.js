@@ -20,6 +20,7 @@ describe("Create New Team Page tests", () => {
   it("manager can create new team", () => {
     // TODO make name unique
     const newTeamName = "Hooli Team 10";
+    // eslint-disable-next-line no-unused-vars
     let createdTeamId;
     cy.visit("/create-team");
     // type new team name
@@ -39,7 +40,6 @@ describe("Create New Team Page tests", () => {
 
         // cy.wait('@saveNewTeam').its('status').should('eq', 200);
         cy.wait('@saveNewTeam').then((xhr) => {
-          console.log(xhr.response.body.id);
           createdTeamId = xhr.response.body.id;
         })
         //

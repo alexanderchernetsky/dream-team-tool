@@ -69,6 +69,7 @@ const MenuItemComponent = ({
     <MenuItemWrapper
       onClick={() => onMenuItemClickHandler(linkTo, disabled)}
       data-test-id={dataTestId}
+      data-testid={dataTestId}
     >
       <Label>{label}</Label>
       <IconWrapper>

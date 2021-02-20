@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { RouteComponentProps } from "react-router";
 import {
-  Key,
   SorterResult,
   TablePaginationConfig,
   ColumnsType,

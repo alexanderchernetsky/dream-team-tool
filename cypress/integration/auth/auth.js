@@ -7,9 +7,7 @@ describe('login', () => {
             email: "admin@example.com",
             password: "12345678"
         }).then(response => {
-            console.log(response);
             const token = response?.body?.access_token;
-            console.log("token", token);
             localStorage.setItem('token', JSON.stringify(token));
             localStorage.setItem('user', JSON.stringify(response?.body?.user));
             Manager.setAuthHeader(`Bearer ${getToken()}`);

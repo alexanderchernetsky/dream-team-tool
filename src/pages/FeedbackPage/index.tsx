@@ -94,6 +94,7 @@ const FeedbackPage = ({
   const onFinishFailed = (errorInfo: ValidateErrorEntity): void=> {
     console.log("Failed:", errorInfo);
   };
+
   const urlParams: FeedbackPageUrlParams = getUrlParams();
   const employeeData: IUser = feedbackPageStore?.employeeData;
 

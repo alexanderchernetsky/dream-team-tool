@@ -40,7 +40,13 @@
     "cy:run": "cypress run --browser chrome",
     "cy:all": "cypress run",
     "cy-e2e:ci": "cypress run --reporter teamcity",
-    "cy:ci": "start-server-and-test start http://localhost:3000 cy-e2e:ci"
+    "cy:ci": "start-server-and-test start http://localhost:3000 cy-e2e:ci",
+    "lint": "eslint ./"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -71,12 +77,16 @@
     "babel-plugin-styled-components": "^1.10.7",
     "customize-cra": "^1.0.0",
     "cypress": "^4.9.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-cypress": "^2.11.1",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.0.4",
+    "history": "^5.0.0",
+    "husky": "^5.0.9",
     "jest-teamcity-reporter": "^0.9.0",
     "prettier": "^2.0.5",
     "start-server-and-test": "^1.12.0"

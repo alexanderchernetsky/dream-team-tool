@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { getToken } from "../helpers/authentication";
 import { Routes } from "../constants/routes";
 
-// handle the public routes
+// eslint-disable-next-line react/prop-types
 function PublicRoute({ component: Component, ...rest }) {
   return (
     <Route
