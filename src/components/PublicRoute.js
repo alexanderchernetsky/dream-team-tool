@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import {getToken} from "../helpers/authentication";
-import {HOMEPAGE_PATH} from "../constants/routes";
+import { getToken } from "../helpers/authentication";
+import { Routes } from "../constants/routes";
 
-// handle the public routes
+// eslint-disable-next-line react/prop-types
 function PublicRoute({ component: Component, ...rest }) {
   return (
     <Route
@@ -12,7 +12,7 @@ function PublicRoute({ component: Component, ...rest }) {
         !getToken() ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: HOMEPAGE_PATH }} />
+          <Redirect to={{ pathname: Routes.HOMEPAGE_PATH }} />
         )
       }
     />

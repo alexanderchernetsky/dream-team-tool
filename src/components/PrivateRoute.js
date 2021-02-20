@@ -1,20 +1,19 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import {getToken} from "../helpers/authentication";
-import {LOGIN_PATH} from "../constants/routes";
+import { getToken } from "../helpers/authentication";
+import { Routes } from "../constants/routes";
 
-
-// handle the private routes
+// eslint-disable-next-line react/prop-types
 function PrivateRoute({ location, component: Component, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) =>
-          getToken() ? (
+        getToken() ? (
           <Component {...props} />
         ) : (
           <Redirect
-            to={{ pathname: LOGIN_PATH, state: { from: location } }}
+            to={{ pathname: Routes.LOGIN_PATH, state: { from: location } }}
           />
         )
       }

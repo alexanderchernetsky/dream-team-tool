@@ -6,32 +6,48 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.6",
+    "@types/react": "^16.9.55",
+    "@types/react-dom": "^16.9.9",
+    "@types/react-router-dom": "^5.1.6",
+    "@types/styled-components": "^5.1.4",
     "antd": "^4.3.4",
     "axios": "^0.19.2",
     "mobx": "^5.15.4",
-    "mobx-react": "^6.2.2",
+    "mobx-react": "^6.3.1",
     "moment": "^2.27.0",
     "prop-types": "^15.7.2",
+    "rc-field-form": "^1.18.1",
     "react": "^16.13.1",
     "react-app-rewire-mobx": "^1.0.9",
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
     "styled-ax": "^1.1.1",
     "styled-components": "^5.1.1",
-    "styled-media-query": "^2.1.2"
+    "styled-media-query": "^2.1.2",
+    "typescript": "^4.0.5"
   },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test --testResultsProcessor=jest-teamcity-reporter",
+    "test": "react-app-rewired test --testResultsProcessor=jest-teamcity-reporter --watchAll=false",
     "eject": "react-app-rewired eject",
     "cy": "cypress open",
     "cy:run": "cypress run --browser chrome",
     "cy:all": "cypress run",
     "cy-e2e:ci": "cypress run --reporter teamcity",
-    "cy:ci": "start-server-and-test start http://localhost:3000 cy-e2e:ci"
+    "cy:ci": "start-server-and-test start http://localhost:3000 cy-e2e:ci",
+    "lint": "eslint ./",
+    "postinstall": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn test"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,6 +66,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
+    "@babel/helper-builder-react-jsx": "^7.12.13",
+    "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
+    "@babel/helper-call-delegate": "^7.12.13",
+    "@babel/helper-define-map": "^7.12.13",
+    "@babel/helper-regex": "^7.10.5",
     "@babel/plugin-proposal-decorators": "^7.10.3",
     "@babel/plugin-proposal-optional-chaining": "^7.10.3",
     "babel-jest": "^24.9.0",
@@ -57,12 +78,16 @@
     "babel-plugin-styled-components": "^1.10.7",
     "customize-cra": "^1.0.0",
     "cypress": "^4.9.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-cypress": "^2.11.1",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.0.4",
+    "history": "^5.0.0",
+    "husky": "^5.0.9",
     "jest-teamcity-reporter": "^0.9.0",
     "prettier": "^2.0.5",
     "start-server-and-test": "^1.12.0"
