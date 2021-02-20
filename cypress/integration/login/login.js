@@ -25,6 +25,7 @@ describe("Login tests", () => {
     cy.url()
       .should("eq", "http://localhost:3000/")
       .then(() => {
+        // eslint-disable-next-line no-unused-expressions
         expect(localStorage.getItem("token")).to.not.be.null;
         // eslint-disable-next-line no-unused-expressions
         expect(localStorage.getItem("user")).to.not.be.null;
