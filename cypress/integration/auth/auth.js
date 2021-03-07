@@ -3,7 +3,7 @@ import {getToken} from "../../../src/helpers/authentication";
 
 describe('login', () => {
     it('logs in programmatically without using the UI', () => {
-        cy.request('POST', 'https://dream-team-api.bubeha.com/api/login', {
+        cy.request('POST', 'https://dream-team-api.bubeha.dev/api/login', {
             email: "admin@example.com",
             password: "12345678"
         }).then(response => {
