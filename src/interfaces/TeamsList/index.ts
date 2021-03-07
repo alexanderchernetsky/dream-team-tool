@@ -8,7 +8,16 @@ export interface ITeam {
 
 export interface ITeamsListStore {
   loading: boolean;
-  teams: {
-    data: ITeam[];
-  };
+  teams: ITeam[];
 }
+
+export interface ITeamsStatePageProps {
+  isLoading: boolean,
+  teams: ITeam[]
+}
+
+export interface ITeamsDispatchProps {
+  fetchTeams: () => void
+}
+
+export type TeamsPageProps = ITeamsStatePageProps & ITeamsDispatchProps;
