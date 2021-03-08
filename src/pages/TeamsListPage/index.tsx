@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {bindActionCreators} from "redux";
+import {bindActionCreators, Dispatch} from "redux";
 import {connect} from "react-redux";
 import {Col, Row, Spin} from "antd";
 import Header from "../../components/Header";
@@ -20,9 +20,7 @@ const mapStateToProps = (state: RootState): ITeamsStatePageProps => ({
     teams: state.teamsListPage.teams
 })
 
-// TODO: add dispatch type
-// @ts-ignore
-const mapDispatchToProps = (dispatch): ITeamsDispatchProps => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch): ITeamsDispatchProps => bindActionCreators({
     fetchTeams: getTeams
 }, dispatch);
 

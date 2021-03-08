@@ -2,6 +2,7 @@ import {ITeam} from "../interfaces/TeamsList";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import parseTeams from "../parsers/teamsListPage";
+import {IActionPromise} from "../interfaces/common";
 
 export enum teamsPageActionTypes {
     SET_LOADING = 'TEAMS_PAGE/SET_LOADING',
@@ -37,10 +38,7 @@ interface GetTeamsAction {
     type: typeof teamsPageActionTypes.GET_TEAMS
 }
 
-// TODO: add return type to the function
-// TODO: add redux-thunk dispatch type
-export function getTeams() {
-    // @ts-ignore
+export function getTeams(): IActionPromise<Promise<SetTeamsAction | void>> {
     return function (dispatch) {
         dispatch(setLoading(true));
         return Manager.getTeams()
