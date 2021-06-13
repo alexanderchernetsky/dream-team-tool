@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { observer } from "mobx-react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Switch } from "react-router-dom";
+import {bindActionCreators, Dispatch} from "redux";
+import {connect} from "react-redux";
 import theme from "./styled-components/theme";
 import HomePageEmployee from "./pages/HomepageEmployee";
 import LoginPage from "./pages/LoginPage";
@@ -15,11 +16,27 @@ import FeedbackPage from "./pages/FeedbackPage";
 import HomepageManager from "./pages/HomepageManager";
 import CreateTeamPage from "./pages/CreateTeamPage";
 import TeamsPage from "./pages/TeamsListPage";
-import loginStore from "./stores/LoginStore";
+import {getAndSetCurrentUserAction} from "./actions/loginPageActions";
+import {RootState} from "./reducers";
+import {IUser} from "./interfaces/user";
 
-function App() {
+const mapStateToProps = (state :RootState) => ({
+  user: state.loginPage.user
+});
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getAndSetCurrentUser: bindActionCreators(getAndSetCurrentUserAction, dispatch)
+})
+
+interface IProps {
+  user: IUser | null,
+  getAndSetCurrentUser: () => void
+}
+
+function App(props :IProps) {
+  const {user, getAndSetCurrentUser} = props;
   useEffect(() => {
-    loginStore.getAndSetCurrentUser();
+    getAndSetCurrentUser();
   }, []);
 
   return (
@@ -27,14 +44,14 @@ function App() {
       <BrowserRouter>
         <Switch>
           <PublicRoute exact path={Routes.LOGIN_PATH} component={LoginPage} />
-          {loginStore?.user?.is_manager && (
+          {user?.is_manager && (
             <PrivateRoute
               exact
               path={Routes.HOMEPAGE_PATH}
               component={HomepageManager}
             />
           )}
-          {!loginStore?.user?.is_manager && (
+          {!user?.is_manager && (
             <PrivateRoute
               exact
               path={Routes.HOMEPAGE_PATH}
@@ -63,4 +80,4 @@ function App() {
   );
 }
 
-export default observer(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

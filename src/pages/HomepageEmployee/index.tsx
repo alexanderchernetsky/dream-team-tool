@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
-import { observer } from "mobx-react";
-import { RouteComponentProps } from "react-router";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import { SelectValue } from "antd/lib/select";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
@@ -9,7 +9,6 @@ import Header from "../../components/Header";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
-import store from "../../stores/EmployeeHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
 import {
@@ -20,10 +19,12 @@ import {
 } from "../../styled-components/HomepageEmployee";
 import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
-import loginStore from "../../stores/LoginStore";
 import { HomepageEmployeeUser } from "../../interfaces/user";
 import { EmployeeHomepageUrlParams } from "../../interfaces/urlParams";
 import { SelectOption } from "../../interfaces/common";
+import {getFeedItemsAction} from "../../actions/homepageEmployeeActions";
+import {RootState} from "../../reducers";
+import {HomepageEmployeePageProps} from "../../interfaces/HomepageEmployee";
 
 const { Option } = Select;
 
@@ -42,12 +43,20 @@ const selectOptions: SelectOption[] = [
   },
 ];
 
-const HomePageEmployee = ({
-  history,
-  location,
-}: RouteComponentProps): React.ReactElement => {
+const mapStateToProps = (state: RootState) => ({
+  feedItems: state.homepageEmployee.feedItems,
+  loading: state.homepageEmployee.loading,
+  userFromStore: state.loginPage.user
+})
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getFeedItems: bindActionCreators(getFeedItemsAction, dispatch)
+})
+
+const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement => {
+  const {history, location, getFeedItems, loading, feedItems} = props;
   useEffect(() => {
-    store.getFeedItems(getUrlParams());
+    getFeedItems(getUrlParams());
   }, [location]);
 
   const user = getUser();
@@ -80,7 +89,7 @@ const HomePageEmployee = ({
 
   return (
     <Layout>
-      {!loginStore?.user ? (
+      {!user ? (
         <SpinnerWrapper>
           <Spin size="large" />
         </SpinnerWrapper>
@@ -127,13 +136,13 @@ const HomePageEmployee = ({
               links={user?.profile?.social_links}
             />
             {/* Feed with reviews */}
-            {store.loading ? (
+            {loading ? (
               <SpinnerWrapper>
                 <Spin size="large" />
               </SpinnerWrapper>
             ) : (
               <FeedWrapper>
-                {store?.feedItems?.data?.map((item: HomepageEmployeeUser) => {
+                {feedItems?.data?.map((item: HomepageEmployeeUser) => {
                   return (
                     <ReviewsFeedItem
                       key={item.id}
@@ -160,4 +169,4 @@ const HomePageEmployee = ({
   );
 };
 
-export default observer(HomePageEmployee);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageEmployee);

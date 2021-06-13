@@ -13,7 +13,7 @@ import TeamCard from "../../components/TeamCard";
 import {ITeam, ITeamsDispatchProps, ITeamsStatePageProps, TeamsPageProps} from "../../interfaces/TeamsList";
 import {IGradient} from "../../interfaces/common";
 import {RootState} from "../../reducers";
-import {getTeams} from "../../actions";
+import {getTeams} from "../../actions/teamsListActions";
 
 const mapStateToProps = (state: RootState): ITeamsStatePageProps => ({
     isLoading: state.teamsListPage.loading,

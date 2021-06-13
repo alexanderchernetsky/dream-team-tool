@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Checkbox } from "antd";
-import { observer } from "mobx-react";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
-import { RouteComponentProps } from "react-router";
 import logo from "../../images/_DTT.svg";
-import loginStore from "../../stores/LoginStore";
 import { Routes } from "../../constants/routes";
 import {
   ForgotPasswordText,
@@ -17,23 +16,32 @@ import {
   StyledInput,
   StyledItem,
 } from "../../styled-components/LoginPage";
-import {ILoginPage} from "../../interfaces/LoginPage";
+import {ILoginPage, LoginPageProps} from "../../interfaces/LoginPage";
+import {RootState} from "../../reducers";
+import {loginAction} from "../../actions/loginPageActions";
 
-const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
+const mapStateToProps = (state: RootState) => ({
+  loginInProgress: state.loginPage.loginInProgress,
+  user: state.loginPage.user
+})
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  login: bindActionCreators(loginAction, dispatch)
+})
+
+const LoginPage = (props: LoginPageProps): React.ReactElement => {
   const [rememberChecked, setRememberChecked] = useState(false);
+  const {history, login, loginInProgress, user} = props;
+
 
   const onFinish = (values: unknown): void => {
     if(typeof values === "object") {
       const {email, password}: ILoginPage = values as ILoginPage;
       if(email && password) {
-        loginStore
-          .login({
-            email: email,
-            password: password,
-          })
-          .then(() => {
-            history.push(Routes.HOMEPAGE_PATH);
-          });
+        login({ email, password });
+        if(user) {
+          history.push(Routes.HOMEPAGE_PATH);
+        }
       }
     }
   };
@@ -73,7 +81,7 @@ const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
           <SingInButton
             type="primary"
             htmlType="submit"
-            loading={loginStore.loginInProgress}
+            loading={loginInProgress}
           >
             Submit
           </SingInButton>
@@ -98,4 +106,4 @@ const LoginPage = ({ history }: RouteComponentProps): React.ReactElement => {
   );
 };
 
-export default observer(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

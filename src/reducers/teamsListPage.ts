@@ -1,12 +1,12 @@
-import {TeamsPageActions, teamsPageActionTypes} from "../actions";
+import {TeamsPageActions, teamsPageActionTypes} from "../actions/teamsListActions";
 import {ITeamsListStore} from "../interfaces/TeamsList";
 
-const intialState: ITeamsListStore = {
+const initialState: ITeamsListStore = {
     loading: false,
     teams: []
 }
 
-export default function teamsListPageReducer(state = intialState, action: TeamsPageActions): ITeamsListStore {
+export default function teamsListPageReducer(state = initialState, action: TeamsPageActions): ITeamsListStore {
     switch (action.type) {
         case teamsPageActionTypes.SET_LOADING:
             return {

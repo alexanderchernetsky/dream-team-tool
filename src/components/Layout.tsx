@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
+import {bindActionCreators, Dispatch} from "redux";
+import {connect} from "react-redux";
 import logo from "../images/_DTT.svg";
 import FolderIcon from "../images/menu/Folder";
 import PencilIcon from "../images/menu/Pencil";
@@ -19,8 +21,8 @@ import { Routes } from "../constants/routes";
 import { getUser } from "../helpers/authentication";
 import HomeIcon from "../images/menu/Home";
 import TeamIcon from "../images/menu/Team";
-import loginStore from "../stores/LoginStore";
 import TeamsIcon from "../images/menu/TeamsIcon";
+import {getAndSetAuthHeaderAction} from "../actions/loginPageActions";
 
 interface IMenuItem {
   label: string;
@@ -92,11 +94,17 @@ const managerMenuItems: IMenuItem[] = [
 
 interface ILayout extends RouteComponentProps {
   children?: React.ReactNode;
+  getAndSetAuthHeader: () => void;
 }
 
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getAndSetAuthHeader: bindActionCreators(getAndSetAuthHeaderAction, dispatch)
+})
+
 const Layout = (props: ILayout): React.ReactElement => {
+  const { children, getAndSetAuthHeader } = props;
   useEffect(() => {
-    loginStore.getAndSetAuthHeader();
+    getAndSetAuthHeader();
   }, []);
 
   const onLogoClick = () => {
@@ -106,7 +114,7 @@ const Layout = (props: ILayout): React.ReactElement => {
   const menuItems = getUser()?.is_manager
     ? managerMenuItems
     : employeeMenuItems;
-  const { children } = props;
+
 
   return (
     <PageWrapper>
@@ -138,4 +146,4 @@ const Layout = (props: ILayout): React.ReactElement => {
   );
 };
 
-export default withRouter(Layout);
+export default withRouter(connect(null, mapDispatchToProps)(Layout));

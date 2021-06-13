@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
-import { observer } from "mobx-react";
 import { Select } from "antd";
-import { RouteComponentProps } from "react-router";
+import {bindActionCreators, Dispatch} from "redux";
+import {connect} from "react-redux";
 import { SelectValue } from "antd/lib/select";
 import {
   SorterResult,
   TablePaginationConfig,
   ColumnsType,
 } from "antd/lib/table/interface";
-import store from "../../stores/ManagerHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
 import Header from "../../components/Header";
@@ -30,6 +29,9 @@ import {
 import { GridDataUser } from "../../interfaces/user";
 import { HomepageManagerUrlParams } from "../../interfaces/urlParams";
 import { SelectOption } from "../../interfaces/common";
+import {RootState} from "../../reducers";
+import {getSelectOptionsAction, getGridDataAction} from "../../actions/homepageManagerActions";
+import {HomepageManagerPageProps} from "../../interfaces/HomepageManager";
 
 const { Option } = Select;
 
@@ -91,16 +93,37 @@ const columns = [
   },
 ];
 
-const HomepageManager = ({
-  history,
-  location,
-}: RouteComponentProps): React.ReactElement => {
+const mapStateToProps = (state :RootState) => ({
+  selectOptionsJobTitle: state.homepageManager.selectOptionsJobTitle,
+  selectOptionsFocus: state.homepageManager.selectOptionsFocus,
+  gridData: state.homepageManager.gridData,
+  pagination: state.homepageManager.pagination,
+  loadingGridData: state.homepageManager.loadingGridData
+});
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getSelectOptions: bindActionCreators(getSelectOptionsAction, dispatch),
+  getGridData: bindActionCreators(getGridDataAction, dispatch)
+})
+
+const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement => {
+  const {
+    location,
+    history,
+    getSelectOptions,
+    getGridData,
+    pagination,
+    gridData,
+    loadingGridData,
+    selectOptionsJobTitle,
+    selectOptionsFocus
+  } = props;
   useEffect((): void => {
-    store.getSelectOptions();
+    getSelectOptions();
   }, []);
 
   useEffect((): void => {
-    store.getGridData(getUrlParams());
+    getGridData(getUrlParams());
   }, [location]);
 
   const onSelectChange = (selectName: string, value: SelectValue): void => {
@@ -130,7 +153,7 @@ const HomepageManager = ({
   };
 
   const tableChangeHandler = (
-    pagination: TablePaginationConfig,
+    currentPagination: TablePaginationConfig,
     filters: Record<string, (string | number | boolean)[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
   ): void => {
@@ -139,7 +162,7 @@ const HomepageManager = ({
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
       delete urlParams.sort_direction;
-      urlParams.page = pagination.current;
+      urlParams.page = currentPagination.current;
       history.push(`${createSearchString(urlParams)}`);
     } else if (!Array.isArray(sorter)) {
       history.push(
@@ -147,7 +170,7 @@ const HomepageManager = ({
           ...urlParams,
           sort_column: sorter.field,
           sort_direction: sorter.order,
-          page: pagination.current,
+          page: currentPagination.current,
         })}`
       );
     }
@@ -168,7 +191,7 @@ const HomepageManager = ({
             onChange={(value) => onSelectChange("job_title", value)}
             value={urlParams.job_title || undefined}
           >
-            {store?.selectOptionsJobTitle?.map(
+            {selectOptionsJobTitle?.map(
               (item: SelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
@@ -185,7 +208,7 @@ const HomepageManager = ({
             onChange={(value) => onSelectChange("focus", value)}
             value={urlParams.focus || undefined}
           >
-            {store?.selectOptionsFocus?.map(
+            {selectOptionsFocus?.map(
               (item: SelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
@@ -208,9 +231,9 @@ const HomepageManager = ({
         <GridWrapper>
           <StyledTable
             columns={columns as ColumnsType<object>}
-            dataSource={store.gridData}
-            loading={store.loadingGridData}
-            pagination={store.pagination}
+            dataSource={gridData}
+            loading={loadingGridData}
+            pagination={pagination}
             onChange={tableChangeHandler}
           />
         </GridWrapper>
@@ -219,4 +242,4 @@ const HomepageManager = ({
   );
 };
 
-export default observer(HomepageManager);
+export default connect(mapStateToProps, mapDispatchToProps)(HomepageManager);

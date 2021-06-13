@@ -18,6 +18,8 @@ describe("Login", () => {
   });
 
   it("after typing correct credentials and clicking Submit, should redirect to the Homepage and set data to the localStorage", () => {
+    cy.get('[type="text"]').clear();
+    cy.get('[type="password"]').clear();
     cy.get('[data-test-id="login-email"]').type("admin@example.com");
     cy.get('[data-test-id="login-password"]').type(Cypress.env('admin_password'));
     cy.contains("Submit").click();
