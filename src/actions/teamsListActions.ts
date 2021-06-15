@@ -10,35 +10,35 @@ export enum teamsPageActionTypes {
     GET_TEAMS = 'TEAMS_PAGE/GET_TEAMS'
 }
 
-interface SetLoadingAction {
+interface ISetLoadingAction {
     type: typeof teamsPageActionTypes.SET_LOADING,
     payload: boolean
 }
 
-export function setLoading(isLoading: boolean): SetLoadingAction {
+export function setLoading(isLoading: boolean): ISetLoadingAction {
     return {
         type: teamsPageActionTypes.SET_LOADING,
         payload: isLoading
     }
 }
 
-interface SetTeamsAction {
+interface ISetTeamsAction {
     type: typeof teamsPageActionTypes.SET_TEAMS,
     payload: ITeam[]
 }
 
-export function setTeams(teams: ITeam[]): SetTeamsAction {
+export function setTeams(teams: ITeam[]): ISetTeamsAction {
     return {
         type: teamsPageActionTypes.SET_TEAMS,
         payload: teams
     }
 }
 
-interface GetTeamsAction {
+interface IGetTeamsAction {
     type: typeof teamsPageActionTypes.GET_TEAMS
 }
 
-export function getTeams(): IActionPromise<Promise<SetTeamsAction | void>> {
+export function getTeams(): IActionPromise<Promise<ISetTeamsAction | void>> {
     return function (dispatch) {
         dispatch(setLoading(true));
         return Manager.getTeams()
@@ -50,4 +50,4 @@ export function getTeams(): IActionPromise<Promise<SetTeamsAction | void>> {
     }
 }
 
-export type TeamsPageActions = SetLoadingAction | SetTeamsAction | GetTeamsAction;
+export type TeamsPageActions = ISetLoadingAction | ISetTeamsAction | IGetTeamsAction;

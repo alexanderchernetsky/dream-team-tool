@@ -25,4 +25,11 @@ export interface ILoginDispatchProps {
   login: (params: IParams) => void
 }
 
+export interface ILoginPageResponse {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+  user: IUser
+}
+
 export type LoginPageProps = ILoginStatePageProps & ILoginDispatchProps & RouteComponentProps;

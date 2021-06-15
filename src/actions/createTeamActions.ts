@@ -18,84 +18,84 @@ export enum createTeamActionsTypes {
     SET_ANALYSIS_DATA = 'CREATE_TEAM/SET_ANALYSIS_DATA',
 }
 
-interface SetLoadingAnalysisData {
+interface ISetLoadingAnalysisData {
     type: typeof createTeamActionsTypes.SET_LOADING_ANALYSIS_DATA,
     payload: boolean
 }
 
-export const setLoadingAnalysisDataAction = (loading: boolean): SetLoadingAnalysisData => {
+export const setLoadingAnalysisDataAction = (loading: boolean): ISetLoadingAnalysisData => {
     return {
         type: createTeamActionsTypes.SET_LOADING_ANALYSIS_DATA,
         payload: loading
     }
 }
 
-interface SetLoadingGridData {
+interface ISetLoadingGridData {
     type: typeof createTeamActionsTypes.SET_LOADING_GRID_DATA,
     payload: boolean
 }
 
-export const setLoadingGridDataAction = (loading: boolean): SetLoadingGridData => {
+export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridData => {
     return {
         type: createTeamActionsTypes.SET_LOADING_GRID_DATA,
         payload: loading
     }
 }
 
-interface SavingTeamInProgress {
+interface ISavingTeamInProgress {
     type: typeof createTeamActionsTypes.SET_SAVING_TEAM_IN_PROGRESS,
     payload: boolean
 }
 
-export const setSavingTeamInProgressAction = (loading: boolean): SavingTeamInProgress => {
+export const setSavingTeamInProgressAction = (loading: boolean): ISavingTeamInProgress => {
     return {
         type: createTeamActionsTypes.SET_SAVING_TEAM_IN_PROGRESS,
         payload: loading
     }
 }
 
-interface SetPagination {
+interface ISetPagination {
     type: typeof createTeamActionsTypes.SET_PAGINATION,
     payload: TablePaginationConfig
 }
 
-export const setPaginationAction = (pagination: TablePaginationConfig): SetPagination => {
+export const setPaginationAction = (pagination: TablePaginationConfig): ISetPagination => {
     return {
         type: createTeamActionsTypes.SET_PAGINATION,
         payload: pagination
     }
 }
 
-interface SetGridData {
+interface ISetGridData {
     type: typeof createTeamActionsTypes.SET_GRID_DATA,
     payload: GridDataUser[]
 }
 
-export const setGridDataAction = (gridData: GridDataUser[]): SetGridData => {
+export const setGridDataAction = (gridData: GridDataUser[]): ISetGridData => {
     return {
         type: createTeamActionsTypes.SET_GRID_DATA,
         payload: gridData
     }
 }
 
-interface SetSelectedUsersGridData {
+interface ISetSelectedUsersGridData {
     type: typeof createTeamActionsTypes.SET_SELECTED_USERS_GRID_DATA,
     payload: GridDataUser[]
 }
 
-export const setSelectedUsersGridDataAction = (gridData: GridDataUser[]): SetSelectedUsersGridData => {
+export const setSelectedUsersGridDataAction = (gridData: GridDataUser[]): ISetSelectedUsersGridData => {
     return {
         type: createTeamActionsTypes.SET_SELECTED_USERS_GRID_DATA,
         payload: gridData
     }
 }
 
-interface SetAnalysisUsersGridData {
+interface ISetAnalysisUsersGridData {
     type: typeof createTeamActionsTypes.SET_ANALYSIS_DATA,
     payload: TeamAnalisysUser[]
 }
 
-export const setAnalysisDataAction = (gridData: TeamAnalisysUser[]): SetAnalysisUsersGridData => {
+export const setAnalysisDataAction = (gridData: TeamAnalisysUser[]): ISetAnalysisUsersGridData => {
     return {
         type: createTeamActionsTypes.SET_ANALYSIS_DATA,
         payload: gridData
@@ -175,4 +175,4 @@ export const saveTeamAction = (name :string) => (dispatch :Dispatch, getState :(
         });
 }
 
-export type CreateTeamPageActions = SetLoadingAnalysisData | SetLoadingGridData | SavingTeamInProgress | SetPagination | SetGridData | SetSelectedUsersGridData | SetAnalysisUsersGridData;
+export type CreateTeamPageActions = ISetLoadingAnalysisData | ISetLoadingGridData | ISavingTeamInProgress | ISetPagination | ISetGridData | ISetSelectedUsersGridData | ISetAnalysisUsersGridData;

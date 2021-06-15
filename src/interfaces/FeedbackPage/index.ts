@@ -1,6 +1,6 @@
 import {RouteComponentProps} from "react-router";
 import { SelectOption } from "../common";
-import { IUser } from "../user";
+import { IUser, UserId } from "../user";
 import {FeedbackPageUrlParams} from "../urlParams";
 
 export interface IFeedbackPageStore {
@@ -20,9 +20,9 @@ export interface IFeedbackStatePageProps {
 }
 
 export interface IFeedbackDispatchPageProps {
-  getSpecificEmployeeData: (id: number | string) => void,
+  getSpecificEmployeeData: (id: UserId) => void,
   removeSpecificEmployeeData: () => void,
-  submitFeedbackForm: (formData: unknown, targetUserId: number | string) => void,
+  submitFeedbackForm: (formData: unknown, targetUserId: UserId) => void,
   getEmployeesList: (params: FeedbackPageUrlParams) => void
 }
 

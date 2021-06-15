@@ -5,6 +5,7 @@ import {getToken, getUser, removeUserSession, setUserSession} from "../helpers/a
 import showErrorMessage from "../helpers/showErrorMessage";
 import {IUser} from "../interfaces/user";
 import {IActionPromise} from "../interfaces/common";
+import parseLoginResponse from "../parsers/loginPage";
 
 
 export enum loginPageActionTypes {
@@ -12,38 +13,40 @@ export enum loginPageActionTypes {
     SET_USER = 'LOGIN_PAGE/SET_USER',
 }
 
-interface SetLoginInProgressAction {
+interface ISetLoginInProgressAction {
     type: typeof loginPageActionTypes.SET_LOGIN_IN_PROGRESS,
     payload: boolean
 }
 
-export function setLoginInProgress(loading: boolean): SetLoginInProgressAction {
+export function setLoginInProgress(loading: boolean): ISetLoginInProgressAction {
     return {
         type: loginPageActionTypes.SET_LOGIN_IN_PROGRESS,
         payload: loading
     }
 }
 
-export interface SetUser {
+export interface ISetUser {
     type: typeof loginPageActionTypes.SET_USER,
     payload: IUser | null
 }
 
-export const setUser = (user: IUser | null) :SetUser => {
+export const setUser = (user: IUser | null) :ISetUser => {
     return {
         type: loginPageActionTypes.SET_USER,
         payload: user
     }
 }
 
-export const loginAction = (params: IParams): IActionPromise<Promise<SetUser | void>> => async (dispatch: Dispatch) => {
+export const loginAction = (params: IParams): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoginInProgress(true));
 
     return Manager.login(params)
         .then((result) => {
-            setUserSession(result?.data?.access_token, result?.data?.user);
+            const parsedInfo = parseLoginResponse(result);
+            setUserSession(parsedInfo.access_token, parsedInfo.user);
             Manager.setAuthHeader(`Bearer ${getToken()}`);
-            dispatch(setUser(result?.data?.user));
+
+            dispatch(setUser(parsedInfo.user));
         })
         .catch((error) => showErrorMessage(error))
         .finally(() => {
@@ -51,12 +54,12 @@ export const loginAction = (params: IParams): IActionPromise<Promise<SetUser | v
         });
 }
 
-export const logOutAction = (): IActionPromise<Promise<SetUser | void>> => async (dispatch: Dispatch) => {
+export const logOutAction = (): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
     removeUserSession();
     dispatch(setUser(null));
 }
 
-export const getAndSetCurrentUserAction = (): IActionPromise<Promise<SetUser | void>> => async (dispatch: Dispatch) => {
+export const getAndSetCurrentUserAction = (): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
     const user = getUser();
     if (user) {
         dispatch(setUser(user));
@@ -70,4 +73,4 @@ export const getAndSetAuthHeaderAction = () :IActionPromise<Promise<void>> => as
     }
 }
 
-export type LoginPageActions = SetLoginInProgressAction | SetUser;
+export type LoginPageActions = ISetLoginInProgressAction | ISetUser;

@@ -1,4 +1,4 @@
-interface ISocialLink {
+export interface ISocialLink {
   link: string;
   name: string;
   profile_name: string;
@@ -48,7 +48,7 @@ export interface IUser {
   focus?: string;
 }
 
-interface IAttributes {
+export interface IAttributes {
   communication_explainsIdeasInSpokenLanguage: string;
   communication_explainsWrittenIdeas: string;
   communication_listensAndClarifiesInformation: string;
@@ -122,3 +122,5 @@ export interface GridDataUser {
   rating?: number | string;
   user?: string;
 }
+
+export type UserId = string | number;

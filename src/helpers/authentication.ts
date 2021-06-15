@@ -22,8 +22,6 @@ export const removeUserSession = (): void => {
 
 // set the token and user to the local storage
 export const setUserSession = (token: string, user: IUser): void => {
-  console.log(token);
-  console.log(user)
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
 };

@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {SelectOption} from "../interfaces/common";
-import {IUser} from "../interfaces/user";
+import {IUser, UserId} from "../interfaces/user";
 import {FeedbackPageUrlParams} from "../interfaces/urlParams";
 import Manager from "../services/Manager";
 import mapResultsToSelectOptions from "../helpers/mapResultsToSelectOptions";
@@ -15,60 +15,60 @@ export enum feedbackActionsTypes {
     SET_EMPLOYEE_DATA = 'FEEDBACK/SET_EMPLOYEE_DATA',
 }
 
-interface SetLoadingEmployeesList {
+interface ISetLoadingEmployeesList {
     type: typeof feedbackActionsTypes.SET_LOADING_EMPLOYEES_LIST,
     payload: boolean
 }
 
-export const setLoadingEmployeesListAction = (loading: boolean): SetLoadingEmployeesList => {
+export const setLoadingEmployeesListAction = (loading: boolean): ISetLoadingEmployeesList => {
     return {
         type: feedbackActionsTypes.SET_LOADING_EMPLOYEES_LIST,
         payload: loading
     }
 }
 
-interface SetLoadingSpecificEmployeeData {
+interface ISetLoadingSpecificEmployeeData {
     type: typeof feedbackActionsTypes.SET_LOADING_SPECIFIC_EMPLOYEE_DATA,
     payload: boolean
 }
 
-export const setLoadingSpecificEmployeeDataAction = (loading: boolean): SetLoadingSpecificEmployeeData => {
+export const setLoadingSpecificEmployeeDataAction = (loading: boolean): ISetLoadingSpecificEmployeeData => {
     return {
         type: feedbackActionsTypes.SET_LOADING_SPECIFIC_EMPLOYEE_DATA,
         payload: loading
     }
 }
 
-interface SetSubmittingFeedbackForm {
+interface ISetSubmittingFeedbackForm {
     type: typeof feedbackActionsTypes.SET_SUBMITTING_FEEDBACK_FORM,
     payload: boolean
 }
 
-export const setSubmittingFeedbackFormAction = (loading: boolean): SetSubmittingFeedbackForm => {
+export const setSubmittingFeedbackFormAction = (loading: boolean): ISetSubmittingFeedbackForm => {
     return {
         type: feedbackActionsTypes.SET_SUBMITTING_FEEDBACK_FORM,
         payload: loading
     }
 }
 
-interface SetEmployeesList {
+interface ISetEmployeesList {
     type: typeof feedbackActionsTypes.SET_EMPLOYEES_LIST,
     payload: SelectOption[]
 }
 
-export const setEmployeesListAction = (list: SelectOption[]): SetEmployeesList => {
+export const setEmployeesListAction = (list: SelectOption[]): ISetEmployeesList => {
     return {
         type: feedbackActionsTypes.SET_EMPLOYEES_LIST,
         payload: list
     }
 }
 
-interface SetSpecificEmployeeData {
+interface ISetSpecificEmployeeData {
     type: typeof feedbackActionsTypes.SET_EMPLOYEE_DATA,
     payload: IUser
 }
 
-export const setSpecificEmployeeDataAction = (user: IUser): SetSpecificEmployeeData => {
+export const setSpecificEmployeeDataAction = (user: IUser): ISetSpecificEmployeeData => {
     return {
         type: feedbackActionsTypes.SET_EMPLOYEE_DATA,
         payload: user
@@ -87,7 +87,7 @@ export const getEmployeesListAction = (params: FeedbackPageUrlParams) => async (
         });
 }
 
-export const getSpecificEmployeeDataAction = (id: number | string) => async( dispatch :Dispatch) => {
+export const getSpecificEmployeeDataAction = (id: UserId) => async (dispatch :Dispatch) => {
     dispatch(setLoadingSpecificEmployeeDataAction(true));
 
     return Manager.getSpecificEmployeeData(id)
@@ -104,7 +104,7 @@ export const removeSpecificEmployeeDataAction = () => (dispatch :Dispatch) => {
     dispatch(setSpecificEmployeeDataAction({} as IUser));
 }
 
-export const submitFeedbackFormAction = (formData: unknown, targetUserId: number | string) => async (dispatch :Dispatch) => {
+export const submitFeedbackFormAction = (formData: unknown, targetUserId: UserId) => async (dispatch :Dispatch) => {
     dispatch(setSubmittingFeedbackFormAction(true));
     return Manager.sendFeedbackForm(formData, targetUserId)
         .then(() => {
@@ -116,4 +116,4 @@ export const submitFeedbackFormAction = (formData: unknown, targetUserId: number
         });
 }
 
-export type FeedbackPageActions = SetLoadingEmployeesList | SetLoadingSpecificEmployeeData | SetSubmittingFeedbackForm | SetEmployeesList | SetSpecificEmployeeData;
+export type FeedbackPageActions = ISetLoadingEmployeesList | ISetLoadingSpecificEmployeeData | ISetSubmittingFeedbackForm | ISetEmployeesList | ISetSpecificEmployeeData;

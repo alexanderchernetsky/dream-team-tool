@@ -17,79 +17,79 @@ export enum homepageManagerActionTypes {
     SET_GRID_DATA = 'HOMEPAGE_MANAGER/SET_GRID_DATA'
 }
 
-interface SetLoadingSelectOptions {
+interface ISetLoadingSelectOptions {
     type: typeof homepageManagerActionTypes.SET_LOADING_SElECT_OPTIONS,
     payload: boolean
 }
 
-export const setLoadingSelectOptionsAction = (loading: boolean): SetLoadingSelectOptions => {
+export const setLoadingSelectOptionsAction = (loading: boolean): ISetLoadingSelectOptions => {
     return {
         type: homepageManagerActionTypes.SET_LOADING_SElECT_OPTIONS,
         payload: loading
     }
 }
 
-interface SetLoadingGridData {
+interface ISetLoadingGridData {
     type: typeof homepageManagerActionTypes.SET_LOADING_GRID_DATA,
     payload: boolean
 }
 
-export const setLoadingGridDataAction = (loading: boolean): SetLoadingGridData => {
+export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridData => {
     return {
         type: homepageManagerActionTypes.SET_LOADING_GRID_DATA,
         payload: loading
     }
 }
 
-interface SetSelectOptionsJobTitle {
+interface ISetSelectOptionsJobTitle {
     type: typeof homepageManagerActionTypes.SET_SELECT_OPTIONS_JOB_TITLE,
     payload: SelectOption[]
 }
 
-export const setSelectOptionsJobTitleAction = (gridData: SelectOption[]): SetSelectOptionsJobTitle => {
+export const setSelectOptionsJobTitleAction = (gridData: SelectOption[]): ISetSelectOptionsJobTitle => {
     return {
         type: homepageManagerActionTypes.SET_SELECT_OPTIONS_JOB_TITLE,
         payload: gridData
     }
 }
 
-interface SetPagination {
+interface ISetPagination {
     type: typeof homepageManagerActionTypes.SET_PAGINATION,
     payload: TablePaginationConfig
 }
 
-export const setPaginationAction = (pagination: TablePaginationConfig): SetPagination => {
+export const setPaginationAction = (pagination: TablePaginationConfig): ISetPagination => {
     return {
         type: homepageManagerActionTypes.SET_PAGINATION,
         payload: pagination
     }
 }
 
-interface SetSelectOptionsFocus {
+interface ISetSelectOptionsFocus {
     type: typeof homepageManagerActionTypes.SET_SELECT_OPTIONS_FOCUS,
     payload: SelectOption[]
 }
 
-export const setSelectOptionsFocusAction = (options: SelectOption[]): SetSelectOptionsFocus => {
+export const setSelectOptionsFocusAction = (options: SelectOption[]): ISetSelectOptionsFocus => {
     return {
         type: homepageManagerActionTypes.SET_SELECT_OPTIONS_FOCUS,
         payload: options
     }
 }
 
-interface SetGridData {
+interface ISetGridData {
     type: typeof homepageManagerActionTypes.SET_GRID_DATA,
     payload: GridDataUser[]
 }
 
-export const setGridDataAction = (gridData: GridDataUser[]): SetGridData => {
+export const setGridDataAction = (gridData: GridDataUser[]): ISetGridData => {
     return {
         type: homepageManagerActionTypes.SET_GRID_DATA,
         payload: gridData
     }
 }
 
-export const getGridDataAction = (params: HomepageManagerUrlParams): IActionPromise<Promise<SetGridData | void>> => async (dispatch: Dispatch) => {
+export const getGridDataAction = (params: HomepageManagerUrlParams): IActionPromise<Promise<ISetGridData | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingGridDataAction(true));
 
     return Manager.getGridData(params)
@@ -107,7 +107,7 @@ export const getGridDataAction = (params: HomepageManagerUrlParams): IActionProm
         });
 }
 
-export const getSelectOptionsAction = (): IActionPromise<Promise<SetSelectOptionsJobTitle | void>> => async (dispatch: Dispatch) => {
+export const getSelectOptionsAction = (): IActionPromise<Promise<ISetSelectOptionsJobTitle | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingSelectOptionsAction(true));
     return Manager.getSelectOptions()
         .then((result) => {
@@ -128,4 +128,4 @@ export const getSelectOptionsAction = (): IActionPromise<Promise<SetSelectOption
         });
 }
 
-export type HomepageManagerPageActions = SetLoadingSelectOptions | SetLoadingGridData | SetSelectOptionsJobTitle | SetPagination | SetSelectOptionsFocus | SetGridData;
+export type HomepageManagerPageActions = ISetLoadingSelectOptions | ISetLoadingGridData | ISetSelectOptionsJobTitle | ISetPagination | ISetSelectOptionsFocus | ISetGridData;
