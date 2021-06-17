@@ -7,9 +7,9 @@ import {
     parseAsString,
     parseUser
 } from "./common";
-import {TeamAnalisysUser} from "../interfaces/user";
+import {ITeamAnalysisUser} from "../interfaces/user";
 
-const parseAnalysisData = (response :unknown): TeamAnalisysUser[] => {
+const parseAnalysisData = (response :unknown): ITeamAnalysisUser[] => {
 
     const data = safelyParseOr(response, 'data', parseAsArray, [] as unknown[]);
     return data.map(item => {

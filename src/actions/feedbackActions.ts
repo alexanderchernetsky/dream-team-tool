@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
-import {SelectOption} from "../interfaces/common";
+import {ISelectOption} from "../interfaces/common";
 import {IUser, UserId} from "../interfaces/user";
-import {FeedbackPageUrlParams} from "../interfaces/urlParams";
+import {IFeedbackPageUrlParams} from "../interfaces/urlParams";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import showSuccessMessage from "../helpers/showSuccessMessage";
@@ -53,10 +53,10 @@ export const setSubmittingFeedbackFormAction = (loading: boolean): ISetSubmittin
 
 interface ISetEmployeesList {
     type: typeof feedbackActionsTypes.SET_EMPLOYEES_LIST,
-    payload: SelectOption[]
+    payload: ISelectOption[]
 }
 
-export const setEmployeesListAction = (list: SelectOption[]): ISetEmployeesList => {
+export const setEmployeesListAction = (list: ISelectOption[]): ISetEmployeesList => {
     return {
         type: feedbackActionsTypes.SET_EMPLOYEES_LIST,
         payload: list
@@ -75,12 +75,11 @@ export const setSpecificEmployeeDataAction = (user: IUser): ISetSpecificEmployee
     }
 }
 
-export const getEmployeesListAction = (params: FeedbackPageUrlParams) => async (dispatch :Dispatch) => {
+export const getEmployeesListAction = (params: IFeedbackPageUrlParams) => async (dispatch :Dispatch) => {
     dispatch(setLoadingEmployeesListAction(true));
     return Manager.getEmployeesList(params)
         .then((result :unknown) => {
             const parsedData = parseSelectOptions(result);
-            console.log(parsedData);
 
             dispatch(setEmployeesListAction(parsedData));
         })

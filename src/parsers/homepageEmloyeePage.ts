@@ -7,14 +7,13 @@ import {
     parseUser,
     parseAttributes
 } from "./common";
-import {IFeedItems} from "../interfaces/HomepageEmployee";
+import {IHomepageEmployeeUser} from "../interfaces/user";
 
-const parseHomepageEmployeeResponse = (response :unknown) :IFeedItems => {
+const parseHomepageEmployeeResponse = (response :unknown) :IHomepageEmployeeUser[] => {
     const responseData = safelyParseOr(response, 'data', parseAsObject, {} as unknown);
     const arrayToParse = safelyParseOr(responseData, 'data', parseAsArray, [] as unknown[]);
 
-    return {
-        data: arrayToParse.map(item => {
+    return arrayToParse.map(item => {
                 const author = safelyParseOr(item, 'author', parseAsObject, {} as unknown);
                 const user = safelyParseOr(item, 'user', parseAsObject, {} as unknown);
                 const attributes = safelyParseOr(item, 'attributes', parseAsObject, {} as unknown);
@@ -31,7 +30,6 @@ const parseHomepageEmployeeResponse = (response :unknown) :IFeedItems => {
                 }
             }
         )
-    }
 }
 
 export default parseHomepageEmployeeResponse;

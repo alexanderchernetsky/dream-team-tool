@@ -1,5 +1,5 @@
 import {ICreateTeamStore} from "../interfaces/CreateTeamPage";
-import {CreateTeamPageActions, createTeamActionsTypes} from "../actions/createTeamActions";
+import {createTeamActionsTypes, CreateTeamPageActions} from "../actions/createTeamActions";
 
 const initialState: ICreateTeamStore = {
     loadingGridData: false,
@@ -8,7 +8,8 @@ const initialState: ICreateTeamStore = {
     pagination: {},
     gridData: [],
     selectedUsersGridData: [],
-    analysisData: []
+    analysisData: [],
+    teamNameValue: ""
 }
 
 export default function createTeamReducer (state = initialState, action: CreateTeamPageActions) {
@@ -48,6 +49,12 @@ export default function createTeamReducer (state = initialState, action: CreateT
                 ...state,
                 analysisData: action.payload
             }
+        case createTeamActionsTypes.SET_TEAM_NAME: {
+            return {
+                ...state,
+                teamNameValue: action.payload
+            }
+        }
         default:
             return state;
     }

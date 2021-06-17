@@ -1,9 +1,10 @@
-import { LoginPageActions, loginPageActionTypes } from "../actions/loginPageActions";
-import { ILogin } from "../interfaces/LoginPage";
+import {LoginPageActions, loginPageActionTypes} from "../actions/loginPageActions";
+import {ILogin} from "../interfaces/LoginPage";
 
 const initialState: ILogin = {
     loginInProgress: false,
-    user: null
+    user: null,
+    rememberChecked: false
 }
 
 export default function loginPageReducer(state = initialState, action: LoginPageActions): ILogin {
@@ -17,6 +18,11 @@ export default function loginPageReducer(state = initialState, action: LoginPage
             return {
                 ...state,
                 user: action.payload
+            }
+        case loginPageActionTypes.SET_REMEMBER_CHECKED:
+            return {
+                ...state,
+                rememberChecked: action.payload
             }
         default:
             return state;

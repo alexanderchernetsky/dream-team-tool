@@ -26,8 +26,8 @@ import {
   StyledTextArea,
 } from "../../styled-components/FeedbackPage";
 import { Routes } from "../../constants/routes";
-import { FeedbackPageUrlParams } from "../../interfaces/urlParams";
-import { SelectOption } from "../../interfaces/common";
+import { IFeedbackPageUrlParams } from "../../interfaces/urlParams";
+import { ISelectOption } from "../../interfaces/common";
 import {RootState} from "../../reducers";
 import {
   getSpecificEmployeeDataAction,
@@ -88,7 +88,7 @@ const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
     getEmployeesList
   } = props;
   useEffect(() => {
-    const urlParams: FeedbackPageUrlParams = getUrlParams();
+    const urlParams: IFeedbackPageUrlParams = getUrlParams();
     const targetUserId = urlParams.user;
     if (targetUserId) {
       getSpecificEmployeeData(targetUserId);
@@ -99,12 +99,12 @@ const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
   }, [location]);
 
   useEffect((): void => {
-    const urlParams: FeedbackPageUrlParams = getUrlParams();
+    const urlParams: IFeedbackPageUrlParams = getUrlParams();
     getEmployeesList(urlParams);
   }, []);
 
   const onSelectChange = (value: SelectValue): void => {
-    const urlParams: FeedbackPageUrlParams = getUrlParams();
+    const urlParams: IFeedbackPageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.user;
       removeSpecificEmployeeData();
@@ -125,7 +125,7 @@ const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
     console.log("Failed:", errorInfo);
   };
 
-  const urlParams: FeedbackPageUrlParams = getUrlParams();
+  const urlParams: IFeedbackPageUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -146,8 +146,8 @@ const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
               onChange={onSelectChange}
               value={urlParams.user || undefined}
             >
-              {employeesList?.map(
-                (item: SelectOption, index: number) => {
+              {employeesList.map(
+                (item: ISelectOption, index: number) => {
                   return (
                     <Option value={item.value} key={index}>
                       {item.label}
@@ -172,7 +172,7 @@ const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
                 <TargetUserInfo
                   photoSrc={employeeData.image_src}
                   fullName={employeeData.full_name}
-                  jobTitle={employeeData.profile?.job_title}
+                  jobTitle={employeeData.profile.job_title}
                 />
                 {/* Feedback form */}
                 <StyledFeedbackForm

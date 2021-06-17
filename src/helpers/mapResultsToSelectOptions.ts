@@ -1,8 +1,8 @@
-import { SelectOption } from "../interfaces/common";
+import { ISelectOption } from "../interfaces/common";
 
 export default function mapResultsToSelectOptions(
   results: string[]
-): SelectOption[] {
+): ISelectOption[] {
   const resultsEntries: string[][] = Object.entries(results);
   return resultsEntries.map((item: string[]) => {
     return {

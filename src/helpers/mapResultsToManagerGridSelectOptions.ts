@@ -1,9 +1,9 @@
 import capitalize from "./capitalize";
-import { SelectOption } from "../interfaces/common";
+import { ISelectOption } from "../interfaces/common";
 
 export default function mapResultsToManagerGridSelectOptions(
   results: string[]
-): SelectOption[] {
+): ISelectOption[] {
   const resultsEntries: string[][] = Object.entries(results);
   return resultsEntries.map((item: string[]) => {
     return {

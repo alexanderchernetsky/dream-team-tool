@@ -1,6 +1,6 @@
-import { IUser, GridDataUser } from "../interfaces/user";
+import { IUser, IGridDataUser } from "../interfaces/user";
 
-function mapToGridData(results: IUser[]): GridDataUser[] {
+function mapToGridData(results: IUser[]): IGridDataUser[] {
   return results.map((item: IUser) => {
     return {
       key: item.id,

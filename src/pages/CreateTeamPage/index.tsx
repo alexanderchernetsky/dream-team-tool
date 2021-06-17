@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
 import {
@@ -35,15 +35,16 @@ import {
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { Routes } from "../../constants/routes";
-import { TeamAnalisysUser, GridDataUser } from "../../interfaces/user";
-import { CreateTeamPageUrlParams } from "../../interfaces/urlParams";
+import { ITeamAnalysisUser, IGridDataUser } from "../../interfaces/user";
+import { ICreateTeamPageUrlParams } from "../../interfaces/urlParams";
 import { ILegendItems, CreateTeamPageProps } from "../../interfaces/CreateTeamPage";
 import {RootState} from "../../reducers";
 import {
   addTeamMemberAction, getAnalysisDataAction,
   getGridDataAction,
   removeTeamMemberAction,
-  saveTeamAction
+  saveTeamAction,
+  setTeamNameValueAction
 } from "../../actions/createTeamActions";
 
 const legendItems: ILegendItems[] = [
@@ -68,7 +69,8 @@ const mapStateToProps = (state :RootState) => ({
   analysisData: state.createTeam.analysisData,
   savingTeamInProgress: state.createTeam.savingTeamInProgress,
   selectedUsersGridData: state.createTeam.selectedUsersGridData,
-  loadingAnalysisData: state.createTeam.loadingAnalysisData
+  loadingAnalysisData: state.createTeam.loadingAnalysisData,
+  teamNameValue: state.createTeam.teamNameValue
 })
 
 const mapDispatchToProps = (dispatch :Dispatch) => ({
@@ -77,6 +79,7 @@ const mapDispatchToProps = (dispatch :Dispatch) => ({
   addTeamMember: bindActionCreators(addTeamMemberAction, dispatch),
   removeTeamMember: bindActionCreators(removeTeamMemberAction, dispatch),
   getAnalysisData: bindActionCreators(getAnalysisDataAction, dispatch),
+  setTeamNameValue: bindActionCreators(setTeamNameValueAction, dispatch)
 })
 
 const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
@@ -94,9 +97,10 @@ const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
     saveTeam,
     addTeamMember,
     removeTeamMember,
-    getAnalysisData
+    getAnalysisData,
+    teamNameValue,
+    setTeamNameValue
   } = props;
-  const [teamNameValue, setTeamNameValue] = useState("");
 
   useEffect((): void => {
     getGridData(getUrlParams());
@@ -107,7 +111,7 @@ const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
     filters: Record<string, (string | number | boolean)[] | null> ,
     sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
-    const urlParams: CreateTeamPageUrlParams = getUrlParams();
+    const urlParams: ICreateTeamPageUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
@@ -126,13 +130,11 @@ const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
     }
   };
 
-  // add team member button handler
-  const addButtonClickHandler = (id: number): void => {
+  const addTeamMemberHandler = (id: number): void => {
     addTeamMember(id);
   };
 
-// remove team member button handler
-  const removeButtonClickHandler = (id: number) => {
+  const removeTeamMemberHandler = (id: number) => {
     removeTeamMember(id);
   };
 
@@ -176,15 +178,15 @@ const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
     {
       title: "Actions",
       key: "actions",
-      render: (data: GridDataUser): React.ReactElement => {
+      render: (data: IGridDataUser): React.ReactElement => {
         return (
             <ActionColWrapper>
               <StyledActionColButton
                   type="primary"
                   htmlType="button"
-                  onClick={() => addButtonClickHandler(data.id)}
+                  onClick={() => addTeamMemberHandler(data.id)}
                   disabled={[...selectedUsersGridData].some(
-                      (item: GridDataUser) => item.id === data.id
+                      (item: IGridDataUser) => item.id === data.id
                   )}
                   data-test-id="add-employee-to-new-team-btn"
               >
@@ -215,13 +217,13 @@ const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
     {
       title: "Actions",
       key: "actions",
-      render: (data: GridDataUser): React.ReactElement => {
+      render: (data: IGridDataUser): React.ReactElement => {
         return (
             <ActionColWrapper>
               <StyledActionColButton
                   type="primary"
                   htmlType="button"
-                  onClick={() => removeButtonClickHandler(data.id)}
+                  onClick={() => removeTeamMemberHandler(data.id)}
               >
                 Remove
               </StyledActionColButton>
@@ -304,18 +306,18 @@ const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
                 })}
               </Legend>
               {analysisData.map(
-                (item: TeamAnalisysUser, index: number) => {
+                (item: ITeamAnalysisUser, index: number) => {
                   return (
                     <UserAnalysisRow
                       key={index}
-                      id={item.user?.id}
-                      jobTitle={item.user?.profile?.job_title}
-                      photoSrc={item.user?.image_src}
-                      fullName={item.user?.full_name}
-                      rating={item.user?.profile?.rating}
-                      negative={item.statistic?.negative}
-                      neutral={item.statistic?.neutral}
-                      positive={item.statistic?.positive}
+                      id={item.user.id}
+                      jobTitle={item.user.profile.job_title}
+                      photoSrc={item.user.image_src}
+                      fullName={item.user.full_name}
+                      rating={item.user.profile.rating}
+                      negative={item.statistic.negative}
+                      neutral={item.statistic.neutral}
+                      positive={item.statistic.positive}
                     />
                   );
                 }

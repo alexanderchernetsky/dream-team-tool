@@ -1,8 +1,8 @@
 import {parseAsObject, parseAsString, parseUser, safelyParseOr} from "./common";
 import {IUser} from "../interfaces/user";
-import {SelectOption} from "../interfaces/common";
+import {ISelectOption} from "../interfaces/common";
 
-export const parseSelectOptions = (response: unknown) :SelectOption[] => {
+export const parseSelectOptions = (response: unknown) :ISelectOption[] => {
     const data = safelyParseOr(response, "data", parseAsObject, {});
     const resultsEntries: string[][] = Object.entries(data);
 

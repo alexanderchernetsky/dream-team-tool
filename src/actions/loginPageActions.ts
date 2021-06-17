@@ -11,6 +11,7 @@ import parseLoginResponse from "../parsers/loginPage";
 export enum loginPageActionTypes {
     SET_LOGIN_IN_PROGRESS = 'LOGIN_PAGE/SET_LOGIN_IN_PROGRESS',
     SET_USER = 'LOGIN_PAGE/SET_USER',
+    SET_REMEMBER_CHECKED = 'LOGIN_PAGE/SET_REMEMBER_CHECKED'
 }
 
 interface ISetLoginInProgressAction {
@@ -37,11 +38,23 @@ export const setUser = (user: IUser | null) :ISetUser => {
     }
 }
 
+export interface ISetRememberChecked {
+    type: typeof loginPageActionTypes.SET_REMEMBER_CHECKED,
+    payload: boolean
+}
+
+export const setRememberCheckedAction = (value: boolean): ISetRememberChecked => {
+    return {
+        type: loginPageActionTypes.SET_REMEMBER_CHECKED,
+        payload: value
+    }
+}
+
 export const loginAction = (params: IParams): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoginInProgress(true));
 
     return Manager.login(params)
-        .then((result) => {
+        .then((result :unknown) => {
             const parsedInfo = parseLoginResponse(result);
             setUserSession(parsedInfo.access_token, parsedInfo.user);
             Manager.setAuthHeader(`Bearer ${getToken()}`);
@@ -73,4 +86,4 @@ export const getAndSetAuthHeaderAction = () :IActionPromise<Promise<void>> => as
     }
 }
 
-export type LoginPageActions = ISetLoginInProgressAction | ISetUser;
+export type LoginPageActions = ISetLoginInProgressAction | ISetUser | ISetRememberChecked;

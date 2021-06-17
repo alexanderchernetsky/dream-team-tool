@@ -1,23 +1,19 @@
 import {RouteComponentProps} from "react-router";
-import {HomepageEmployeeUser} from "../user";
-import {EmployeeHomepageUrlParams} from "../urlParams";
-
-export interface IFeedItems {
-  data: HomepageEmployeeUser[];
-}
+import {IHomepageEmployeeUser} from "../user";
+import {IEmployeeHomepageUrlParams} from "../urlParams";
 
 export interface IHomepageEmployeeStore {
-  feedItems: IFeedItems;
+  feedItems: IHomepageEmployeeUser[];
   loading: boolean;
 }
 
 export interface IHomepageEmployeeStatePageProps {
   loading: boolean,
-  feedItems: IFeedItems
+  feedItems: IHomepageEmployeeUser[]
 }
 
 export interface IHomepageEmployeeDispatchProps {
-  getFeedItems: (params: EmployeeHomepageUrlParams) => void
+  getFeedItems: (params: IEmployeeHomepageUrlParams) => void
 }
 
 export type HomepageEmployeePageProps = IHomepageEmployeeStatePageProps & IHomepageEmployeeDispatchProps & RouteComponentProps;

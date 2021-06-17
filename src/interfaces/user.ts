@@ -96,7 +96,7 @@ export interface IReview {
   user_id: number;
 }
 
-export interface HomepageEmployeeUser {
+export interface IHomepageEmployeeUser {
   attributes: IAttributes;
   author: IUser;
   author_id: number;
@@ -108,14 +108,14 @@ export interface HomepageEmployeeUser {
   user: IUser;
 }
 
-export interface TeamAnalisysUser {
+export interface ITeamAnalysisUser {
   statistic: IStatistic;
   user: {
     reviews: IReview[]
   } & IUser;
 }
 
-export interface GridDataUser {
+export interface IGridDataUser {
   focus?: string;
   full_name: string;
   id: number;

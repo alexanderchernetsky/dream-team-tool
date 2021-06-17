@@ -19,16 +19,16 @@ import {
 } from "../../styled-components/HomepageEmployee";
 import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
-import { HomepageEmployeeUser } from "../../interfaces/user";
-import { EmployeeHomepageUrlParams } from "../../interfaces/urlParams";
-import { SelectOption } from "../../interfaces/common";
+import { IHomepageEmployeeUser } from "../../interfaces/user";
+import { IEmployeeHomepageUrlParams } from "../../interfaces/urlParams";
+import { ISelectOption } from "../../interfaces/common";
 import {getFeedItemsAction} from "../../actions/homepageEmployeeActions";
 import {RootState} from "../../reducers";
 import {HomepageEmployeePageProps} from "../../interfaces/HomepageEmployee";
 
 const { Option } = Select;
 
-const selectOptions: SelectOption[] = [
+const selectOptions: ISelectOption[] = [
   {
     value: "1",
     label: "Positive",
@@ -62,7 +62,7 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
   const user = getUser();
 
   const onSelectChange = (value: SelectValue): void => {
-    const urlParams: EmployeeHomepageUrlParams = getUrlParams();
+    const urlParams: IEmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.rating;
       history.push(`${createSearchString(urlParams)}`);
@@ -74,7 +74,7 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
   };
 
   const searchHandler = (value: string): void => {
-    const urlParams: EmployeeHomepageUrlParams = getUrlParams();
+    const urlParams: IEmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -85,8 +85,7 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
     }
   };
 
-  const urlParams: EmployeeHomepageUrlParams = getUrlParams();
-
+  const urlParams: IEmployeeHomepageUrlParams = getUrlParams();
   return (
     <Layout>
       {!user ? (
@@ -104,7 +103,7 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
                 onChange={onSelectChange}
                 value={urlParams.rating || undefined}
               >
-                {selectOptions.map((item: SelectOption, index: number) => {
+                {selectOptions.map((item: ISelectOption, index: number) => {
                   return (
                     <Option value={item.value} key={index}>
                       {item.label}
@@ -126,14 +125,14 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
           <EmployeeHomepageContent>
             {/* User Info */}
             <UserMainInfo
-              jobTitle={user?.profile?.job_title}
-              fullName={user?.full_name}
-              age={user?.age}
-              email={user?.email}
-              imageSrc={user?.image_src}
-              yearsOfExperience={user?.years_of_experience}
-              shortDescription={user?.profile?.short_description}
-              links={user?.profile?.social_links}
+              jobTitle={user.profile.job_title}
+              fullName={user.full_name}
+              age={user.age}
+              email={user.email}
+              imageSrc={user.image_src}
+              yearsOfExperience={user.years_of_experience}
+              shortDescription={user.profile.short_description}
+              links={user.profile.social_links}
             />
             {/* Feed with reviews */}
             {loading ? (
@@ -142,21 +141,21 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
               </SpinnerWrapper>
             ) : (
               <FeedWrapper>
-                {feedItems?.data?.map((item: HomepageEmployeeUser) => {
+                {feedItems?.map((item: IHomepageEmployeeUser) => {
                   return (
                     <ReviewsFeedItem
                       key={item.id}
-                      jobTitle={item.author?.profile?.job_title}
-                      fullName={item.author?.full_name}
+                      jobTitle={item.author.profile.job_title}
+                      fullName={item.author.full_name}
                       date={item.created_at}
                       id={item.id}
-                      photoSrc={item.author?.image_src}
-                      otherComments={item.attributes?.otherComments}
+                      photoSrc={item.author.image_src}
+                      otherComments={item.attributes.otherComments}
                       personalCharacteristics={
-                        item.attributes?.strongPersonalCharacteristics
+                        item.attributes.strongPersonalCharacteristics
                       }
                       rating={item.rating}
-                      weakSides={item.attributes?.weakSides}
+                      weakSides={item.attributes.weakSides}
                     />
                   );
                 })}

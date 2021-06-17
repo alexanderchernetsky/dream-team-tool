@@ -26,9 +26,9 @@ import {
   StyledManagerHomepageSelect,
   StyledTable,
 } from "../../styled-components/HomepageManager";
-import { GridDataUser } from "../../interfaces/user";
-import { HomepageManagerUrlParams } from "../../interfaces/urlParams";
-import { SelectOption } from "../../interfaces/common";
+import { IGridDataUser } from "../../interfaces/user";
+import { IHomepageManagerUrlParams } from "../../interfaces/urlParams";
+import { ISelectOption } from "../../interfaces/common";
 import {RootState} from "../../reducers";
 import {getSelectOptionsAction, getGridDataAction} from "../../actions/homepageManagerActions";
 import {HomepageManagerPageProps} from "../../interfaces/HomepageManager";
@@ -73,7 +73,7 @@ const columns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: GridDataUser) => {
+    render: (data: IGridDataUser) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -127,10 +127,10 @@ const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement =>
   }, [location]);
 
   const onSelectChange = (selectName: string, value: SelectValue): void => {
-    const urlParams: HomepageManagerUrlParams = getUrlParams();
+    const urlParams: IHomepageManagerUrlParams = getUrlParams();
     if (!value) {
       if (!Array.isArray(urlParams)) {
-        delete urlParams[selectName as keyof HomepageManagerUrlParams];
+        delete urlParams[selectName as keyof IHomepageManagerUrlParams];
         history.push(`${createSearchString(urlParams)}`);
       }
     } else {
@@ -141,7 +141,7 @@ const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement =>
   };
 
   const searchHandler = (value: string): void => {
-    const urlParams: HomepageManagerUrlParams = getUrlParams();
+    const urlParams: IHomepageManagerUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -157,7 +157,7 @@ const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement =>
     filters: Record<string, (string | number | boolean)[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
   ): void => {
-    const urlParams: HomepageManagerUrlParams = getUrlParams();
+    const urlParams: IHomepageManagerUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
@@ -175,7 +175,7 @@ const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement =>
       );
     }
   };
-  const urlParams: HomepageManagerUrlParams = getUrlParams();
+  const urlParams: IHomepageManagerUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -191,8 +191,8 @@ const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement =>
             onChange={(value) => onSelectChange("job_title", value)}
             value={urlParams.job_title || undefined}
           >
-            {selectOptionsJobTitle?.map(
-              (item: SelectOption, index: number) => {
+            {selectOptionsJobTitle.map(
+              (item: ISelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}
@@ -208,8 +208,8 @@ const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement =>
             onChange={(value) => onSelectChange("focus", value)}
             value={urlParams.focus || undefined}
           >
-            {selectOptionsFocus?.map(
-              (item: SelectOption, index: number) => {
+            {selectOptionsFocus.map(
+              (item: ISelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}

@@ -1,7 +1,7 @@
 import {RouteComponentProps} from "react-router";
 import { TablePaginationConfig } from "antd/lib/table/interface";
-import {TeamAnalisysUser, GridDataUser} from "../user";
-import {CreateTeamPageUrlParams} from "../urlParams";
+import {ITeamAnalysisUser, IGridDataUser} from "../user";
+import {ICreateTeamPageUrlParams} from "../urlParams";
 
 export interface ILegendItems {
   color: string;
@@ -12,28 +12,31 @@ export interface ICreateTeamStore {
   loadingGridData: boolean;
   loadingAnalysisData: boolean;
   savingTeamInProgress: boolean;
-  gridData: GridDataUser[];
-  selectedUsersGridData: GridDataUser[];
-  analysisData: TeamAnalisysUser[];
+  gridData: IGridDataUser[];
+  selectedUsersGridData: IGridDataUser[];
+  analysisData: ITeamAnalysisUser[];
   pagination: TablePaginationConfig;
+  teamNameValue: string;
 }
 
 export interface ICreateTeamStatePageProps {
-  gridData: GridDataUser[],
+  gridData: IGridDataUser[],
   loadingGridData: boolean,
   pagination: TablePaginationConfig,
-  analysisData: TeamAnalisysUser[],
+  analysisData: ITeamAnalysisUser[],
   savingTeamInProgress: boolean,
-  selectedUsersGridData: GridDataUser[],
-  loadingAnalysisData: boolean
+  selectedUsersGridData: IGridDataUser[],
+  loadingAnalysisData: boolean,
+  teamNameValue: string
 }
 
 export interface ICreateTeamDispatchPageProps {
-  getGridData: (params: CreateTeamPageUrlParams) => void,
+  getGridData: (params: ICreateTeamPageUrlParams) => void,
   saveTeam: (name :string) => void,
   addTeamMember: (id: number) => void,
   removeTeamMember: (id: number) => void,
   getAnalysisData: () => void,
+  setTeamNameValue: (name :string) => void,
 }
 
 export type CreateTeamPageProps = ICreateTeamStatePageProps & ICreateTeamDispatchPageProps & RouteComponentProps;

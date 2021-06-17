@@ -9,6 +9,7 @@ export interface IParams {
 export interface ILogin {
   loginInProgress: boolean;
   user: IUser | null;
+  rememberChecked: boolean;
 }
 
 export interface ILoginPage {
@@ -18,11 +19,13 @@ export interface ILoginPage {
 
 export interface ILoginStatePageProps {
   loginInProgress: boolean,
-  user: IUser | null
+  user: IUser | null,
+  rememberChecked: boolean
 }
 
 export interface ILoginDispatchProps {
   login: (params: IParams) => void
+  setRememberChecked: (value: boolean) => void
 }
 
 export interface ILoginPageResponse {

@@ -1,8 +1,8 @@
 import {TablePaginationConfig} from "antd/lib/table/interface";
 import {Dispatch} from "redux";
-import {GridDataUser} from "../interfaces/user";
-import {IActionPromise, SelectOption} from "../interfaces/common";
-import {HomepageManagerUrlParams} from "../interfaces/urlParams";
+import {IGridDataUser} from "../interfaces/user";
+import {IActionPromise, ISelectOption} from "../interfaces/common";
+import {IHomepageManagerUrlParams} from "../interfaces/urlParams";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapToGridData from "../helpers/mapToGridData";
@@ -45,10 +45,10 @@ export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridData 
 
 interface ISetSelectOptionsJobTitle {
     type: typeof homepageManagerActionTypes.SET_SELECT_OPTIONS_JOB_TITLE,
-    payload: SelectOption[]
+    payload: ISelectOption[]
 }
 
-export const setSelectOptionsJobTitleAction = (gridData: SelectOption[]): ISetSelectOptionsJobTitle => {
+export const setSelectOptionsJobTitleAction = (gridData: ISelectOption[]): ISetSelectOptionsJobTitle => {
     return {
         type: homepageManagerActionTypes.SET_SELECT_OPTIONS_JOB_TITLE,
         payload: gridData
@@ -69,10 +69,10 @@ export const setPaginationAction = (pagination: TablePaginationConfig): ISetPagi
 
 interface ISetSelectOptionsFocus {
     type: typeof homepageManagerActionTypes.SET_SELECT_OPTIONS_FOCUS,
-    payload: SelectOption[]
+    payload: ISelectOption[]
 }
 
-export const setSelectOptionsFocusAction = (options: SelectOption[]): ISetSelectOptionsFocus => {
+export const setSelectOptionsFocusAction = (options: ISelectOption[]): ISetSelectOptionsFocus => {
     return {
         type: homepageManagerActionTypes.SET_SELECT_OPTIONS_FOCUS,
         payload: options
@@ -81,17 +81,17 @@ export const setSelectOptionsFocusAction = (options: SelectOption[]): ISetSelect
 
 interface ISetGridData {
     type: typeof homepageManagerActionTypes.SET_GRID_DATA,
-    payload: GridDataUser[]
+    payload: IGridDataUser[]
 }
 
-export const setGridDataAction = (gridData: GridDataUser[]): ISetGridData => {
+export const setGridDataAction = (gridData: IGridDataUser[]): ISetGridData => {
     return {
         type: homepageManagerActionTypes.SET_GRID_DATA,
         payload: gridData
     }
 }
 
-export const getGridDataAction = (params: HomepageManagerUrlParams): IActionPromise<Promise<ISetGridData | void>> => async (dispatch: Dispatch) => {
+export const getGridDataAction = (params: IHomepageManagerUrlParams): IActionPromise<Promise<ISetGridData | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingGridDataAction(true));
 
     return Manager.getGridData(params)
@@ -113,7 +113,7 @@ export const getGridDataAction = (params: HomepageManagerUrlParams): IActionProm
 export const getSelectOptionsAction = (): IActionPromise<Promise<ISetSelectOptionsJobTitle | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingSelectOptionsAction(true));
     return Manager.getSelectOptions()
-        .then((result) => {
+        .then((result :unknown) => {
             const parsedOptions = parseSelectOptions(result);
             dispatch(
                 setSelectOptionsJobTitleAction(

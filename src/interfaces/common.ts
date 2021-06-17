@@ -1,7 +1,7 @@
 import {ThunkAction} from "redux-thunk";
 import {RootState} from "../reducers";
 
-export interface SelectOption {
+export interface ISelectOption {
   label: string;
   value: string;
 }

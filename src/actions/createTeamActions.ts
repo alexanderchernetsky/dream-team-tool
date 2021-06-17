@@ -1,10 +1,10 @@
 import {Dispatch} from "redux";
 import {TablePaginationConfig} from "antd/lib/table/interface";
-import {GridDataUser, TeamAnalisysUser} from "../interfaces/user";
+import {IGridDataUser, ITeamAnalysisUser} from "../interfaces/user";
 import Manager from "../services/Manager";
 import mapToGridData from "../helpers/mapToGridData";
 import showErrorMessage from "../helpers/showErrorMessage";
-import {CreateTeamPageUrlParams} from "../interfaces/urlParams";
+import {ICreateTeamPageUrlParams} from "../interfaces/urlParams";
 import {RootState} from "../reducers";
 import showSuccessMessage from "../helpers/showSuccessMessage";
 import {parseGridData} from "../parsers/common";
@@ -18,6 +18,7 @@ export enum createTeamActionsTypes {
     SET_GRID_DATA = 'CREATE_TEAM/SET_GRID_DATA',
     SET_SELECTED_USERS_GRID_DATA = 'CREATE_TEAM/SET_SELECTED_USERS_GRID_DATA',
     SET_ANALYSIS_DATA = 'CREATE_TEAM/SET_ANALYSIS_DATA',
+    SET_TEAM_NAME = 'CREATE_TEAM/SET_TEAM_NAME'
 }
 
 interface ISetLoadingAnalysisData {
@@ -70,10 +71,10 @@ export const setPaginationAction = (pagination: TablePaginationConfig): ISetPagi
 
 interface ISetGridData {
     type: typeof createTeamActionsTypes.SET_GRID_DATA,
-    payload: GridDataUser[]
+    payload: IGridDataUser[]
 }
 
-export const setGridDataAction = (gridData: GridDataUser[]): ISetGridData => {
+export const setGridDataAction = (gridData: IGridDataUser[]): ISetGridData => {
     return {
         type: createTeamActionsTypes.SET_GRID_DATA,
         payload: gridData
@@ -82,10 +83,10 @@ export const setGridDataAction = (gridData: GridDataUser[]): ISetGridData => {
 
 interface ISetSelectedUsersGridData {
     type: typeof createTeamActionsTypes.SET_SELECTED_USERS_GRID_DATA,
-    payload: GridDataUser[]
+    payload: IGridDataUser[]
 }
 
-export const setSelectedUsersGridDataAction = (gridData: GridDataUser[]): ISetSelectedUsersGridData => {
+export const setSelectedUsersGridDataAction = (gridData: IGridDataUser[]): ISetSelectedUsersGridData => {
     return {
         type: createTeamActionsTypes.SET_SELECTED_USERS_GRID_DATA,
         payload: gridData
@@ -94,20 +95,20 @@ export const setSelectedUsersGridDataAction = (gridData: GridDataUser[]): ISetSe
 
 interface ISetAnalysisUsersGridData {
     type: typeof createTeamActionsTypes.SET_ANALYSIS_DATA,
-    payload: TeamAnalisysUser[]
+    payload: ITeamAnalysisUser[]
 }
 
-export const setAnalysisDataAction = (gridData: TeamAnalisysUser[]): ISetAnalysisUsersGridData => {
+export const setAnalysisDataAction = (gridData: ITeamAnalysisUser[]): ISetAnalysisUsersGridData => {
     return {
         type: createTeamActionsTypes.SET_ANALYSIS_DATA,
         payload: gridData
     }
 }
 
-export const getGridDataAction = (params: CreateTeamPageUrlParams) => async (dispatch :Dispatch) => {
+export const getGridDataAction = (params: ICreateTeamPageUrlParams) => async (dispatch :Dispatch) => {
     dispatch(setLoadingGridDataAction(true));
     return Manager.getGridData(params)
-        .then((result) => {
+        .then((result :unknown) => {
             const parsedData = parseGridData(result);
             dispatch(setGridDataAction(mapToGridData(parsedData.data)))
             dispatch(
@@ -126,8 +127,8 @@ export const getGridDataAction = (params: CreateTeamPageUrlParams) => async (dis
 
 export const addTeamMemberAction = (id: number) => (dispatch :Dispatch, getState: () => RootState) => {
     const {gridData, selectedUsersGridData} = getState()?.createTeam;
-    const targetMember :GridDataUser | undefined = gridData.find(
-        (user :GridDataUser) => user.id === id
+    const targetMember :IGridDataUser | undefined = gridData.find(
+        (user :IGridDataUser) => user.id === id
     );
     if (targetMember) {
         dispatch(setSelectedUsersGridDataAction([
@@ -139,8 +140,8 @@ export const addTeamMemberAction = (id: number) => (dispatch :Dispatch, getState
 
 export const removeTeamMemberAction = (id: number) => (dispatch :Dispatch, getState :() => RootState) => {
     const {selectedUsersGridData} = getState()?.createTeam;
-    const filtered: GridDataUser[] = selectedUsersGridData.filter(
-        (user: GridDataUser) => user.id !== id
+    const filtered: IGridDataUser[] = selectedUsersGridData.filter(
+        (user: IGridDataUser) => user.id !== id
     );
     dispatch(setSelectedUsersGridDataAction(filtered));
 }
@@ -149,7 +150,7 @@ export const getAnalysisDataAction = () => (dispatch :Dispatch, getState :() => 
     dispatch(setLoadingAnalysisDataAction(true));
     const {selectedUsersGridData} = getState()?.createTeam;
     const users = selectedUsersGridData.map(
-        (item: GridDataUser) => item.id
+        (item: IGridDataUser) => item.id
     );
 
     return Manager.getAnalysis({ users })
@@ -167,7 +168,7 @@ export const saveTeamAction = (name :string) => (dispatch :Dispatch, getState :(
     dispatch(setSavingTeamInProgressAction(true));
     const {selectedUsersGridData} = getState()?.createTeam;
     const users = selectedUsersGridData.map(
-        (item: GridDataUser) => item.id
+        (item: IGridDataUser) => item.id
     );
     return Manager.saveTeam({ name, users })
         .then(() => {
@@ -179,4 +180,16 @@ export const saveTeamAction = (name :string) => (dispatch :Dispatch, getState :(
         });
 }
 
-export type CreateTeamPageActions = ISetLoadingAnalysisData | ISetLoadingGridData | ISavingTeamInProgress | ISetPagination | ISetGridData | ISetSelectedUsersGridData | ISetAnalysisUsersGridData;
+interface ISetTeamNameValue {
+    type: createTeamActionsTypes.SET_TEAM_NAME,
+    payload: string
+}
+
+export const setTeamNameValueAction = (value :string): ISetTeamNameValue => {
+    return {
+        type: createTeamActionsTypes.SET_TEAM_NAME,
+        payload: value
+    }
+}
+
+export type CreateTeamPageActions = ISetLoadingAnalysisData | ISetLoadingGridData | ISavingTeamInProgress | ISetPagination | ISetGridData | ISetSelectedUsersGridData | ISetAnalysisUsersGridData | ISetTeamNameValue;

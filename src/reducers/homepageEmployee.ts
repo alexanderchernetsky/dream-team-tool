@@ -1,9 +1,9 @@
-import {IFeedItems, IHomepageEmployeeStore} from "../interfaces/HomepageEmployee";
+import {IHomepageEmployeeStore} from "../interfaces/HomepageEmployee";
 import {HomepageEmployeePageActions, homepageEmployeeActionTypes} from "../actions/homepageEmployeeActions";
 
 const initialState: IHomepageEmployeeStore = {
     loading: false,
-    feedItems: <IFeedItems>{}
+    feedItems: []
 }
 
 export default function homepageEmployeeReducer (state = initialState, action: HomepageEmployeePageActions) {

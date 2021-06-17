@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Checkbox } from "antd";
 import {connect} from "react-redux";
 import {bindActionCreators, Dispatch} from "redux";
@@ -18,20 +18,21 @@ import {
 } from "../../styled-components/LoginPage";
 import {ILoginPage, LoginPageProps} from "../../interfaces/LoginPage";
 import {RootState} from "../../reducers";
-import {loginAction} from "../../actions/loginPageActions";
+import {loginAction, setRememberCheckedAction} from "../../actions/loginPageActions";
 
 const mapStateToProps = (state: RootState) => ({
   loginInProgress: state.loginPage.loginInProgress,
-  user: state.loginPage.user
+  user: state.loginPage.user,
+  rememberChecked: state.loginPage.rememberChecked
 })
 
 const mapDispatchToProps = (dispatch :Dispatch) => ({
-  login: bindActionCreators(loginAction, dispatch)
+  login: bindActionCreators(loginAction, dispatch),
+  setRememberChecked: bindActionCreators(setRememberCheckedAction, dispatch)
 })
 
 const LoginPage = (props: LoginPageProps): React.ReactElement => {
-  const [rememberChecked, setRememberChecked] = useState(false);
-  const {history, login, loginInProgress, user} = props;
+  const {history, login, loginInProgress, user, rememberChecked, setRememberChecked} = props;
 
 
   const onFinish = (values: unknown): void => {

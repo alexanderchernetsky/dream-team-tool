@@ -2,9 +2,9 @@ import { Dispatch } from 'redux';
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import {IActionPromise} from "../interfaces/common";
-import {IFeedItems} from "../interfaces/HomepageEmployee";
-import {EmployeeHomepageUrlParams} from "../interfaces/urlParams";
+import {IEmployeeHomepageUrlParams} from "../interfaces/urlParams";
 import parseHomepageEmployeeResponse from "../parsers/homepageEmloyeePage";
+import {IHomepageEmployeeUser} from "../interfaces/user";
 
 export enum homepageEmployeeActionTypes {
     SET_LOADING = 'HOMEPAGE_EMPLOYEE/SET_LOADING',
@@ -25,17 +25,17 @@ export function setLoadingAction(loading: boolean) :ISetLoadingAction {
 
 export interface ISetFeedItems {
     type: typeof homepageEmployeeActionTypes.SET_FEED_ITEMS,
-    payload: IFeedItems
+    payload: IHomepageEmployeeUser[]
 }
 
-export const setFeedItemsAction = (feedItems: IFeedItems ) :ISetFeedItems => {
+export const setFeedItemsAction = (feedItems: IHomepageEmployeeUser[] ) :ISetFeedItems => {
     return {
         type: homepageEmployeeActionTypes.SET_FEED_ITEMS,
         payload: feedItems
     }
 }
 
-export const getFeedItemsAction = (params: EmployeeHomepageUrlParams) :IActionPromise<Promise<ISetFeedItems | void>> => async (dispatch: Dispatch) => {
+export const getFeedItemsAction = (params: IEmployeeHomepageUrlParams) :IActionPromise<Promise<ISetFeedItems | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingAction(true));
 
     return Manager.getFeedItems(params)
