@@ -4,7 +4,7 @@ export interface ISocialLink {
   profile_name: string;
 }
 
-interface IProfile {
+export interface IProfile {
   created_at: string;
   focus: string;
   id: number;
@@ -16,7 +16,7 @@ interface IProfile {
   user_id?: number;
 }
 
-interface IRole {
+export interface IRole {
   created_at: string;
   id: number;
   name: string;
@@ -44,7 +44,7 @@ export interface IUser {
   is_manager?: boolean;
   roles?: IRole[];
   job_title?: string;
-  rating?: string;
+  rating?: number;
   focus?: string;
 }
 

@@ -7,6 +7,7 @@ import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapToGridData from "../helpers/mapToGridData";
 import mapResultsToManagerGridSelectOptions from "../helpers/mapResultsToManagerGridSelectOptions";
+import {parseHomepageManagerGridData, parseSelectOptions} from "../parsers/homepageManagerPage";
 
 export enum homepageManagerActionTypes {
     SET_LOADING_SElECT_OPTIONS = 'HOMEPAGE_MANAGER/SET_LOADING_SElECT_OPTIONS',
@@ -93,12 +94,13 @@ export const getGridDataAction = (params: HomepageManagerUrlParams): IActionProm
     dispatch(setLoadingGridDataAction(true));
 
     return Manager.getGridData(params)
-        .then((result) => {
-            dispatch(setGridDataAction(mapToGridData(result?.data?.data)));
+        .then((result :unknown) => {
+            const parsedData = parseHomepageManagerGridData(result)
+            dispatch(setGridDataAction(mapToGridData(parsedData.data)));
             dispatch(setPaginationAction({
-                total: result?.data?.total,
-                pageSize: result?.data?.per_page,
-                current: result?.data?.current_page,
+                total: parsedData.total,
+                pageSize: parsedData.per_page,
+                current: parsedData.current_page,
             }));
         })
         .catch((error) => showErrorMessage(error))
@@ -111,14 +113,15 @@ export const getSelectOptionsAction = (): IActionPromise<Promise<ISetSelectOptio
     dispatch(setLoadingSelectOptionsAction(true));
     return Manager.getSelectOptions()
         .then((result) => {
+            const parsedOptions = parseSelectOptions(result);
             dispatch(
                 setSelectOptionsJobTitleAction(
-                    mapResultsToManagerGridSelectOptions(result?.data?.jobs)
+                    mapResultsToManagerGridSelectOptions(parsedOptions.jobs)
                 )
             );
             dispatch(
                 setSelectOptionsFocusAction(
-                    mapResultsToManagerGridSelectOptions(result?.data?.focuses)
+                    mapResultsToManagerGridSelectOptions(parsedOptions.focuses)
                 )
             );
         })
