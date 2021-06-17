@@ -86,7 +86,7 @@ interface IStatistic {
   neutral: number;
 }
 
-interface IReview {
+export interface IReview {
   attributes: IAttributes;
   author_id: number;
   created_at: string;
@@ -110,7 +110,9 @@ export interface HomepageEmployeeUser {
 
 export interface TeamAnalisysUser {
   statistic: IStatistic;
-  user: IUser & IReview[];
+  user: {
+    reviews: IReview[]
+  } & IUser;
 }
 
 export interface GridDataUser {

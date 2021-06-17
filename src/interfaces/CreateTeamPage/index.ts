@@ -36,4 +36,4 @@ export interface ICreateTeamDispatchPageProps {
   getAnalysisData: () => void,
 }
 
-export type CreateTeamPageProps =  ICreateTeamStatePageProps & ICreateTeamDispatchPageProps & RouteComponentProps
+export type CreateTeamPageProps = ICreateTeamStatePageProps & ICreateTeamDispatchPageProps & RouteComponentProps;

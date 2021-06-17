@@ -7,6 +7,8 @@ import showErrorMessage from "../helpers/showErrorMessage";
 import {CreateTeamPageUrlParams} from "../interfaces/urlParams";
 import {RootState} from "../reducers";
 import showSuccessMessage from "../helpers/showSuccessMessage";
+import {parseGridData} from "../parsers/common";
+import parseAnalysisData from "../parsers/createTeamPage";
 
 export enum createTeamActionsTypes {
     SET_LOADING_ANALYSIS_DATA = 'CREATE_TEAM/SET_LOADING_ANALYSIS_DATA',
@@ -106,12 +108,13 @@ export const getGridDataAction = (params: CreateTeamPageUrlParams) => async (dis
     dispatch(setLoadingGridDataAction(true));
     return Manager.getGridData(params)
         .then((result) => {
-            dispatch(setGridDataAction(mapToGridData(result?.data?.data)))
+            const parsedData = parseGridData(result);
+            dispatch(setGridDataAction(mapToGridData(parsedData.data)))
             dispatch(
                 setPaginationAction({
-                   total: result?.data?.total,
-                   pageSize: result?.data?.per_page,
-                   current: result?.data?.current_page,
+                   total: parsedData.total,
+                   pageSize:parsedData.per_page,
+                   current: parsedData.current_page,
                 })
             );
         })
@@ -150,8 +153,9 @@ export const getAnalysisDataAction = () => (dispatch :Dispatch, getState :() => 
     );
 
     return Manager.getAnalysis({ users })
-        .then((result) => {
-            dispatch(setAnalysisDataAction(result?.data));
+        .then((result :unknown) => {
+            const parsedData = parseAnalysisData(result);
+            dispatch(setAnalysisDataAction(parsedData));
         })
         .catch((error) => showErrorMessage(error))
         .finally(() => {

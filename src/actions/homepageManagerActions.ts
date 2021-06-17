@@ -7,7 +7,8 @@ import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
 import mapToGridData from "../helpers/mapToGridData";
 import mapResultsToManagerGridSelectOptions from "../helpers/mapResultsToManagerGridSelectOptions";
-import {parseHomepageManagerGridData, parseSelectOptions} from "../parsers/homepageManagerPage";
+import parseSelectOptions from "../parsers/homepageManagerPage";
+import {parseGridData} from "../parsers/common";
 
 export enum homepageManagerActionTypes {
     SET_LOADING_SElECT_OPTIONS = 'HOMEPAGE_MANAGER/SET_LOADING_SElECT_OPTIONS',
@@ -95,7 +96,7 @@ export const getGridDataAction = (params: HomepageManagerUrlParams): IActionProm
 
     return Manager.getGridData(params)
         .then((result :unknown) => {
-            const parsedData = parseHomepageManagerGridData(result)
+            const parsedData = parseGridData(result);
             dispatch(setGridDataAction(mapToGridData(parsedData.data)));
             dispatch(setPaginationAction({
                 total: parsedData.total,
