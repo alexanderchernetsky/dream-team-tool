@@ -3,9 +3,9 @@ import {SelectOption} from "../interfaces/common";
 import {IUser, UserId} from "../interfaces/user";
 import {FeedbackPageUrlParams} from "../interfaces/urlParams";
 import Manager from "../services/Manager";
-import mapResultsToSelectOptions from "../helpers/mapResultsToSelectOptions";
 import showErrorMessage from "../helpers/showErrorMessage";
 import showSuccessMessage from "../helpers/showSuccessMessage";
+import {parseSelectOptions, parseEmployee} from "../parsers/feedbackPage";
 
 export enum feedbackActionsTypes {
     SET_LOADING_EMPLOYEES_LIST = 'FEEDBACK/SET_LOADING_EMPLOYEES_LIST',
@@ -78,8 +78,11 @@ export const setSpecificEmployeeDataAction = (user: IUser): ISetSpecificEmployee
 export const getEmployeesListAction = (params: FeedbackPageUrlParams) => async (dispatch :Dispatch) => {
     dispatch(setLoadingEmployeesListAction(true));
     return Manager.getEmployeesList(params)
-        .then((result) => {
-            dispatch(setEmployeesListAction(mapResultsToSelectOptions(result?.data)))
+        .then((result :unknown) => {
+            const parsedData = parseSelectOptions(result);
+            console.log(parsedData);
+
+            dispatch(setEmployeesListAction(parsedData));
         })
         .catch((error) => showErrorMessage(error))
         .finally(() => {
@@ -91,8 +94,9 @@ export const getSpecificEmployeeDataAction = (id: UserId) => async (dispatch :Di
     dispatch(setLoadingSpecificEmployeeDataAction(true));
 
     return Manager.getSpecificEmployeeData(id)
-        .then((result) => {
-            dispatch(setSpecificEmployeeDataAction(result?.data))
+        .then((result :unknown) => {
+            const parsedData = parseEmployee(result);
+            dispatch(setSpecificEmployeeDataAction(parsedData))
         })
         .catch((error) => showErrorMessage(error))
         .finally(() => {
