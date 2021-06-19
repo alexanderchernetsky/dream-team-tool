@@ -16,6 +16,7 @@ import HomepageManager from "./pages/HomepageManager";
 import CreateTeamPage from "./pages/CreateTeamPage";
 import TeamsPage from "./pages/TeamsListPage";
 import loginStore from "./stores/LoginStore";
+import EmployeeDetails from "./pages/EmployeeDetails";
 
 function App() {
   useEffect(() => {
@@ -50,6 +51,11 @@ function App() {
             exact
             path={Routes.VIEW_EMPLOYEE_PROFILE_PATH}
             component={HomePageEmployee}
+          />
+          <PrivateRoute
+              exact
+              path={Routes.EMPLOYEE_DETAILS_PATH}
+              component={EmployeeDetails}
           />
           <PrivateRoute
             exact

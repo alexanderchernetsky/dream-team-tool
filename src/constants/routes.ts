@@ -7,4 +7,5 @@ export enum Routes {
   TEAMS_LIST_PATH = "/teams",
   CREATE_TEAM_PATH = "/create-team",
   VIEW_EMPLOYEE_PROFILE_PATH = "/view-profile/:id",
+  EMPLOYEE_DETAILS_PATH = "/employee-details/:id"
 }

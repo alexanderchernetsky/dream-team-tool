@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import moment from "moment";
 import ax from "../styled-components/accessor";
 import noLogoImage from "../images/no_logo_image.png";
 import SocMediaLink from "./SocMediaLink";
+import capitalize from "../helpers/capitalize";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  max-width: 500px;
+  max-width: 100%;
   min-width: 400px;
   box-sizing: border-box;
   padding: 70px 50px;
@@ -24,8 +26,8 @@ const PhotoAndMainInfoWrapper = styled.div`
 `;
 
 const Photo = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 5px;
   img {
     width: 100%;
@@ -70,6 +72,9 @@ interface IUserMainInfo {
   imageSrc?: string;
   fullName?: string;
   jobTitle?: string;
+  focus?: string;
+  rating?: number;
+  birth?: string;
   age?: number;
   yearsOfExperience?: number;
   email?: string;
@@ -87,6 +92,9 @@ const UserMainInfo = ({
   imageSrc = noLogoImage,
   fullName = "Full Name",
   jobTitle = "Employee",
+  focus = "Frontend",
+  rating = 1,
+  birth = "24 may 2020",
   age = 25,
   yearsOfExperience = 0,
   email = "example@mail.ru",
@@ -101,11 +109,14 @@ const UserMainInfo = ({
         </Photo>
         <MainInfo>
           <FullName>{fullName}</FullName>
+          <MainInfoText>{capitalize(focus)}</MainInfoText>
           <MainInfoText>{jobTitle}</MainInfoText>
+          <MainInfoText>Date of birth - {moment(birth).format("MMM Do YYYY")}</MainInfoText>
           <MainInfoText>
             {age} years old - {yearsOfExperience} years of exp
           </MainInfoText>
           <MainInfoText>{email}</MainInfoText>
+          <TextWrapper>Rating: {rating}</TextWrapper>
         </MainInfo>
       </PhotoAndMainInfoWrapper>
       <TextWrapper>{shortDescription}</TextWrapper>
