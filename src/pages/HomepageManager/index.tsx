@@ -108,7 +108,7 @@ const HomepageManager = ({
       }
     } else {
       history.push(
-        `${createSearchString({  [`${selectName}`]: value })}`
+        `${createSearchString({ ...getUrlParams(), [`${selectName}`]: value })}`
       );
     }
   };
