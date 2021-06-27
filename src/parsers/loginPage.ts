@@ -1,21 +1,18 @@
 import {
     parseAsNumber,
-    parseAsObject,
     parseAsString,
-    parseUser,
     safelyParseOr
 } from "./common";
 import {ILoginPageResponse} from "../interfaces/LoginPage";
+import {parseUser} from "./parseUser";
+import {IUser} from "../interfaces/user";
 
 const parseLoginResponse = (response :unknown) :ILoginPageResponse => {
-    const data = safelyParseOr(response, 'data', parseAsObject, {} as unknown);
-    const user = safelyParseOr(data, 'user', parseAsObject, {} as unknown);
-
     return {
-        access_token: safelyParseOr(data, 'access_token', parseAsString, ''),
-        expires_in: safelyParseOr(data, 'expires_in', parseAsNumber, 0),
-        token_type: safelyParseOr(data, 'token_type', parseAsString, ''),
-        user: parseUser(user)
+        access_token: safelyParseOr(response, 'data.access_token', parseAsString, ''),
+        expires_in: safelyParseOr(response, 'data.expires_in', parseAsNumber, 0),
+        token_type: safelyParseOr(response, 'data.token_type', parseAsString, ''),
+        user: safelyParseOr(response, "data.user", parseUser, {} as IUser)
     };
 }
 

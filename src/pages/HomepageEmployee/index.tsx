@@ -141,7 +141,7 @@ const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement 
               </SpinnerWrapper>
             ) : (
               <FeedWrapper>
-                {feedItems?.map((item: IHomepageEmployeeUser) => {
+                {feedItems.map((item: IHomepageEmployeeUser) => {
                   return (
                     <ReviewsFeedItem
                       key={item.id}

@@ -8,7 +8,7 @@ import showErrorMessage from "../helpers/showErrorMessage";
 import mapToGridData from "../helpers/mapToGridData";
 import mapResultsToManagerGridSelectOptions from "../helpers/mapResultsToManagerGridSelectOptions";
 import parseSelectOptions from "../parsers/homepageManagerPage";
-import {parseGridData} from "../parsers/common";
+import parseGridData from "../parsers/parseGridData";
 
 export enum homepageManagerActionTypes {
     SET_LOADING_SElECT_OPTIONS = 'HOMEPAGE_MANAGER/SET_LOADING_SElECT_OPTIONS',
@@ -19,79 +19,79 @@ export enum homepageManagerActionTypes {
     SET_GRID_DATA = 'HOMEPAGE_MANAGER/SET_GRID_DATA'
 }
 
-interface ISetLoadingSelectOptions {
+interface ISetLoadingSelectOptionsAction {
     type: typeof homepageManagerActionTypes.SET_LOADING_SElECT_OPTIONS,
     payload: boolean
 }
 
-export const setLoadingSelectOptionsAction = (loading: boolean): ISetLoadingSelectOptions => {
+export const setLoadingSelectOptionsAction = (loading: boolean): ISetLoadingSelectOptionsAction => {
     return {
         type: homepageManagerActionTypes.SET_LOADING_SElECT_OPTIONS,
         payload: loading
     }
 }
 
-interface ISetLoadingGridData {
+interface ISetLoadingGridDataAction {
     type: typeof homepageManagerActionTypes.SET_LOADING_GRID_DATA,
     payload: boolean
 }
 
-export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridData => {
+export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridDataAction => {
     return {
         type: homepageManagerActionTypes.SET_LOADING_GRID_DATA,
         payload: loading
     }
 }
 
-interface ISetSelectOptionsJobTitle {
+interface ISetSelectOptionsJobTitleAction {
     type: typeof homepageManagerActionTypes.SET_SELECT_OPTIONS_JOB_TITLE,
     payload: ISelectOption[]
 }
 
-export const setSelectOptionsJobTitleAction = (gridData: ISelectOption[]): ISetSelectOptionsJobTitle => {
+export const setSelectOptionsJobTitleAction = (gridData: ISelectOption[]): ISetSelectOptionsJobTitleAction => {
     return {
         type: homepageManagerActionTypes.SET_SELECT_OPTIONS_JOB_TITLE,
         payload: gridData
     }
 }
 
-interface ISetPagination {
+interface ISetPaginationAction {
     type: typeof homepageManagerActionTypes.SET_PAGINATION,
     payload: TablePaginationConfig
 }
 
-export const setPaginationAction = (pagination: TablePaginationConfig): ISetPagination => {
+export const setPaginationAction = (pagination: TablePaginationConfig): ISetPaginationAction => {
     return {
         type: homepageManagerActionTypes.SET_PAGINATION,
         payload: pagination
     }
 }
 
-interface ISetSelectOptionsFocus {
+interface ISetSelectOptionsFocusAction {
     type: typeof homepageManagerActionTypes.SET_SELECT_OPTIONS_FOCUS,
     payload: ISelectOption[]
 }
 
-export const setSelectOptionsFocusAction = (options: ISelectOption[]): ISetSelectOptionsFocus => {
+export const setSelectOptionsFocusAction = (options: ISelectOption[]): ISetSelectOptionsFocusAction => {
     return {
         type: homepageManagerActionTypes.SET_SELECT_OPTIONS_FOCUS,
         payload: options
     }
 }
 
-interface ISetGridData {
+interface ISetGridDataAction {
     type: typeof homepageManagerActionTypes.SET_GRID_DATA,
     payload: IGridDataUser[]
 }
 
-export const setGridDataAction = (gridData: IGridDataUser[]): ISetGridData => {
+export const setGridDataAction = (gridData: IGridDataUser[]): ISetGridDataAction => {
     return {
         type: homepageManagerActionTypes.SET_GRID_DATA,
         payload: gridData
     }
 }
 
-export const getGridDataAction = (params: IHomepageManagerUrlParams): IActionPromise<Promise<ISetGridData | void>> => async (dispatch: Dispatch) => {
+export const getGridDataAction = (params: IHomepageManagerUrlParams): IActionPromise<Promise<ISetGridDataAction | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingGridDataAction(true));
 
     return Manager.getGridData(params)
@@ -110,7 +110,7 @@ export const getGridDataAction = (params: IHomepageManagerUrlParams): IActionPro
         });
 }
 
-export const getSelectOptionsAction = (): IActionPromise<Promise<ISetSelectOptionsJobTitle | void>> => async (dispatch: Dispatch) => {
+export const getSelectOptionsAction = (): IActionPromise<Promise<ISetSelectOptionsJobTitleAction | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingSelectOptionsAction(true));
     return Manager.getSelectOptions()
         .then((result :unknown) => {
@@ -132,4 +132,10 @@ export const getSelectOptionsAction = (): IActionPromise<Promise<ISetSelectOptio
         });
 }
 
-export type HomepageManagerPageActions = ISetLoadingSelectOptions | ISetLoadingGridData | ISetSelectOptionsJobTitle | ISetPagination | ISetSelectOptionsFocus | ISetGridData;
+export type HomepageManagerPageActions =
+    ISetLoadingSelectOptionsAction |
+    ISetLoadingGridDataAction |
+    ISetSelectOptionsJobTitleAction |
+    ISetPaginationAction |
+    ISetSelectOptionsFocusAction |
+    ISetGridDataAction;

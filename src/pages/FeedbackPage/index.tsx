@@ -91,7 +91,7 @@ const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
     const urlParams: IFeedbackPageUrlParams = getUrlParams();
     const targetUserId = urlParams.user;
     if (targetUserId) {
-      getSpecificEmployeeData(targetUserId);
+      getSpecificEmployeeData(+targetUserId);
     }
     return () => {
       removeSpecificEmployeeData();

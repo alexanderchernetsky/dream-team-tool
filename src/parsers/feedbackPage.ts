@@ -1,10 +1,13 @@
-import {parseAsObject, parseAsString, parseUser, safelyParseOr} from "./common";
+import {parseAsString,  safelyParseOr} from "./common";
 import {IUser} from "../interfaces/user";
 import {ISelectOption} from "../interfaces/common";
+import {parseUser} from "./parseUser";
 
-export const parseSelectOptions = (response: unknown) :ISelectOption[] => {
-    const data = safelyParseOr(response, "data", parseAsObject, {});
-    const resultsEntries: string[][] = Object.entries(data);
+import {IFeedbackResponse} from "../interfaces/FeedbackPage";
+
+export const parseSelectOptions = (response: IFeedbackResponse) :ISelectOption[] => {
+
+    const resultsEntries: string[][] = Object.entries(response.data);
 
     return resultsEntries.map((item: unknown[]) => {
         return {
@@ -15,6 +18,5 @@ export const parseSelectOptions = (response: unknown) :ISelectOption[] => {
 }
 
 export const parseEmployee = (response :unknown) :IUser => {
-    const data = safelyParseOr(response, "data", parseAsObject, {});
-    return parseUser(data);
+    return safelyParseOr(response, "data", parseUser, {} as IUser);
 }

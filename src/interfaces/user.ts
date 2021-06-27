@@ -124,5 +124,3 @@ export interface IGridDataUser {
   rating?: number | string;
   user?: string;
 }
-
-export type UserId = string | number;

@@ -26,31 +26,31 @@ export function setLoginInProgress(loading: boolean): ISetLoginInProgressAction 
     }
 }
 
-export interface ISetUser {
+export interface ISetUserAction {
     type: typeof loginPageActionTypes.SET_USER,
     payload: IUser | null
 }
 
-export const setUser = (user: IUser | null) :ISetUser => {
+export const setUser = (user: IUser | null) :ISetUserAction => {
     return {
         type: loginPageActionTypes.SET_USER,
         payload: user
     }
 }
 
-export interface ISetRememberChecked {
+export interface ISetRememberCheckedAction {
     type: typeof loginPageActionTypes.SET_REMEMBER_CHECKED,
     payload: boolean
 }
 
-export const setRememberCheckedAction = (value: boolean): ISetRememberChecked => {
+export const setRememberCheckedAction = (value: boolean): ISetRememberCheckedAction => {
     return {
         type: loginPageActionTypes.SET_REMEMBER_CHECKED,
         payload: value
     }
 }
 
-export const loginAction = (params: IParams): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
+export const loginAction = (params: IParams): IActionPromise<Promise<ISetUserAction | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoginInProgress(true));
 
     return Manager.login(params)
@@ -67,12 +67,12 @@ export const loginAction = (params: IParams): IActionPromise<Promise<ISetUser | 
         });
 }
 
-export const logOutAction = (): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
+export const logOutAction = (): IActionPromise<Promise<ISetUserAction | void>> => async (dispatch: Dispatch) => {
     removeUserSession();
     dispatch(setUser(null));
 }
 
-export const getAndSetCurrentUserAction = (): IActionPromise<Promise<ISetUser | void>> => async (dispatch: Dispatch) => {
+export const getAndSetCurrentUserAction = (): IActionPromise<Promise<ISetUserAction | void>> => async (dispatch: Dispatch) => {
     const user = getUser();
     if (user) {
         dispatch(setUser(user));
@@ -86,4 +86,4 @@ export const getAndSetAuthHeaderAction = () :IActionPromise<Promise<void>> => as
     }
 }
 
-export type LoginPageActions = ISetLoginInProgressAction | ISetUser | ISetRememberChecked;
+export type LoginPageActions = ISetLoginInProgressAction | ISetUserAction | ISetRememberCheckedAction;

@@ -23,19 +23,19 @@ export function setLoadingAction(loading: boolean) :ISetLoadingAction {
     }
 }
 
-export interface ISetFeedItems {
+export interface ISetFeedItemsAction {
     type: typeof homepageEmployeeActionTypes.SET_FEED_ITEMS,
     payload: IHomepageEmployeeUser[]
 }
 
-export const setFeedItemsAction = (feedItems: IHomepageEmployeeUser[] ) :ISetFeedItems => {
+export const setFeedItemsAction = (feedItems: IHomepageEmployeeUser[] ) :ISetFeedItemsAction => {
     return {
         type: homepageEmployeeActionTypes.SET_FEED_ITEMS,
         payload: feedItems
     }
 }
 
-export const getFeedItemsAction = (params: IEmployeeHomepageUrlParams) :IActionPromise<Promise<ISetFeedItems | void>> => async (dispatch: Dispatch) => {
+export const getFeedItemsAction = (params: IEmployeeHomepageUrlParams) :IActionPromise<Promise<ISetFeedItemsAction | void>> => async (dispatch: Dispatch) => {
     dispatch(setLoadingAction(true));
 
     return Manager.getFeedItems(params)
@@ -49,4 +49,4 @@ export const getFeedItemsAction = (params: IEmployeeHomepageUrlParams) :IActionP
         });
 }
 
-export type HomepageEmployeePageActions = ISetFeedItems | ISetLoadingAction;
+export type HomepageEmployeePageActions = ISetFeedItemsAction | ISetLoadingAction;

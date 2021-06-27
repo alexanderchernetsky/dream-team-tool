@@ -1,28 +1,26 @@
 import {
     safelyParseOr,
     parseAsArray,
-    parseAsObject,
-    parseAttributes,
     parseAsNumber,
     parseAsString,
-    parseUser
 } from "./common";
-import {ITeamAnalysisUser} from "../interfaces/user";
+import {IAttributes, ITeamAnalysisUser, IUser} from "../interfaces/user";
+import parseAttributes from "./parseAttributes";
+import {parseUser} from "./parseUser";
 
 const parseAnalysisData = (response :unknown): ITeamAnalysisUser[] => {
 
     const data = safelyParseOr(response, 'data', parseAsArray, [] as unknown[]);
     return data.map(item => {
-        const user = safelyParseOr(item, 'user', parseAsObject, {} as unknown);
-        const reviews = safelyParseOr(user, 'reviews', parseAsArray, [] as unknown[]);
-        const statistic = safelyParseOr(item, 'statistic', parseAsObject, {} as unknown);
+        const reviews = safelyParseOr(item, 'item.user.reviews', parseAsArray, [] as unknown[]);
+        const user = safelyParseOr(item, "user", parseUser, {} as IUser)
         return {
             user: {
                 reviews:
                     reviews.map(review => {
-                        const attributes = safelyParseOr(review, 'attributes', parseAsObject, {} as unknown);
+
                         return {
-                            attributes: parseAttributes(attributes),
+                            attributes: safelyParseOr(review, "attributes",parseAttributes, {} as IAttributes),
                             author_id: safelyParseOr(review, 'author_id', parseAsNumber, 0),
                             created_at: safelyParseOr(review, 'created_at', parseAsString, ""),
                             id: safelyParseOr(review, 'id', parseAsNumber, 0),
@@ -31,12 +29,12 @@ const parseAnalysisData = (response :unknown): ITeamAnalysisUser[] => {
                             user_id: safelyParseOr(review, 'user_id', parseAsNumber, 0),
                         }
                     }),
-                ...parseUser(user),
+                ...user as IUser
             },
             statistic: {
-                negative: safelyParseOr(statistic, 'negative', parseAsNumber, 0),
-                neutral: safelyParseOr(statistic, 'neutral', parseAsNumber, 0),
-                positive: safelyParseOr(statistic, 'positive', parseAsNumber, 0),
+                negative: safelyParseOr(item, 'statistic.negative', parseAsNumber, 0),
+                neutral: safelyParseOr(item, 'statistic.neutral', parseAsNumber, 0),
+                positive: safelyParseOr(item, 'statistic.positive', parseAsNumber, 0),
             }
         }
     })

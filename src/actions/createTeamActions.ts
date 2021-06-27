@@ -7,7 +7,7 @@ import showErrorMessage from "../helpers/showErrorMessage";
 import {ICreateTeamPageUrlParams} from "../interfaces/urlParams";
 import {RootState} from "../reducers";
 import showSuccessMessage from "../helpers/showSuccessMessage";
-import {parseGridData} from "../parsers/common";
+import parseGridData from "../parsers/parseGridData";
 import parseAnalysisData from "../parsers/createTeamPage";
 
 export enum createTeamActionsTypes {
@@ -21,84 +21,84 @@ export enum createTeamActionsTypes {
     SET_TEAM_NAME = 'CREATE_TEAM/SET_TEAM_NAME'
 }
 
-interface ISetLoadingAnalysisData {
+interface ISetLoadingAnalysisDataAction {
     type: typeof createTeamActionsTypes.SET_LOADING_ANALYSIS_DATA,
     payload: boolean
 }
 
-export const setLoadingAnalysisDataAction = (loading: boolean): ISetLoadingAnalysisData => {
+export const setLoadingAnalysisDataAction = (loading: boolean): ISetLoadingAnalysisDataAction => {
     return {
         type: createTeamActionsTypes.SET_LOADING_ANALYSIS_DATA,
         payload: loading
     }
 }
 
-interface ISetLoadingGridData {
+interface ISetLoadingGridDataAction {
     type: typeof createTeamActionsTypes.SET_LOADING_GRID_DATA,
     payload: boolean
 }
 
-export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridData => {
+export const setLoadingGridDataAction = (loading: boolean): ISetLoadingGridDataAction => {
     return {
         type: createTeamActionsTypes.SET_LOADING_GRID_DATA,
         payload: loading
     }
 }
 
-interface ISavingTeamInProgress {
+interface ISavingTeamInProgressAction {
     type: typeof createTeamActionsTypes.SET_SAVING_TEAM_IN_PROGRESS,
     payload: boolean
 }
 
-export const setSavingTeamInProgressAction = (loading: boolean): ISavingTeamInProgress => {
+export const setSavingTeamInProgressAction = (loading: boolean): ISavingTeamInProgressAction => {
     return {
         type: createTeamActionsTypes.SET_SAVING_TEAM_IN_PROGRESS,
         payload: loading
     }
 }
 
-interface ISetPagination {
+interface ISetPaginationAction {
     type: typeof createTeamActionsTypes.SET_PAGINATION,
     payload: TablePaginationConfig
 }
 
-export const setPaginationAction = (pagination: TablePaginationConfig): ISetPagination => {
+export const setPaginationAction = (pagination: TablePaginationConfig): ISetPaginationAction => {
     return {
         type: createTeamActionsTypes.SET_PAGINATION,
         payload: pagination
     }
 }
 
-interface ISetGridData {
+interface ISetGridDataAction {
     type: typeof createTeamActionsTypes.SET_GRID_DATA,
     payload: IGridDataUser[]
 }
 
-export const setGridDataAction = (gridData: IGridDataUser[]): ISetGridData => {
+export const setGridDataAction = (gridData: IGridDataUser[]): ISetGridDataAction => {
     return {
         type: createTeamActionsTypes.SET_GRID_DATA,
         payload: gridData
     }
 }
 
-interface ISetSelectedUsersGridData {
+interface ISetSelectedUsersGridDataAction {
     type: typeof createTeamActionsTypes.SET_SELECTED_USERS_GRID_DATA,
     payload: IGridDataUser[]
 }
 
-export const setSelectedUsersGridDataAction = (gridData: IGridDataUser[]): ISetSelectedUsersGridData => {
+export const setSelectedUsersGridDataAction = (gridData: IGridDataUser[]): ISetSelectedUsersGridDataAction => {
     return {
         type: createTeamActionsTypes.SET_SELECTED_USERS_GRID_DATA,
         payload: gridData
     }
 }
 
-interface ISetAnalysisUsersGridData {
+interface ISetAnalysisUsersGridDataAction {
     type: typeof createTeamActionsTypes.SET_ANALYSIS_DATA,
     payload: ITeamAnalysisUser[]
 }
 
-export const setAnalysisDataAction = (gridData: ITeamAnalysisUser[]): ISetAnalysisUsersGridData => {
+export const setAnalysisDataAction = (gridData: ITeamAnalysisUser[]): ISetAnalysisUsersGridDataAction => {
     return {
         type: createTeamActionsTypes.SET_ANALYSIS_DATA,
         payload: gridData
@@ -180,16 +180,24 @@ export const saveTeamAction = (name :string) => (dispatch :Dispatch, getState :(
         });
 }
 
-interface ISetTeamNameValue {
+interface ISetTeamNameValueAction {
     type: createTeamActionsTypes.SET_TEAM_NAME,
     payload: string
 }
 
-export const setTeamNameValueAction = (value :string): ISetTeamNameValue => {
+export const setTeamNameValueAction = (value :string): ISetTeamNameValueAction => {
     return {
         type: createTeamActionsTypes.SET_TEAM_NAME,
         payload: value
     }
 }
 
-export type CreateTeamPageActions = ISetLoadingAnalysisData | ISetLoadingGridData | ISavingTeamInProgress | ISetPagination | ISetGridData | ISetSelectedUsersGridData | ISetAnalysisUsersGridData | ISetTeamNameValue;
+export type CreateTeamPageActions =
+    ISetLoadingAnalysisDataAction |
+    ISetLoadingGridDataAction |
+    ISavingTeamInProgressAction |
+    ISetPaginationAction |
+    ISetGridDataAction |
+    ISetSelectedUsersGridDataAction |
+    ISetAnalysisUsersGridDataAction |
+    ISetTeamNameValueAction;
