@@ -8,8 +8,8 @@ const parseGridData = (response :unknown) => {
         total: safelyParseOr(response, 'data.total', parseAsNumber, 0),
         per_page: safelyParseOr(response, 'data.per_page', parseAsNumber, 0),
         current_page: safelyParseOr(response, 'data.current_page', parseAsNumber, 0),
-        data: gridDataArray.map(item => {
-            return parseUser(item);
+        data: gridDataArray.map(user => {
+            return parseUser(user);
         })
     };
 }

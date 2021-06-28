@@ -16,8 +16,6 @@ export enum feedbackActionsTypes {
     SET_EMPLOYEE_DATA = 'FEEDBACK/SET_EMPLOYEE_DATA',
 }
 
-
-
 interface ISetLoadingEmployeesListAction {
     type: typeof feedbackActionsTypes.SET_LOADING_EMPLOYEES_LIST,
     payload: boolean
