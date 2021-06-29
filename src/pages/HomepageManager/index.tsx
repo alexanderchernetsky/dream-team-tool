@@ -119,7 +119,6 @@ const HomepageManager = ({
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
     } else {
-      delete urlParams.page;
       history.push(
         `${createSearchString({ ...urlParams, searchPhrase: value })}`
       );

@@ -2,35 +2,32 @@ import React, { useEffect } from "react";
 import { Spin } from "antd";
 import { observer } from "mobx-react";
 import { RouteComponentProps } from "react-router";
-import loginStore from "../../stores/LoginStore";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
-import feedBackStore from "../../stores/FeedbackPageStore";
+import store from "../../stores/FeedbackPageStore";
 import {
   EmployeeHomepageContent,
   SpinnerWrapper,
 } from "../../styled-components/HomepageEmployee";
 import EmployeeInfo from "../../components/EmployeeInfo";
 
-const EmployeeDetails = ({
-  location,
-}: RouteComponentProps): React.ReactElement => {
-  const id = location.pathname.replace("/employee-details/", "");
-  const user = feedBackStore.employeeData;
+interface MatchParams {
+  id: string;
+}
 
+const EmployeeDetails = ({
+  match: { params },
+}: RouteComponentProps<MatchParams>): React.ReactElement => {
+  const user = store.employeeData;
   useEffect(() => {
-    feedBackStore.getSpecificEmployeeData(id);
-  }, [id]);
+    store.getSpecificEmployeeData(params.id);
+  }, [params.id]);
 
   return (
     <Layout>
-      {!loginStore?.user ? (
-        <SpinnerWrapper>
-          <Spin size="large" />
-        </SpinnerWrapper>
-      ) : (
-        <>
-          <Header pageTitle="Employee Details" />
+      <Header pageTitle="Employee Details" />
+      <SpinnerWrapper>
+        <Spin size="large" spinning={store.loadingSpecificEmployeeData}>
           <EmployeeHomepageContent>
             <EmployeeInfo
               jobTitle={user?.profile?.job_title}
@@ -47,8 +44,8 @@ const EmployeeDetails = ({
               links={user?.profile?.social_links}
             />
           </EmployeeHomepageContent>
-        </>
-      )}
+        </Spin>
+      </SpinnerWrapper>
     </Layout>
   );
 };
