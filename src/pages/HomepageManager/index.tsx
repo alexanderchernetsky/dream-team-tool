@@ -111,8 +111,9 @@ const HomepageManager = ({
         history.push(`${createSearchString(urlParams)}`);
       }
     } else {
+      delete urlParams.page;
       history.push(
-        `${createSearchString({ ...getUrlParams(), [`${selectName}`]: value })}`
+        `${createSearchString({ ...urlParams, [`${selectName}`]: value })}`
       );
     }
   };
@@ -123,6 +124,7 @@ const HomepageManager = ({
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
     } else {
+      delete urlParams.page;
       history.push(
         `${createSearchString({ ...urlParams, searchPhrase: value })}`
       );
