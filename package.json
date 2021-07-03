@@ -14,18 +14,18 @@
     "@types/styled-components": "^5.1.4",
     "antd": "^4.3.4",
     "axios": "^0.19.2",
-    "mobx": "^5.15.4",
-    "mobx-react": "^6.3.1",
     "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "rc-field-form": "^1.18.1",
     "react": "^16.13.1",
-    "react-app-rewire-mobx": "^1.0.9",
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "styled-ax": "^1.1.1",
     "styled-components": "^5.1.1",
     "styled-media-query": "^2.1.2",
@@ -46,7 +46,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn test"
+      "pre-commit": "tsc && yarn lint && yarn test"
     }
   },
   "eslintConfig": {
@@ -73,6 +73,7 @@
     "@babel/helper-regex": "^7.10.5",
     "@babel/plugin-proposal-decorators": "^7.10.3",
     "@babel/plugin-proposal-optional-chaining": "^7.10.3",
+    "@types/react-redux": "^7.1.16",
     "babel-jest": "^24.9.0",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-styled-components": "^1.10.7",

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { observer } from "mobx-react";
-import { RouteComponentProps } from "react-router";
+import React, { useEffect } from "react";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import {
   SorterResult,
   TablePaginationConfig,
@@ -14,7 +14,6 @@ import {
   StyledActionColButton,
   StyledTable,
 } from "../../styled-components/HomepageManager";
-import store from "../../stores/CreateTeamPageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
 import Header from "../../components/Header";
@@ -36,114 +35,17 @@ import {
 } from "../../styled-components/CreateTeamPage";
 import UserAnalysisRow from "../../components/UserAnalysisRow";
 import { Routes } from "../../constants/routes";
-import { TeamAnalisysUser, GridDataUser } from "../../interfaces/user";
-import { CreateTeamPageUrlParams } from "../../interfaces/urlParams";
-import { ILegendItems } from "../../interfaces/CreateTeamPage";
-
-// add team member button handler
-const addButtonClickHandler = (id: number): void => {
-  store.addTeamMember(id);
-};
-
-// remove team member button handler
-const removeButtonClickHandler = (id: number) => {
-  store.removeTeamMember(id);
-};
-
-// common columns
-const commonUserColumn = {
-  title: "User",
-  dataIndex: "user",
-  key: "user",
-  render: (text: string): React.ReactElement => (
-    <GridImage src={text} alt="user" />
-  ),
-};
-
-const commonFocusColumn = {
-  title: "Focus",
-  key: "focus",
-  dataIndex: "focus",
-  render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
-};
-
-// Select employee table
-const allEmployeesGridColumns = [
-  commonUserColumn,
-  {
-    title: "Full name",
-    dataIndex: "full_name",
-    key: "full_name",
-    sortable: true,
-    sorter: ["ascend", "descend"],
-    render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
-  },
-  {
-    title: "Rating",
-    key: "rating",
-    dataIndex: "rating",
-    sortable: true,
-    sorter: ["ascend", "descend"],
-    render: (text: string): React.ReactElement => <Rating>{text}</Rating>,
-  },
-  commonFocusColumn,
-  {
-    title: "Actions",
-    key: "actions",
-    render: (data: GridDataUser): React.ReactElement => {
-      return (
-        <ActionColWrapper>
-          <StyledActionColButton
-            type="primary"
-            htmlType="button"
-            onClick={() => addButtonClickHandler(data.id)}
-            disabled={store.selectedUsersGridData.some(
-              (item: GridDataUser) => item.id === data.id
-            )}
-            data-test-id="add-employee-to-new-team-btn"
-          >
-            Add
-          </StyledActionColButton>
-        </ActionColWrapper>
-      );
-    },
-  },
-];
-
-// Team table
-const selectedUsersGridColumns = [
-  commonUserColumn,
-  {
-    title: "Full name",
-    dataIndex: "full_name",
-    key: "full_name",
-    render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
-  },
-  {
-    title: "Rating",
-    key: "rating",
-    dataIndex: "rating",
-    render: (text: string): React.ReactElement => <Rating>{text}</Rating>,
-  },
-  commonFocusColumn,
-  {
-    title: "Actions",
-    key: "actions",
-    render: (data: GridDataUser): React.ReactElement => {
-      return (
-        <ActionColWrapper>
-          <StyledActionColButton
-            type="primary"
-            htmlType="button"
-            onClick={() => removeButtonClickHandler(data.id)}
-          >
-            Remove
-          </StyledActionColButton>
-        </ActionColWrapper>
-      );
-    },
-  },
-];
+import { ITeamAnalysisUser, IGridDataUser } from "../../interfaces/user";
+import { ICreateTeamPageUrlParams } from "../../interfaces/urlParams";
+import { ILegendItems, CreateTeamPageProps } from "../../interfaces/CreateTeamPage";
+import {RootState} from "../../reducers";
+import {
+  addTeamMemberAction, getAnalysisDataAction,
+  getGridDataAction,
+  removeTeamMemberAction,
+  saveTeamAction,
+  setTeamNameValueAction
+} from "../../actions/createTeamActions";
 
 const legendItems: ILegendItems[] = [
   {
@@ -160,27 +62,61 @@ const legendItems: ILegendItems[] = [
   },
 ];
 
-const CreateTeamPage = ({
-  location,
-  history,
-}: RouteComponentProps): React.ReactElement => {
-  const [teamNameValue, setTeamNameValue] = useState("");
+const mapStateToProps = (state :RootState) => ({
+  gridData: state.createTeam.gridData,
+  loadingGridData: state.createTeam.loadingGridData,
+  pagination: state.createTeam.pagination,
+  analysisData: state.createTeam.analysisData,
+  savingTeamInProgress: state.createTeam.savingTeamInProgress,
+  selectedUsersGridData: state.createTeam.selectedUsersGridData,
+  loadingAnalysisData: state.createTeam.loadingAnalysisData,
+  teamNameValue: state.createTeam.teamNameValue
+})
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getGridData: bindActionCreators(getGridDataAction, dispatch),
+  saveTeam: bindActionCreators(saveTeamAction, dispatch),
+  addTeamMember: bindActionCreators(addTeamMemberAction, dispatch),
+  removeTeamMember: bindActionCreators(removeTeamMemberAction, dispatch),
+  getAnalysisData: bindActionCreators(getAnalysisDataAction, dispatch),
+  setTeamNameValue: bindActionCreators(setTeamNameValueAction, dispatch)
+})
+
+const CreateTeamPage = (props :CreateTeamPageProps): React.ReactElement => {
+  const {
+    location,
+    history,
+    gridData,
+    loadingGridData,
+    pagination,
+    analysisData,
+    savingTeamInProgress,
+    selectedUsersGridData,
+    loadingAnalysisData,
+    getGridData,
+    saveTeam,
+    addTeamMember,
+    removeTeamMember,
+    getAnalysisData,
+    teamNameValue,
+    setTeamNameValue
+  } = props;
 
   useEffect((): void => {
-    store.getGridData(getUrlParams());
+    getGridData(getUrlParams());
   }, [location]);
 
   const tableChangeHandler = (
-    pagination: TablePaginationConfig,
+    currentPagination: TablePaginationConfig,
     filters: Record<string, (string | number | boolean)[] | null> ,
     sorter: SorterResult<object> | SorterResult<object>[]
   ) => {
-    const urlParams: CreateTeamPageUrlParams = getUrlParams();
+    const urlParams: ICreateTeamPageUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
       delete urlParams.sort_direction;
-      urlParams.page = pagination.current;
+      urlParams.page = currentPagination.current;
       history.push(`${createSearchString(urlParams)}`);
     } else if (!Array.isArray(sorter)) {
       history.push(
@@ -188,16 +124,119 @@ const CreateTeamPage = ({
           ...getUrlParams(),
           sort_column: sorter.field,
           sort_direction: sorter.order,
-          page: pagination.current,
+          page: currentPagination.current,
         })}`
       );
     }
   };
 
+  const addTeamMemberHandler = (id: number): void => {
+    addTeamMember(id);
+  };
+
+  const removeTeamMemberHandler = (id: number) => {
+    removeTeamMember(id);
+  };
+
+// common columns
+  const commonUserColumn = {
+    title: "User",
+    dataIndex: "user",
+    key: "user",
+    render: (text: string): React.ReactElement => (
+        <GridImage src={text} alt="user" />
+    ),
+  };
+
+  const commonFocusColumn = {
+    title: "Focus",
+    key: "focus",
+    dataIndex: "focus",
+    render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
+  };
+
+// Select employee table
+  const allEmployeesGridColumns = [
+    commonUserColumn,
+    {
+      title: "Full name",
+      dataIndex: "full_name",
+      key: "full_name",
+      sortable: true,
+      sorter: ["ascend", "descend"],
+      render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
+    },
+    {
+      title: "Rating",
+      key: "rating",
+      dataIndex: "rating",
+      sortable: true,
+      sorter: ["ascend", "descend"],
+      render: (text: string): React.ReactElement => <Rating>{text}</Rating>,
+    },
+    commonFocusColumn,
+    {
+      title: "Actions",
+      key: "actions",
+      render: (data: IGridDataUser): React.ReactElement => {
+        return (
+            <ActionColWrapper>
+              <StyledActionColButton
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => addTeamMemberHandler(data.id)}
+                  disabled={[...selectedUsersGridData].some(
+                      (item: IGridDataUser) => item.id === data.id
+                  )}
+                  data-test-id="add-employee-to-new-team-btn"
+              >
+                Add
+              </StyledActionColButton>
+            </ActionColWrapper>
+        );
+      },
+    },
+  ];
+
+// Team table
+  const selectedUsersGridColumns = [
+    commonUserColumn,
+    {
+      title: "Full name",
+      dataIndex: "full_name",
+      key: "full_name",
+      render: (text: string): React.ReactElement => <GridText>{text}</GridText>,
+    },
+    {
+      title: "Rating",
+      key: "rating",
+      dataIndex: "rating",
+      render: (text: string): React.ReactElement => <Rating>{text}</Rating>,
+    },
+    commonFocusColumn,
+    {
+      title: "Actions",
+      key: "actions",
+      render: (data: IGridDataUser): React.ReactElement => {
+        return (
+            <ActionColWrapper>
+              <StyledActionColButton
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => removeTeamMemberHandler(data.id)}
+              >
+                Remove
+              </StyledActionColButton>
+            </ActionColWrapper>
+        );
+      },
+    },
+  ];
+
+
   const saveTeamButtonHandler = () => {
-    store.saveTeam(teamNameValue).then(() => {
-      history.push(Routes.TEAMS_LIST_PATH);
-    });
+    saveTeam(teamNameValue);
+    history.push(Routes.TEAMS_LIST_PATH);
   };
 
   return (
@@ -223,9 +262,9 @@ const CreateTeamPage = ({
             <GridName>Select employee</GridName>
             <StyledTable
               columns={allEmployeesGridColumns as ColumnsType<object>}
-              dataSource={store.gridData}
-              loading={store.loadingGridData}
-              pagination={store.pagination}
+              dataSource={gridData}
+              loading={loadingGridData}
+              pagination={pagination}
               onChange={tableChangeHandler}
             />
           </EmployeesGridWrapper>
@@ -234,7 +273,7 @@ const CreateTeamPage = ({
             <GridName>Team</GridName>
             <StyledTable
               columns={selectedUsersGridColumns}
-              dataSource={[...store.selectedUsersGridData]}
+              dataSource={[...selectedUsersGridData]}
               pagination={false}
             />
           </SelectedGridWrapper>
@@ -244,15 +283,15 @@ const CreateTeamPage = ({
             data-test-id="new-team-analyze-btn"
             type="primary"
             htmlType="button"
-            onClick={() => store.getAnalysisData()}
-            loading={store.loadingAnalysisData}
-            disabled={!store.selectedUsersGridData.length}
+            onClick={() => getAnalysisData()}
+            loading={loadingAnalysisData}
+            disabled={!selectedUsersGridData.length}
           >
             Team analysis
           </StyledActionColButton>
         </TeamAnalysisBtnWrapper>
         {/* Team analysis */}
-        {store.analysisData.length !== 0 && (
+        {analysisData.length !== 0 && (
           <>
             <AnalysisCard>
               <GridName>Team analysis</GridName>
@@ -266,19 +305,19 @@ const CreateTeamPage = ({
                   );
                 })}
               </Legend>
-              {store.analysisData.map(
-                (item: TeamAnalisysUser, index: number) => {
+              {analysisData.map(
+                (item: ITeamAnalysisUser, index: number) => {
                   return (
                     <UserAnalysisRow
                       key={index}
-                      id={item.user?.id}
-                      jobTitle={item.user?.profile?.job_title}
-                      photoSrc={item.user?.image_src}
-                      fullName={item.user?.full_name}
-                      rating={item.user?.profile?.rating}
-                      negative={item.statistic?.negative}
-                      neutral={item.statistic?.neutral}
-                      positive={item.statistic?.positive}
+                      id={item.user.id}
+                      jobTitle={item.user.profile.job_title}
+                      photoSrc={item.user.image_src}
+                      fullName={item.user.full_name}
+                      rating={item.user.profile.rating}
+                      negative={item.statistic.negative}
+                      neutral={item.statistic.neutral}
+                      positive={item.statistic.positive}
                     />
                   );
                 }
@@ -290,7 +329,7 @@ const CreateTeamPage = ({
                 type="primary"
                 htmlType="button"
                 onClick={saveTeamButtonHandler}
-                loading={store.savingTeamInProgress}
+                loading={savingTeamInProgress}
                 disabled={!teamNameValue}
               >
                 Save team
@@ -303,4 +342,4 @@ const CreateTeamPage = ({
   );
 };
 
-export default observer(CreateTeamPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTeamPage);

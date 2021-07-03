@@ -1,12 +1,34 @@
+import {RouteComponentProps} from "react-router";
 import { TablePaginationConfig } from "antd/lib/table/interface";
-import { GridDataUser } from "../user";
-import { SelectOption } from "../common";
+import {IGridDataUser} from "../user";
+import { ISelectOption } from "../common";
+import {IHomepageManagerUrlParams} from "../urlParams";
 
 export interface IManagerHomepageStore {
   loadingSelectOptions: boolean;
   loadingGridData: boolean;
-  selectOptionsJobTitle: SelectOption[];
+  selectOptionsJobTitle: ISelectOption[];
   pagination: TablePaginationConfig;
-  selectOptionsFocus: SelectOption[];
-  gridData: GridDataUser[];
+  selectOptionsFocus: ISelectOption[];
+  gridData: IGridDataUser[];
+}
+
+export interface IHomepageManagerStatePageProps {
+  selectOptionsJobTitle: ISelectOption[],
+  selectOptionsFocus: ISelectOption[],
+  gridData: IGridDataUser[],
+  pagination: TablePaginationConfig,
+  loadingGridData: boolean
+}
+
+export interface IHomepageManagerDispatchProps {
+  getSelectOptions: () => void,
+  getGridData: (params: IHomepageManagerUrlParams) => void
+}
+
+export type HomepageManagerPageProps = IHomepageManagerStatePageProps & IHomepageManagerDispatchProps & RouteComponentProps;
+
+export interface IHomepageManagerSelectOptions {
+  jobs: string[],
+  focuses: string[]
 }

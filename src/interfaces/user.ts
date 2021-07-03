@@ -1,10 +1,10 @@
-interface ISocialLink {
+export interface ISocialLink {
   link: string;
   name: string;
   profile_name: string;
 }
 
-interface IProfile {
+export interface IProfile {
   created_at: string;
   focus: string;
   id: number;
@@ -16,7 +16,7 @@ interface IProfile {
   user_id?: number;
 }
 
-interface IRole {
+export interface IRole {
   created_at: string;
   id: number;
   name: string;
@@ -44,11 +44,11 @@ export interface IUser {
   is_manager?: boolean;
   roles?: IRole[];
   job_title?: string;
-  rating?: string;
+  rating?: number;
   focus?: string;
 }
 
-interface IAttributes {
+export interface IAttributes {
   communication_explainsIdeasInSpokenLanguage: string;
   communication_explainsWrittenIdeas: string;
   communication_listensAndClarifiesInformation: string;
@@ -86,7 +86,7 @@ interface IStatistic {
   neutral: number;
 }
 
-interface IReview {
+export interface IReview {
   attributes: IAttributes;
   author_id: number;
   created_at: string;
@@ -96,7 +96,7 @@ interface IReview {
   user_id: number;
 }
 
-export interface HomepageEmployeeUser {
+export interface IHomepageEmployeeUser {
   attributes: IAttributes;
   author: IUser;
   author_id: number;
@@ -108,12 +108,14 @@ export interface HomepageEmployeeUser {
   user: IUser;
 }
 
-export interface TeamAnalisysUser {
+export interface ITeamAnalysisUser {
   statistic: IStatistic;
-  user: IUser & IReview[];
+  user: {
+    reviews: IReview[]
+  } & IUser;
 }
 
-export interface GridDataUser {
+export interface IGridDataUser {
   focus?: string;
   full_name: string;
   id: number;

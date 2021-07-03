@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
+import {bindActionCreators, Dispatch} from "redux";
 import { Select, Spin } from "antd";
-import { RouteComponentProps } from "react-router";
-import { observer } from "mobx-react";
+import {connect} from "react-redux"
 import { SelectValue } from "antd/lib/select";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
-import feedbackPageStore from "../../stores/FeedbackPageStore";
 import TargetUserInfo from "../../components/TargetUserInfo";
 import {
   EmployeeHomepageContent,
@@ -27,9 +26,16 @@ import {
   StyledTextArea,
 } from "../../styled-components/FeedbackPage";
 import { Routes } from "../../constants/routes";
-import { FeedbackPageUrlParams } from "../../interfaces/urlParams";
-import { IUser } from "../../interfaces/user";
-import { SelectOption } from "../../interfaces/common";
+import { IFeedbackPageUrlParams } from "../../interfaces/urlParams";
+import { ISelectOption } from "../../interfaces/common";
+import {RootState} from "../../reducers";
+import {
+  getSpecificEmployeeDataAction,
+  removeSpecificEmployeeDataAction,
+  submitFeedbackFormAction,
+  getEmployeesListAction
+} from "../../actions/feedbackActions";
+import {FeedbackPageProps} from "../../interfaces/FeedbackPage";
 
 const { Option } = Select;
 
@@ -52,31 +58,56 @@ const requiredTextAreaRules = [
   { max: 32500, message: "This field should be less than 32500 characters." },
 ];
 
-const FeedbackPage = ({
-  history,
-  location,
-}: RouteComponentProps): React.ReactElement => {
+const mapStateToProps = (state: RootState) => ({
+  employeeData: state.feedback.employeeData,
+  employeesList: state.feedback.employeesList,
+  loadingEmployeesList: state.feedback.loadingEmployeesList,
+  loadingSpecificEmployeeData: state.feedback.loadingSpecificEmployeeData,
+  submittingFeedbackForm: state.feedback.submittingFeedbackForm
+});
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getSpecificEmployeeData: bindActionCreators(getSpecificEmployeeDataAction, dispatch),
+  removeSpecificEmployeeData: bindActionCreators(removeSpecificEmployeeDataAction, dispatch),
+  submitFeedbackForm: bindActionCreators(submitFeedbackFormAction, dispatch),
+  getEmployeesList: bindActionCreators(getEmployeesListAction, dispatch)
+})
+
+const FeedbackPage = (props: FeedbackPageProps): React.ReactElement => {
+  const {
+    location,
+    history,
+    employeeData,
+    employeesList,
+    loadingEmployeesList,
+    loadingSpecificEmployeeData,
+    submittingFeedbackForm,
+    getSpecificEmployeeData,
+    removeSpecificEmployeeData,
+    submitFeedbackForm,
+    getEmployeesList
+  } = props;
   useEffect(() => {
-    const urlParams: FeedbackPageUrlParams = getUrlParams();
+    const urlParams: IFeedbackPageUrlParams = getUrlParams();
     const targetUserId = urlParams.user;
     if (targetUserId) {
-      feedbackPageStore.getSpecificEmployeeData(targetUserId);
+      getSpecificEmployeeData(+targetUserId);
     }
     return () => {
-      feedbackPageStore.removeSpecificEmployeeData();
+      removeSpecificEmployeeData();
     };
   }, [location]);
 
   useEffect((): void => {
-    const urlParams: FeedbackPageUrlParams = getUrlParams();
-    feedbackPageStore.getEmployeesList(urlParams);
+    const urlParams: IFeedbackPageUrlParams = getUrlParams();
+    getEmployeesList(urlParams);
   }, []);
 
   const onSelectChange = (value: SelectValue): void => {
-    const urlParams: FeedbackPageUrlParams = getUrlParams();
+    const urlParams: IFeedbackPageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.user;
-      feedbackPageStore.removeSpecificEmployeeData();
+      removeSpecificEmployeeData();
       history.push(`${createSearchString(urlParams)}`);
     } else {
       history.push(`${createSearchString({ ...getUrlParams(), user: value })}`);
@@ -84,19 +115,17 @@ const FeedbackPage = ({
   };
 
   const onFinish = (values: unknown): void => {
-    const employeeData: IUser = feedbackPageStore?.employeeData;
+    submitFeedbackForm(values, employeeData.id)
 
-    feedbackPageStore.submitFeedbackForm(values, employeeData.id).then(() => {
-      history.push(Routes.ADD_FEEDBACK_PATH);
-    });
+    history.push(Routes.ADD_FEEDBACK_PATH);
+
   };
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity): void=> {
     console.log("Failed:", errorInfo);
   };
 
-  const urlParams: FeedbackPageUrlParams = getUrlParams();
-  const employeeData: IUser = feedbackPageStore?.employeeData;
+  const urlParams: IFeedbackPageUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -106,7 +135,7 @@ const FeedbackPage = ({
       <EmployeeHomepageContent>
         {/* User selection */}
         <FiltersWrapper>
-          {feedbackPageStore.loadingEmployeesList ? (
+          {loadingEmployeesList ? (
             <FiltersSpinnerWrapper>
               <Spin size="default" />
             </FiltersSpinnerWrapper>
@@ -117,8 +146,8 @@ const FeedbackPage = ({
               onChange={onSelectChange}
               value={urlParams.user || undefined}
             >
-              {feedbackPageStore?.employeesList?.map(
-                (item: SelectOption, index: number) => {
+              {employeesList.map(
+                (item: ISelectOption, index: number) => {
                   return (
                     <Option value={item.value} key={index}>
                       {item.label}
@@ -130,7 +159,7 @@ const FeedbackPage = ({
           )}
         </FiltersWrapper>
         {/* FeedbackForm */}
-        {feedbackPageStore.loadingSpecificEmployeeData ? (
+        {loadingSpecificEmployeeData ? (
           <SpinnerWrapper>
             <Spin size="large" />
           </SpinnerWrapper>
@@ -143,7 +172,7 @@ const FeedbackPage = ({
                 <TargetUserInfo
                   photoSrc={employeeData.image_src}
                   fullName={employeeData.full_name}
-                  jobTitle={employeeData.profile?.job_title}
+                  jobTitle={employeeData.profile.job_title}
                 />
                 {/* Feedback form */}
                 <StyledFeedbackForm
@@ -493,7 +522,7 @@ const FeedbackPage = ({
                     <StyledButton
                       type="primary"
                       htmlType="submit"
-                      loading={feedbackPageStore?.submittingFeedbackForm}
+                      loading={submittingFeedbackForm}
                     >
                       Send
                     </StyledButton>
@@ -508,4 +537,4 @@ const FeedbackPage = ({
   );
 };
 
-export default observer(FeedbackPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackPage);

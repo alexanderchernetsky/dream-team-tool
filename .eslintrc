@@ -18,6 +18,9 @@
     "react/no-array-index-key": "off",
     "camelcase": "off",
     "import/extensions": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "func-names": "off",
+    "no-else-return": "warn",
+    "no-prototype-builtins": "warn"
   }
 }

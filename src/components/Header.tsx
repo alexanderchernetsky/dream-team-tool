@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
 import { Button } from "antd";
 import { withRouter } from "react-router-dom";
+import {bindActionCreators, Dispatch} from "redux";
+import {connect} from "react-redux";
 import ax from "../styled-components/accessor";
-import loginStore from "../stores/LoginStore";
 import { Routes } from "../constants/routes";
+import {logOutAction} from "../actions/loginPageActions";
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -32,16 +34,22 @@ const PageTitle = styled.div`
 
 interface IHeader extends RouteComponentProps {
   pageTitle: string;
+  logOut: () => void;
   children?: React.ReactNode;
 }
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  logOut: bindActionCreators(logOutAction, dispatch)
+})
 
 const Header = ({
   history,
   pageTitle,
   children,
+  logOut
 }: IHeader): React.ReactElement => {
   const logOutClickHandler = () => {
-    loginStore.logOut();
+    logOut();
     history.push(Routes.LOGIN_PATH);
   };
 
@@ -54,4 +62,4 @@ const Header = ({
   );
 };
 
-export default withRouter(Header);
+export default withRouter(connect(null, mapDispatchToProps)(Header));

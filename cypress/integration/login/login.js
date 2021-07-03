@@ -1,4 +1,4 @@
-describe("Login tests", () => {
+describe("Login", () => {
   it("trying to visit the homepage without auth token will redirect to the /login page", () => {
     cy.visit("/");
     cy.url().should("eq", "http://localhost:3000/login");
@@ -18,8 +18,10 @@ describe("Login tests", () => {
   });
 
   it("after typing correct credentials and clicking Submit, should redirect to the Homepage and set data to the localStorage", () => {
+    cy.get('[type="text"]').clear();
+    cy.get('[type="password"]').clear();
     cy.get('[data-test-id="login-email"]').type("admin@example.com");
-    cy.get('[data-test-id="login-password"]').type("12345678");
+    cy.get('[data-test-id="login-password"]').type(Cypress.env('admin_password'));
     cy.contains("Submit").click();
     // we have to use .then otherwise assertions with expect would fail because cypress executes asynchronously
     cy.url()

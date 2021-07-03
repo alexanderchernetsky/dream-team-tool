@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Select, Spin } from "antd";
-import { observer } from "mobx-react";
-import { RouteComponentProps } from "react-router";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import { SelectValue } from "antd/lib/select";
 import UserMainInfo from "../../components/UserMainInfo";
 import Layout from "../../components/Layout";
@@ -9,7 +9,6 @@ import Header from "../../components/Header";
 import LoopIcon from "../../images/Loop";
 import { getUser } from "../../helpers/authentication";
 import ReviewsFeedItem from "../../components/ReviewsFeedItem";
-import store from "../../stores/EmployeeHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
 import {
@@ -20,14 +19,16 @@ import {
 } from "../../styled-components/HomepageEmployee";
 import StyledSelect from "../../styled-components/common/Select";
 import StyledSearch from "../../styled-components/common/Search";
-import loginStore from "../../stores/LoginStore";
-import { HomepageEmployeeUser } from "../../interfaces/user";
-import { EmployeeHomepageUrlParams } from "../../interfaces/urlParams";
-import { SelectOption } from "../../interfaces/common";
+import { IHomepageEmployeeUser } from "../../interfaces/user";
+import { IEmployeeHomepageUrlParams } from "../../interfaces/urlParams";
+import { ISelectOption } from "../../interfaces/common";
+import {getFeedItemsAction} from "../../actions/homepageEmployeeActions";
+import {RootState} from "../../reducers";
+import {HomepageEmployeePageProps} from "../../interfaces/HomepageEmployee";
 
 const { Option } = Select;
 
-const selectOptions: SelectOption[] = [
+const selectOptions: ISelectOption[] = [
   {
     value: "1",
     label: "Positive",
@@ -42,18 +43,26 @@ const selectOptions: SelectOption[] = [
   },
 ];
 
-const HomePageEmployee = ({
-  history,
-  location,
-}: RouteComponentProps): React.ReactElement => {
+const mapStateToProps = (state: RootState) => ({
+  feedItems: state.homepageEmployee.feedItems,
+  loading: state.homepageEmployee.loading,
+  userFromStore: state.loginPage.user
+})
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getFeedItems: bindActionCreators(getFeedItemsAction, dispatch)
+})
+
+const HomePageEmployee = (props: HomepageEmployeePageProps): React.ReactElement => {
+  const {history, location, getFeedItems, loading, feedItems} = props;
   useEffect(() => {
-    store.getFeedItems(getUrlParams());
+    getFeedItems(getUrlParams());
   }, [location]);
 
   const user = getUser();
 
   const onSelectChange = (value: SelectValue): void => {
-    const urlParams: EmployeeHomepageUrlParams = getUrlParams();
+    const urlParams: IEmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.rating;
       history.push(`${createSearchString(urlParams)}`);
@@ -65,7 +74,7 @@ const HomePageEmployee = ({
   };
 
   const searchHandler = (value: string): void => {
-    const urlParams: EmployeeHomepageUrlParams = getUrlParams();
+    const urlParams: IEmployeeHomepageUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -76,11 +85,10 @@ const HomePageEmployee = ({
     }
   };
 
-  const urlParams: EmployeeHomepageUrlParams = getUrlParams();
-
+  const urlParams: IEmployeeHomepageUrlParams = getUrlParams();
   return (
     <Layout>
-      {!loginStore?.user ? (
+      {!user ? (
         <SpinnerWrapper>
           <Spin size="large" />
         </SpinnerWrapper>
@@ -95,7 +103,7 @@ const HomePageEmployee = ({
                 onChange={onSelectChange}
                 value={urlParams.rating || undefined}
               >
-                {selectOptions.map((item: SelectOption, index: number) => {
+                {selectOptions.map((item: ISelectOption, index: number) => {
                   return (
                     <Option value={item.value} key={index}>
                       {item.label}
@@ -117,37 +125,37 @@ const HomePageEmployee = ({
           <EmployeeHomepageContent>
             {/* User Info */}
             <UserMainInfo
-              jobTitle={user?.profile?.job_title}
-              fullName={user?.full_name}
-              age={user?.age}
-              email={user?.email}
-              imageSrc={user?.image_src}
-              yearsOfExperience={user?.years_of_experience}
-              shortDescription={user?.profile?.short_description}
-              links={user?.profile?.social_links}
+              jobTitle={user.profile.job_title}
+              fullName={user.full_name}
+              age={user.age}
+              email={user.email}
+              imageSrc={user.image_src}
+              yearsOfExperience={user.years_of_experience}
+              shortDescription={user.profile.short_description}
+              links={user.profile.social_links}
             />
             {/* Feed with reviews */}
-            {store.loading ? (
+            {loading ? (
               <SpinnerWrapper>
                 <Spin size="large" />
               </SpinnerWrapper>
             ) : (
               <FeedWrapper>
-                {store?.feedItems?.data?.map((item: HomepageEmployeeUser) => {
+                {feedItems.map((item: IHomepageEmployeeUser) => {
                   return (
                     <ReviewsFeedItem
                       key={item.id}
-                      jobTitle={item.author?.profile?.job_title}
-                      fullName={item.author?.full_name}
+                      jobTitle={item.author.profile.job_title}
+                      fullName={item.author.full_name}
                       date={item.created_at}
                       id={item.id}
-                      photoSrc={item.author?.image_src}
-                      otherComments={item.attributes?.otherComments}
+                      photoSrc={item.author.image_src}
+                      otherComments={item.attributes.otherComments}
                       personalCharacteristics={
-                        item.attributes?.strongPersonalCharacteristics
+                        item.attributes.strongPersonalCharacteristics
                       }
                       rating={item.rating}
-                      weakSides={item.attributes?.weakSides}
+                      weakSides={item.attributes.weakSides}
                     />
                   );
                 })}
@@ -160,4 +168,4 @@ const HomePageEmployee = ({
   );
 };
 
-export default observer(HomePageEmployee);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageEmployee);

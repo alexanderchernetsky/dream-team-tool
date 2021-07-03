@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
-import { observer } from "mobx-react";
 import { Select } from "antd";
-import { RouteComponentProps } from "react-router";
+import {bindActionCreators, Dispatch} from "redux";
+import {connect} from "react-redux";
 import { SelectValue } from "antd/lib/select";
 import {
   SorterResult,
   TablePaginationConfig,
   ColumnsType,
 } from "antd/lib/table/interface";
-import store from "../../stores/ManagerHomepageStore";
 import getUrlParams from "../../helpers/getUrlParams";
 import createSearchString from "../../helpers/createSearchString";
 import Header from "../../components/Header";
@@ -27,9 +26,12 @@ import {
   StyledManagerHomepageSelect,
   StyledTable,
 } from "../../styled-components/HomepageManager";
-import { GridDataUser } from "../../interfaces/user";
-import { HomepageManagerUrlParams } from "../../interfaces/urlParams";
-import { SelectOption } from "../../interfaces/common";
+import { IGridDataUser } from "../../interfaces/user";
+import { IHomepageManagerUrlParams } from "../../interfaces/urlParams";
+import { ISelectOption } from "../../interfaces/common";
+import {RootState} from "../../reducers";
+import {getSelectOptionsAction, getGridDataAction} from "../../actions/homepageManagerActions";
+import {HomepageManagerPageProps} from "../../interfaces/HomepageManager";
 
 const { Option } = Select;
 
@@ -71,7 +73,7 @@ const columns = [
   {
     title: "Actions",
     key: "actions",
-    render: (data: GridDataUser) => {
+    render: (data: IGridDataUser) => {
       return (
         <ActionColWrapper>
           <StyledActionColButton
@@ -91,23 +93,44 @@ const columns = [
   },
 ];
 
-const HomepageManager = ({
-  history,
-  location,
-}: RouteComponentProps): React.ReactElement => {
+const mapStateToProps = (state :RootState) => ({
+  selectOptionsJobTitle: state.homepageManager.selectOptionsJobTitle,
+  selectOptionsFocus: state.homepageManager.selectOptionsFocus,
+  gridData: state.homepageManager.gridData,
+  pagination: state.homepageManager.pagination,
+  loadingGridData: state.homepageManager.loadingGridData
+});
+
+const mapDispatchToProps = (dispatch :Dispatch) => ({
+  getSelectOptions: bindActionCreators(getSelectOptionsAction, dispatch),
+  getGridData: bindActionCreators(getGridDataAction, dispatch)
+})
+
+const HomepageManager = (props: HomepageManagerPageProps): React.ReactElement => {
+  const {
+    location,
+    history,
+    getSelectOptions,
+    getGridData,
+    pagination,
+    gridData,
+    loadingGridData,
+    selectOptionsJobTitle,
+    selectOptionsFocus
+  } = props;
   useEffect((): void => {
-    store.getSelectOptions();
+    getSelectOptions();
   }, []);
 
   useEffect((): void => {
-    store.getGridData(getUrlParams());
+    getGridData(getUrlParams());
   }, [location]);
 
   const onSelectChange = (selectName: string, value: SelectValue): void => {
-    const urlParams: HomepageManagerUrlParams = getUrlParams();
+    const urlParams: IHomepageManagerUrlParams = getUrlParams();
     if (!value) {
       if (!Array.isArray(urlParams)) {
-        delete urlParams[selectName as keyof HomepageManagerUrlParams];
+        delete urlParams[selectName as keyof IHomepageManagerUrlParams];
         history.push(`${createSearchString(urlParams)}`);
       }
     } else {
@@ -119,7 +142,7 @@ const HomepageManager = ({
   };
 
   const searchHandler = (value: string): void => {
-    const urlParams: HomepageManagerUrlParams = getUrlParams();
+    const urlParams: IHomepageManagerUrlParams = getUrlParams();
     if (!value) {
       delete urlParams.searchPhrase;
       history.push(`${createSearchString(urlParams)}`);
@@ -132,16 +155,16 @@ const HomepageManager = ({
   };
 
   const tableChangeHandler = (
-    pagination: TablePaginationConfig,
+    currentPagination: TablePaginationConfig,
     filters: Record<string, (string | number | boolean)[] | null>,
     sorter: SorterResult<object> | SorterResult<object>[]
   ): void => {
-    const urlParams: HomepageManagerUrlParams = getUrlParams();
+    const urlParams: IHomepageManagerUrlParams = getUrlParams();
     // handle sorting or pagination change
     if (!sorter || (!Array.isArray(sorter) && !sorter.order)) {
       delete urlParams.sort_column;
       delete urlParams.sort_direction;
-      urlParams.page = pagination.current;
+      urlParams.page = currentPagination.current;
       history.push(`${createSearchString(urlParams)}`);
     } else if (!Array.isArray(sorter)) {
       history.push(
@@ -149,12 +172,12 @@ const HomepageManager = ({
           ...urlParams,
           sort_column: sorter.field,
           sort_direction: sorter.order,
-          page: pagination.current,
+          page: currentPagination.current,
         })}`
       );
     }
   };
-  const urlParams: HomepageManagerUrlParams = getUrlParams();
+  const urlParams: IHomepageManagerUrlParams = getUrlParams();
 
   return (
     <Layout>
@@ -170,8 +193,8 @@ const HomepageManager = ({
             onChange={(value) => onSelectChange("job_title", value)}
             value={urlParams.job_title || undefined}
           >
-            {store?.selectOptionsJobTitle?.map(
-              (item: SelectOption, index: number) => {
+            {selectOptionsJobTitle.map(
+              (item: ISelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}
@@ -187,8 +210,8 @@ const HomepageManager = ({
             onChange={(value) => onSelectChange("focus", value)}
             value={urlParams.focus || undefined}
           >
-            {store?.selectOptionsFocus?.map(
-              (item: SelectOption, index: number) => {
+            {selectOptionsFocus.map(
+              (item: ISelectOption, index: number) => {
                 return (
                   <Option value={item.value} key={index}>
                     {item.label}
@@ -210,9 +233,9 @@ const HomepageManager = ({
         <GridWrapper>
           <StyledTable
             columns={columns as ColumnsType<object>}
-            dataSource={store.gridData}
-            loading={store.loadingGridData}
-            pagination={store.pagination}
+            dataSource={gridData}
+            loading={loadingGridData}
+            pagination={pagination}
             onChange={tableChangeHandler}
           />
         </GridWrapper>
@@ -221,4 +244,4 @@ const HomepageManager = ({
   );
 };
 
-export default observer(HomepageManager);
+export default connect(mapStateToProps, mapDispatchToProps)(HomepageManager);
