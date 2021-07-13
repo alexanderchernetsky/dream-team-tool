@@ -26,8 +26,12 @@ const EmployeeDetails = ({
   return (
     <Layout>
       <Header pageTitle="Employee Details" />
-      <SpinnerWrapper>
-        <Spin size="large" spinning={store.loadingSpecificEmployeeData}>
+      {store?.loadingSpecificEmployeeData ? (
+        <SpinnerWrapper>
+          <Spin size="large" />
+        </SpinnerWrapper>
+      ) : (
+        <>
           <EmployeeHomepageContent>
             <EmployeeInfo
               jobTitle={user?.profile?.job_title}
@@ -44,8 +48,8 @@ const EmployeeDetails = ({
               links={user?.profile?.social_links}
             />
           </EmployeeHomepageContent>
-        </Spin>
-      </SpinnerWrapper>
+        </>
+      )}
     </Layout>
   );
 };

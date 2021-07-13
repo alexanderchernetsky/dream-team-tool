@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import moment from "moment";
 import ax from "../styled-components/accessor";
-import noLogoImage from "../images/no_logo_image.png";
 import ProfileBackground from "../images/profile_background.jpg";
 import SocMediaLink from "./SocMediaLink";
 import capitalize from "../helpers/capitalize";
@@ -47,7 +46,7 @@ const ProfileInfo = styled.article`
   justify-content: flex-start;
 `;
 
-const JobInfo = styled.h3`
+const JobInfo = styled.div`
   font-weight: 600;
   font-size: 20px;
   color: ${ax("user-info-text-color")};
@@ -83,15 +82,17 @@ const TextWrapper = styled.article`
   color: ${ax("user-info-text-color")};
   width: 70%;
   margin-top: 30px;
+  text-align: justify;
 `;
 
-const LinksWrapper = styled.section`
+const LinksWrapper = styled.ul`
   display: flex;
   flex-direction: row;
   margin-top: 30px;
+  padding: 0;
 `;
 
-const ActionColWrapper = styled.div`
+const ActionColWrapper = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -129,7 +130,7 @@ interface IEmployee {
   profile_name: string;
 }
 const EmployeeInfo = ({
-  imageSrc = noLogoImage,
+  imageSrc,
   fullName,
   name,
   jobTitle,
