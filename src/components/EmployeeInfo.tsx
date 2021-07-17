@@ -40,7 +40,7 @@ const MainInfoWrapper = styled.section`
   margin-top: 20px;
 `;
 
-const ProfileInfo = styled.article`
+const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -76,7 +76,7 @@ const MainInfoText = styled.p`
   color: ${ax("user-main-info-text-color")};
 `;
 
-const TextWrapper = styled.article`
+const TextWrapper = styled.p`
   font-size: 16px;
   line-height: 22px;
   color: ${ax("user-info-text-color")};
@@ -152,8 +152,9 @@ const EmployeeInfo = ({
         <ProfileInfo>
           <FullName>{fullName}</FullName>
           <JobInfo>
-            {capitalize(focus)} <JobName>{jobTitle}</JobName>
+            {capitalize(focus)}, {yearsOfExperience} years in {focus}
           </JobInfo>
+          <JobName>{jobTitle}</JobName>
           <MainInfoText>
             {moment(birth).format("YYYY-MM-DD")} ({age} y.o.)
           </MainInfoText>
@@ -161,9 +162,6 @@ const EmployeeInfo = ({
         </ProfileInfo>
         <ProfileInfo>
           <RatingInfo>Rating: {rating}</RatingInfo>
-          <JobInfo>
-            {yearsOfExperience} years in {focus}
-          </JobInfo>
         </ProfileInfo>
       </MainInfoWrapper>
       <LinksWrapper>

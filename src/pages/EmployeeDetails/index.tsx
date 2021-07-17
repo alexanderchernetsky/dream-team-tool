@@ -31,7 +31,6 @@ const EmployeeDetails = ({
           <Spin size="large" />
         </SpinnerWrapper>
       ) : (
-        <>
           <EmployeeHomepageContent>
             <EmployeeInfo
               jobTitle={user?.profile?.job_title}
@@ -48,7 +47,6 @@ const EmployeeDetails = ({
               links={user?.profile?.social_links}
             />
           </EmployeeHomepageContent>
-        </>
       )}
     </Layout>
   );
