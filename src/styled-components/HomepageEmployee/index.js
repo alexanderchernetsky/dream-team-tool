@@ -18,6 +18,7 @@ const EmployeeHomepageContent = styled.div`
 
 const FeedWrapper = styled.div`
   display: flex;
+  min-width: 50%;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;

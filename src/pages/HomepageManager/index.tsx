@@ -77,11 +77,7 @@ const columns = [
           <StyledActionColButton
             type="primary"
             htmlType="button"
-            href={`/view-profile/${data.id}`}
-            onClick={(event) => {
-              event.preventDefault();
-              alert("Coming soon...");
-            }}
+            href={`/employee-details/${data.id}`}
           >
             View profile
           </StyledActionColButton>
