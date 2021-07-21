@@ -69,6 +69,10 @@ const StyledActionColButton = styled(StyledButton)`
   margin: 0;
 `;
 
+const StyledPrimaryButton = styled(StyledButton)`
+  background: ${ax("primary-color")};
+`;
+
 const StyledTable = styled(Table)`
   .ant-table-thead {
     tr {
@@ -106,4 +110,5 @@ export {
   Rating,
   StyledActionColButton,
   StyledTable,
+  StyledPrimaryButton,
 };

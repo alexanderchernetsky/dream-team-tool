@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* for ant modal mask */
+body .ant-modal-mask {
+  background-color: rgba(94, 94, 94, 0.2);
+}

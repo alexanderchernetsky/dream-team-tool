@@ -20,6 +20,12 @@ const formSectionCardShadowColor = "#E2ECFF";
 const gridTextColor = "#515151";
 const inputPlaceholderColor = "#C2C2C2";
 const analysisRowBorderColor = "#ECF1FB"
+const modalBackground = "#fff";
+const modalCloseBtnColor = "#DFDFDF";
+const modalBorderColor = "#ECF1FB";
+const neutralColor = "#A5F081";
+const positiveColor = "#CFCFCF";
+const negativeColor = "#C78AF7";
 
 const theme = {
   "primary-color": primaryColor,
@@ -41,8 +47,14 @@ const theme = {
   "form-section-heading-color": formSectionHeadingColor,
   "form-section-card-shadow-color": formSectionCardShadowColor,
   "grid-text-color": gridTextColor,
+  "modal-background": modalBackground,
+  "modal-close-btn-color": modalCloseBtnColor,
   "input-placeholder-color": inputPlaceholderColor,
-  "analysis-row-border-color": analysisRowBorderColor
+  "analysis-row-border-color": analysisRowBorderColor,
+  "neutral-color": neutralColor,
+  "positive-color": positiveColor,
+  "negative-color": negativeColor,
+  "modal-border-color": modalBorderColor,
 };
 
 export default theme;
