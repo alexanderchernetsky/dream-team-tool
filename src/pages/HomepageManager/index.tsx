@@ -155,7 +155,7 @@ const HomepageManager = ({
   return (
     <Layout>
       {/* Header */}
-      <Header pageTitle="Home page" />
+      <Header pageTitle="Manager Home Page" />
       {/* Content */}
       <ManagerHomepageContent>
         <FiltersWrapper>
