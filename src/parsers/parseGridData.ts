@@ -1,7 +1,8 @@
 import {parseAsArray, parseAsNumber, safelyParseOr} from "./common";
 import {parseUser} from "./parseUser";
+import {IGridParsedData} from "../interfaces/common";
 
-const parseGridData = (response :unknown) => {
+const parseGridData = (response :unknown) :IGridParsedData => {
     const gridDataArray = safelyParseOr(response, 'data.data', parseAsArray, [] as unknown[]);
 
     return {

@@ -9,6 +9,7 @@ import {RootState} from "../reducers";
 import showSuccessMessage from "../helpers/showSuccessMessage";
 import parseGridData from "../parsers/parseGridData";
 import parseAnalysisData from "../parsers/createTeamPage";
+import {IGridParsedData} from "../interfaces/common";
 
 export enum createTeamActionsTypes {
     SET_LOADING_ANALYSIS_DATA = 'CREATE_TEAM/SET_LOADING_ANALYSIS_DATA',
@@ -109,7 +110,7 @@ export const getGridDataAction = (params: ICreateTeamPageUrlParams) => async (di
     dispatch(setLoadingGridDataAction(true));
     return Manager.getGridData(params)
         .then((result :unknown) => {
-            const parsedData = parseGridData(result);
+            const parsedData :IGridParsedData = parseGridData(result);
             dispatch(setGridDataAction(mapToGridData(parsedData.data)))
             dispatch(
                 setPaginationAction({
@@ -126,7 +127,7 @@ export const getGridDataAction = (params: ICreateTeamPageUrlParams) => async (di
 }
 
 export const addTeamMemberAction = (id: number) => (dispatch :Dispatch, getState: () => RootState) => {
-    const {gridData, selectedUsersGridData} = getState()?.createTeam;
+    const {gridData, selectedUsersGridData} = getState().createTeam;
     const targetMember :IGridDataUser | undefined = gridData.find(
         (user :IGridDataUser) => user.id === id
     );

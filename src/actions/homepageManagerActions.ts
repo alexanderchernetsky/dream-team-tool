@@ -1,7 +1,7 @@
 import {TablePaginationConfig} from "antd/lib/table/interface";
 import {Dispatch} from "redux";
 import {IGridDataUser} from "../interfaces/user";
-import {IActionPromise, ISelectOption} from "../interfaces/common";
+import {IActionPromise, ISelectOption, IGridParsedData} from "../interfaces/common";
 import {IHomepageManagerUrlParams} from "../interfaces/urlParams";
 import Manager from "../services/Manager";
 import showErrorMessage from "../helpers/showErrorMessage";
@@ -96,7 +96,7 @@ export const getGridDataAction = (params: IHomepageManagerUrlParams): IActionPro
 
     return Manager.getGridData(params)
         .then((result :unknown) => {
-            const parsedData = parseGridData(result);
+            const parsedData :IGridParsedData = parseGridData(result);
             dispatch(setGridDataAction(mapToGridData(parsedData.data)));
             dispatch(setPaginationAction({
                 total: parsedData.total,

@@ -13,7 +13,7 @@ const parseAnalysisData = (response :unknown): ITeamAnalysisUser[] => {
     const data = safelyParseOr(response, 'data', parseAsArray, [] as unknown[]);
     return data.map(item => {
         const reviews = safelyParseOr(item, 'item.user.reviews', parseAsArray, [] as unknown[]);
-        const user = safelyParseOr(item, "user", parseUser, {} as IUser)
+        const user :IUser = safelyParseOr(item, "user", parseUser, {} as IUser)
         return {
             user: {
                 reviews:
@@ -29,7 +29,7 @@ const parseAnalysisData = (response :unknown): ITeamAnalysisUser[] => {
                             user_id: safelyParseOr(review, 'user_id', parseAsNumber, 0),
                         }
                     }),
-                ...user as IUser
+                ...user
             },
             statistic: {
                 negative: safelyParseOr(item, 'statistic.negative', parseAsNumber, 0),

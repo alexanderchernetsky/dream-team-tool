@@ -1,5 +1,6 @@
 import {ThunkAction} from "redux-thunk";
 import {RootState} from "../reducers";
+import {IUser} from "./user";
 
 export interface ISelectOption {
   label: string;
@@ -13,6 +14,13 @@ export interface IGradient {
 
 export interface IAction<T extends string> {
   type: T;
+}
+
+export interface IGridParsedData {
+  total: number;
+  per_page: number;
+  current_page: number;
+  data: IUser[];
 }
 
 export interface IActionWithPayload<T extends string, P> extends IAction<T> {
